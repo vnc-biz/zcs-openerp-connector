@@ -1,0 +1,34 @@
+<zimlet name="com_zimbra_erp_mail_connector" version="1.0" description="OpenERP  Configuration Settings">
+	<include>json2.js</include>
+	<include>com_zimbra_erp_mail_connector.js</include>
+	<include>configuration_setting.js</include>	
+	<include>document_setting.js</include>	
+	<include>push_to_openERP.js</include>	
+	<includeCSS>openerp.css</includeCSS>
+	<resource>resources/submit_please_wait.gif</resource> 
+	
+	
+	<handlerObject>com_zimbra_erp_mail_connector_HandlerObject</handlerObject>
+	
+	<zimletPanelItem label="${msg.connector_panel_lbl}" icon="zimbraIcon">
+		
+		<toolTipText>${msg.connector_panel_tooltip}</toolTipText>
+		<dragSource type="ZmAppt" />
+		<dragSource type="ZmContact" />
+		<dragSource type="ZmConv" />
+		<dragSource type="ZmMailMsg" />
+		
+	</zimletPanelItem>
+	
+	<userProperties>
+		<property type="string" name="urladdress" value="localhost"/>
+		<property type="string" name="port" value="8069"/>
+		<property type="string" name="getdatabase" value="select any database"/>
+		<property type="string" name="username" value="admin"/>
+		<property type="string" name="userpassword" value="admin"/>
+		
+	</userProperties>
+	
+	
+	
+</zimlet>
