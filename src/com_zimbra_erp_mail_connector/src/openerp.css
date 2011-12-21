@@ -1,0 +1,115 @@
+table.gridtable
+{
+	font-family:verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width:1px;
+	border-color:#666666;
+	border-collapse:collapse;
+	width:100%;
+}
+
+table.gridtable th
+{
+	border-width:1px;
+	padding:8px;
+	border-style:solid;
+	border-color:#666666;
+	background-color:#dedede;
+}
+
+table.gridtable td
+{
+	border-width:1px;
+	padding:4px;
+	border-style:solid;
+	border-color:#666666;
+	background-color:#ffffff;
+}
+
+table.gridtable tr.d0 td
+{
+	background-color:#EBEBEB;
+}
+
+table.gridtable tr.d1 td
+{
+	background-color:#FEFEF2;
+}
+
+#connect
+{
+	margin-left:250px;
+}
+
+#urladdress
+{
+	font-family:Times New Roman;
+	font-size:11px;
+	margin-bottom:5px;
+	margin-top:5px;
+}
+
+#port
+{
+	font-family:Times New Roman;
+	font-size:11px;
+	margin-bottom:5px;
+	margin-top:5px;
+	width:50px;
+}
+
+#username
+{
+	font-family:Times New Roman;
+	font-size:11px;
+	margin-bottom:5px;
+	margin-top:7px;
+}
+
+#userpassword
+{
+	font-family:Times New Roman;
+	font-size:11px;
+	margin-bottom:5px;
+	margin-top:5px;
+}
+
+#document_title
+{
+	font-family:Times New Roman;
+	font-size:11px;
+	width:130px;
+	margin-top:5px;
+}
+
+#document_docname
+{
+	font-family:Times New Roman;
+	font-size:11px;
+	width:130px;
+	margin-top:5px;
+}
+
+#mailsearch
+{
+	font-family:Times New Roman;
+	font-size:11px;
+	width:130px;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+select
+{
+	font-family:Arial, Sans-Serif;
+	font-size:12px;
+	margin-top:5px;
+}
+
+#push_recor
+{
+	width:98%;
+	height:70px;
+	overflow:auto;
+}
