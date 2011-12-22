@@ -19,17 +19,17 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 		// get the index of View menu so we can display it after that.
 		var buttonIndex = -1;
 		for ( var i = 0, count = toolbar.opList.length; i < count; i++) {
-			if (toolbar.opList[i] == ZmOperation.VIEW_MENU) {
-				buttonIndex = i + 1;
+			if (toolbar.opList[i] == ZmOperation.TAG_MENU) {
+				buttonIndex = i + 2;
 				break;
 			}
 		}
 		// create params obj with button details
 		var buttonArgs = {
-			text : "Contact Sync.",
+			text : "ContactSync.",
 			tooltip : "Synchronize contacts",
 			index : buttonIndex, // position of the button
-			image : this.getResource("sync.png") // icon
+			image : "refresh" // icon
 		};
 
 		// toolbar.createOp api creates the button with some id and params
@@ -44,6 +44,12 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = function(controller) {
 	alert("Tool Bar clicked fddfsf");
+
+	new contactsync(this);
+
+
+
+
 };
 
 
@@ -63,8 +69,7 @@ function com_zimbra_erp_mail_connector_HandlerObject() {
 }
 
 function tagcreate(){
-	/*var params = {"name":"openERP_archived","color":"1"};
-	ZmTag.create(params);*/
+	
 	var tree=appCtxt.getTagTree(appCtxt.getActiveAccount());
 	var tag=tree.getByName("openERP_archived");
 	
@@ -120,27 +125,32 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	var view = new DwtComposite(appCtxt.getShell());	
 	this.tabView = new DwtTabView(view,"SideStepTabView");
 	
-	//canvas = new TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),view);
+	 //this.about_setting= new about_setting(this.tabView,this);
 
 	this.configuration_setting = new configuration_setting(this.tabView,this,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password);
 	this.document_setting= new document_setting(this.tabView,this,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank);
 
+	
+
+	
 	view.setSize("550px", "400px");
 	this.tabView.setSize("550px", "400px");	
 	
 	this.tabkeys = [];
+
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab1"),this.configuration_setting));
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab2"),this.document_setting));	
-	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab3")));		
+	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab3")));
+		
 	 canvas = new TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),view);
 	
 canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_project_close"));
 
 	canvas.popup();
 		
-	this.tabView.getTabButton(this.tabkeys[0]);
-	this.tabView.getTabButton(this.tabkeys[1]);	
-	this.tabView.getTabButton(this.tabkeys[2]);	
+	this.tabView.getTabButton(this.tabkeys[0]).setImage("SideStep-configuration");
+	this.tabView.getTabButton(this.tabkeys[1]).setImage("SideStep-document");	
+	this.tabView.getTabButton(this.tabkeys[2]).setImage("SideStep-about");	
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._okBtnListener=function(){

@@ -113,3 +113,26 @@ select
 	height:70px;
 	overflow:auto;
 }
+
+.ImgSideStep-about
+{
+	background:url(resources/about.png) no-repeat 0 0;
+	width:25px;
+	height:16px;
+	overflow:hidden;
+}
+
+.ImgSideStep-configuration
+{
+	background:url(resources/configuration.png) no-repeat 0 0;
+	width:20px;
+	height:16px;
+	overflow:hidden;
+}
+
+.ImgSideStep-document
+{
+	background:url(resources/document.png) no-repeat 0 0;
+	width:20px;
+	height:16px;
+}

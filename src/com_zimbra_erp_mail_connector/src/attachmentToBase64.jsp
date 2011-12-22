@@ -5,6 +5,14 @@
 java.io.File, java.lang.Exception, java.io.FileInputStream, java.io.FileOutputStream, biz.source_code.base64Coder.Base64Coder, java.io.BufferedInputStream, java.io.BufferedWriter,
 java.io.FileWriter" %>
 
+
+
+<%
+response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
+response.setHeader("Pragma","no-cache"); //HTTP 1.0
+response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
+%>
+
 <%
 
 // We're directly putting out the base64, so text/plain is our content-type

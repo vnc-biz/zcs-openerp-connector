@@ -49,7 +49,7 @@ function getTableRecords(){
 		var elJson =JSON.parse(response.text.trim());
 		var records=elJson.records;
 
-		var s="<table class='gridtable' align='right'><tr><td><input type='checkbox' id='selectall' onclick='checkAll()'/><b>Delete</b></td><td><b>Title</b></td><td><b>Document Name</b></td></tr>";
+		var s="<table class='gridtable' align='right'><tr><td><input type='checkbox' id='selectall' onclick='checkAll()'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
 		for(var i=0;i<records.length;i++){
 			
 			if(i%2==0){
@@ -87,10 +87,10 @@ document_setting.prototype._createHTML = function() {
 
 	var html = new Array();
 
-	html[i++]="<fieldset>";
-	html[i++]="<legend>";
+	//html[i++]="<fieldset>";
+	//html[i++]="<legend>";
 	html[i++]=zm.getMessage("connector_document_fieldset");
-	html[i++]="<legend>";
+	//html[i++]="<legend>";
 	html[i++]="<table>";	
 		html[i++]="<tr>";
 			html[i++]="<td>";
@@ -114,7 +114,7 @@ document_setting.prototype._createHTML = function() {
 
 	html[i++]="<br><br>";
 	html[i++]="<div id='doc_record'></div>";
-	html[i++]="</fieldset>";
+	//html[i++]="</fieldset>";
 	this.getHtmlElement().innerHTML = html.join("");
 
 };
@@ -174,7 +174,6 @@ function addRecord(){
 		 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&obj_name="+docname+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim();
 
                 var response = AjxRpc.invoke(null,jspurl, null, null, true);
-		
 		if(response.text.trim()=="Fail"){
 			alert(zm.getMessage("invalid_record_name"));
 			return;

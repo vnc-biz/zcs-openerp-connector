@@ -3,9 +3,14 @@
 	<include>com_zimbra_erp_mail_connector.js</include>
 	<include>configuration_setting.js</include>	
 	<include>document_setting.js</include>	
-	<include>push_to_openERP.js</include>	
+	<include>push_to_openERP.js</include>
+	
+	<include>contactsync.js</include>	
 	<includeCSS>openerp.css</includeCSS>
 	<resource>resources/submit_please_wait.gif</resource> 
+	<resource>resources/about.png</resource>
+	<resource>resources/configuration.png</resource>
+	<resource>resources/document.png</resource>
 	<resource>sync.png</resource>
 	
 	<handlerObject>com_zimbra_erp_mail_connector_HandlerObject</handlerObject>
