@@ -13,7 +13,9 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
             String password=request.getParameter("password");
             String urladdress=request.getParameter("urladdress");
             String port=request.getParameter("port");
-	String uname=request.getParameter("uname");
+	    	
+	    String urladd=request.getParameter("urladd");
+	    	
 	     Cookie cookies [] = request.getCookies();
              String auth_token=new String();
                         if (cookies != null)
@@ -29,7 +31,7 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 
             ErpConfiguration configuration=new ErpConfiguration();
 
-            out.println(configuration.getContacts(dbname,password,urladdress,port,auth_token,uname));
+            out.print(configuration.getContacts(dbname,password,urladdress,port,auth_token,urladd));
 	//out.print("this is response from jsp"+dbname+password+urladdress+port);
 
             } catch (Exception e) {

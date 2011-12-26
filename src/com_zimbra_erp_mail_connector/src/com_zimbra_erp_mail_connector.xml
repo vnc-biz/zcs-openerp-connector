@@ -4,6 +4,8 @@
 	<include>configuration_setting.js</include>	
 	<include>document_setting.js</include>	
 	<include>push_to_openERP.js</include>
+	<include>about_setting.js</include> 
+	<include>VncContactSync.js</include>
 	
 	<include>contactsync.js</include>	
 	<includeCSS>openerp.css</includeCSS>
@@ -11,6 +13,7 @@
 	<resource>resources/about.png</resource>
 	<resource>resources/configuration.png</resource>
 	<resource>resources/document.png</resource>
+	<resource>resources/VNC-Logo.png</resource>
 	<resource>sync.png</resource>
 	
 	<handlerObject>com_zimbra_erp_mail_connector_HandlerObject</handlerObject>

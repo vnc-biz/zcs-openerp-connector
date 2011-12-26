@@ -182,7 +182,7 @@ function addRecord(){
 		
 	}
 	catch(e){
-		alert("Invalid Document name or databese connection, Please check the connection");
+		alert(zm.getMessage("invalid_doc_or_connection"));
 		return;
 	
 	}
@@ -199,7 +199,7 @@ var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/AddDocumentRecord.jsp?
 		}else{
 			
 			if(response.text.trim()=="duplicate"){
-				alert("Duplicate records are not allowed");
+				alert(zm.getMessage("duplicate_error"));
 				
 			}else{
 

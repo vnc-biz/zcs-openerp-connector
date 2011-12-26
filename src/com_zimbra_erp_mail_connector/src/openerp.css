@@ -114,6 +114,11 @@ select
 	overflow:auto;
 }
 
+.about_logo
+{
+	margin-top:20px;
+}
+
 .ImgSideStep-about
 {
 	background:url(resources/about.png) no-repeat 0 0;

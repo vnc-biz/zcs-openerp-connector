@@ -174,7 +174,7 @@ function getDatabase(){
 			
 	}
 	else{
-		alert("Connection time out");
+		alert(zm.getMessage("time_out"));
 	}	
 	
 

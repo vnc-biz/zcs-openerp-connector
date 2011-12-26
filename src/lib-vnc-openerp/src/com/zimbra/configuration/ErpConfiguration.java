@@ -550,7 +550,7 @@ public class ErpConfiguration
 	}
 
 
-	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String user)
+	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd)
 	{
 
 		Gson gson = new Gson();
@@ -565,9 +565,9 @@ public class ErpConfiguration
 			dbname=dbname.trim();
 
 			Object objlist = lists.invoke("execute",new Object[] {dbname,1,password,"res.partner.address","search",new Vector()});
-			System.out.println("----------------------------------> Id list:"+objlist.toString());
+			//System.out.println("----------------------------------> Id list:"+objlist.toString());
 			Vector nameList = new Vector();
-			nameList.add("name");
+			/*nameList.add("name");
 			nameList.add("city");
 			nameList.add("street");
 			nameList.add("street2");
@@ -576,12 +576,36 @@ public class ErpConfiguration
 			nameList.add("fax");
 			nameList.add("email");
 			nameList.add("mobile");
+			nameList.add("partner_id");*/
+			BufferedReader br=new BufferedReader(new FileReader("/tmp/contactFields.properties"));
+			String[] cField;
+			Vector heading=new Vector();
+			String str;
+			int k=0;
+			while((str=br.readLine())!=null)
+			{
+				try
+				{
+					cField=str.split("=");
+					nameList.add(cField[0].trim());
+					System.out.println("length of cField:"+cField.length+"   --------------- >key:"+cField[0].trim()+" value:"+cField[1].trim());
 
-			System.out.println("------------------------------------>  This is before call");
+
+					heading.add(cField[1].trim());
+
+				}
+				catch(Exception r)
+				{
+					System.out.print("--------------------------->>>>>Exception");
+					r.printStackTrace();
+				}
+			}
+
+			System.out.println("------------------------------------>  End of file... Contacts heading read successfully from file...");
 			contact=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 
 			XmlRpcStruct contactList=(XmlRpcStruct)lists.invoke("execute",new Object[] {dbname,1,password,"res.partner.address","export_data",objlist,nameList});
-			System.out.print("----> excuting  hi this is contact list============"+contactList.getArray("datas") +" ----> end new.");
+			//System.out.print("----> excuting  hi this is contact list============"+contactList.getArray("datas") +" ----> end new.");
 
 
 			int len1=contactList.getArray("datas").size();
@@ -590,18 +614,31 @@ public class ErpConfiguration
 			XmlRpcArray arr=contactList.getArray("datas");
 			CsvWriter csvFile=new CsvWriter("/tmp/myData.csv",',',Charset.forName("UTF-8"));
 			csvFile.setForceQualifier(true);
-			String[] heading= {"Name","Home City","Home Street","Business Street","Home Postal Code","Home Phone","Home Fax","E-mail Address","Mobile Phone"};
-			csvFile.writeRecord(heading);
-			//csvFile.endRecord();
+			/*	String[] heading={"Name","Home City","Home Street","Business Street","Home Postal Code","Home Phone","Home Fax","E-mail Address","Mobile Phone"};  */
+			for(int t=1; t<heading.size(); t++)
+			{
+				csvFile.write(heading.get(t).toString());
+			}
+			csvFile.endRecord();
+
 			for(int i=0; i<len1; i++)
 			{
 
-				for(int j=0; j<len2; j++)
+				for(int j=1; j<len2; j++)
 				{
+
 					name=arr.getArray(i).get(j).toString();
+					if(j==0)
+					{
+						if(name.equals("false"))
+						{
+							name=arr.getArray(i).get(0).toString();
+							System.out.println("----------------- > partner ID:"+name);
+						}
+					}
 					if(name.equals("false"))
 						name="";
-					System.out.println("NNNNNNNNNNNNNNNNNNNNName : " + name);
+					//System.out.println("NNNNNNNNNNNNNNNNNNNNName : " + name);
 					csvFile.write(name);
 				}
 				csvFile.endRecord();
@@ -610,8 +647,8 @@ public class ErpConfiguration
 			csvFile.close();
 
 			Runtime r=Runtime.getRuntime();
-			Process p=r.exec("curl --upload-file /tmp/myData.csv http://localhost/home/"+user+"/openERP?fmt=csv&auth=qp&zauthtoken="+auth_token);
-			System.out.println(user+"****************"+auth_token+"------------------------> End of file...\n");
+			Process p=r.exec("curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
+			//System.out.println("****************"+auth_token+"------------------------> End of file...\n");
 			return "success";
 
 
@@ -620,10 +657,8 @@ public class ErpConfiguration
 		{
 			System.out.print("Exception in xmlrpc contact");
 			e.printStackTrace();
-
+			return "fail";
 		}
-		System.out.print("Hi this is id list========="+idList.toString());
-		return "after success";
 	}
 
 }

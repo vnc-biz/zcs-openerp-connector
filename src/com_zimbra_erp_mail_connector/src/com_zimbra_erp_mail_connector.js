@@ -43,10 +43,8 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = function(controller) {
-	alert("Tool Bar clicked fddfsf");
 
 	new contactsync(this);
-
 
 
 
@@ -125,7 +123,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	var view = new DwtComposite(appCtxt.getShell());	
 	this.tabView = new DwtTabView(view,"SideStepTabView");
 	
-	 //this.about_setting= new about_setting(this.tabView,this);
+	 this.about_setting= new about_setting(this.tabView,this);
 
 	this.configuration_setting = new configuration_setting(this.tabView,this,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password);
 	this.document_setting= new document_setting(this.tabView,this,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank);
@@ -140,7 +138,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab1"),this.configuration_setting));
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab2"),this.document_setting));	
-	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab3")));
+	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab3"),this.about_setting));
 		
 	 canvas = new TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),view);
 	
@@ -148,9 +146,9 @@ canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_pro
 
 	canvas.popup();
 		
-	this.tabView.getTabButton(this.tabkeys[0]).setImage("SideStep-configuration");
-	this.tabView.getTabButton(this.tabkeys[1]).setImage("SideStep-document");	
-	this.tabView.getTabButton(this.tabkeys[2]).setImage("SideStep-about");	
+	this.tabView.getTabButton(this.tabkeys[0]).setImage("preferences");//SideStep-configuration
+	this.tabView.getTabButton(this.tabkeys[1]).setImage("edit");//SideStep-document	
+	this.tabView.getTabButton(this.tabkeys[2]).setImage("social-icon");//SideStep-about	
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._okBtnListener=function(){
@@ -357,9 +355,7 @@ function(convSrcObj) {
 	`			var jss="/service/zimlet/com_zimbra_erp_mail_connector/attachmentToBase64.jsp?messageUrl="+AjxStringUtil.urlComponentEncode(jspUrl);
 							
 				response = AjxRpc.invoke(null, jss, null, null, true, null);
-				alert(response.text.trim());
 				attachment_binary.push(response.text.trim().replace(/(\r\n|[\r\n])/g,"")); 
-			        alert("aaa" + attachment_binary[0]);	
 				
 				
 			}
@@ -479,7 +475,6 @@ download_link=baseURL;
 				jspUrl=baseURL+tmpAtt[i].filename+"?auth=co&loc=en_US&id="+convSrcObj.msgIds+"&part=2&disp=a";
 				var jss="/service/zimlet/com_zimbra_erp_mail_connector/attachmentToBase64.jsp?messageUrl="+AjxStringUtil.urlComponentEncode(jspUrl);				
 				response = AjxRpc.invoke(null, jss, null, null, true, null);
-				alert(response.text.trim());
 				attachment_binary.push(response.text.trim().replace(/(\r\n|[\r\n])/g,"")); 
 			        alert("aaa" + attachment_binary[0]);	
 				

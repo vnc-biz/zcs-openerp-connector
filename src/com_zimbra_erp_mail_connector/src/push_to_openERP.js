@@ -30,9 +30,9 @@ push_to_openERP=function(zimlet,jsonArray,msgids,download_link,push_from,msgtype
 	this._displayDailog();
 	
 	
-	
 	};
 
+//var fixheading="<table class='gridtable'><tr><td><b>"+zmlt.getMessage("connector_pushopener_select")+"</b></td><td><b>Name</b></td></tr>";
 push_to_openERP.prototype=new ZmZimletBase;
 
 push_to_openERP.prototype.constructor = push_to_openERP;
