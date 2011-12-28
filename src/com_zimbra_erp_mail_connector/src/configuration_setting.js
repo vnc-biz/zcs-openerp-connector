@@ -48,7 +48,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="<legend>";
 		html[i++]=this.zimlet.getMessage("connector_configuration_fieldset");
 		html[i++]="</legend>";
-		html[i++]="<table align=center>";
+		html[i++]="<table style='padding-left:76px;'>";
 		html[i++]="<tr>";
 		html[i++]="<td>";
 		html[i++]=config_lbl_url;
@@ -71,7 +71,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]=config_lbl_database;
 		html[i++]="</td>";
 		html[i++]="<td>";
-		html[i++]="<select id='getdatabase'></select>";
+		html[i++]="<select id='getdatabase' style='width:145px;'></select>";
 		html[i++]="</td>";
 		html[i++]="</tr>";
 			

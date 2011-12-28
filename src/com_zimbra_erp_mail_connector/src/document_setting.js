@@ -37,6 +37,11 @@ function document_setting(parent, zimlet,document_lbl_title,document_lbl_docname
 }
 
 
+String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g,"");
+}
+
+
 function getTableRecords(){
 
 			
