@@ -37,7 +37,7 @@ push_to_openERP.prototype=new ZmZimletBase;
 
 push_to_openERP.prototype.constructor = push_to_openERP;
 
-
+/*Display dilogbox when Email will be pushed on zimlet*/
 push_to_openERP.prototype._displayDailog=function(){
 	
 
@@ -67,6 +67,7 @@ push_to_openERP.prototype._displayDailog=function(){
 
 }
 
+/*Retrives all records stored from add document*/
 function getRecords(){
 
 	 
@@ -104,7 +105,7 @@ function getRecords(){
 }
 
 
-
+/*Check if "Select All" checkbox is checked*/
 function AllCheckbox(){
 	 record_all=document.getElementsByName("records"+push_random+"");
 	
@@ -131,7 +132,7 @@ function AllCheckbox(){
 
 
 
-
+/*Will select all documents*/
 
 function checkdAll(ran){
 	
@@ -157,6 +158,7 @@ function checkdAll(ran){
 
 }
 
+/*Create a dialog view for push Email*/
 push_to_openERP.prototype._createDialogView = function() {
 
 	var i = 0;
@@ -192,7 +194,7 @@ push_to_openERP.prototype._createDialogView = function() {
 
 
 var documentrecord;
-
+/*Provede All users name from Open ERP*/
 function getDocumentRecord(){
 
 	
@@ -264,7 +266,7 @@ function getDocumentRecord(){
 
    	  	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	
-			
+		/*response will have users list*/	
                 	if (response.success == true) {
 
 			
@@ -335,7 +337,7 @@ this.pbDialog.popdown();
 
 
 var push_id="";
-
+/*Ajax call with all mail details to push Email*/
 function pushEmail(push_random){
 
 	

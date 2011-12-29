@@ -1,6 +1,6 @@
 <%@ page import="java.util.*,com.zimbra.configuration.*" %>
 	<%
-		
+		/*All users list from open ERP*/
 		try { 
 			String dbname=request.getParameter("dbname");
 			String password=request.getParameter("password");

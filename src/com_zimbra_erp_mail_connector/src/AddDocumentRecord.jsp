@@ -7,7 +7,7 @@ response.setHeader("Pragma","no-cache"); //HTTP 1.0
 response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 %>
 	<%
-		
+		/*I will add your name in database if it will correct*/
 		try { 
 			String title=request.getParameter("title");
 			String docname=request.getParameter("docname");

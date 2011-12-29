@@ -11,7 +11,7 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 	
 
 <%
-		
+		/*Finally send Email to open ERP*/
 		try { 
 			String dbname=request.getParameter("dbname");
 			String password=request.getParameter("password");

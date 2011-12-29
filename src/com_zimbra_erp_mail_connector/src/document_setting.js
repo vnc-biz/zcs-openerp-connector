@@ -130,6 +130,9 @@ function addRecord(){
 	
 	 var title=document.getElementById("document_title").value;
 	var docname=document.getElementById("document_docname").value;
+	title=title.trim();
+	docname=docname.trim();
+	
 
 	
 	  

@@ -10,6 +10,21 @@ configuration_setting.prototype.constructor = configuration_setting;
 	var proto="http://";
 
 	
+String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g,"");
+}
+
+/*function trim(s)
+{
+ var l=0; var r=s.length -1;
+ while(l < s.length && s[l] == ' ')
+ { l++; }
+ while(r > l && s[r] == ' ')
+ { r-=1; }
+ return s.substring(l, r+1);
+}*/
+
+
 
 function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password){
 	
@@ -48,7 +63,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="<legend>";
 		html[i++]=this.zimlet.getMessage("connector_configuration_fieldset");
 		html[i++]="</legend>";
-		html[i++]="<table style='padding-left:76px;'>";
+		html[i++]="<table style='padding-left:76px;' class='marginIE'>";
 		html[i++]="<tr>";
 		html[i++]="<td>";
 		html[i++]=config_lbl_url;
@@ -115,7 +130,9 @@ function getDatabase(){
 		
 	var urladdress=document.getElementById("urladdress").value;
 	var port=document.getElementById("port").value;
+	port=port.trim();
 
+	urladdress=urladdress.trim();
 	if(urladdress==""){
 		alert(zm.getMessage("connector_configuration_urlblank"));
 		document.getElementById("urladdress").focus();
@@ -175,11 +192,12 @@ function getDatabase(){
 	}
 	else{
 		alert(zm.getMessage("time_out"));
+		document.getElementById("getdatabase").innerHTML=""+"<option>select any database</option>";
 	}	
 	
-
-
 }
+
+
 
 
 function checkConnection(){
@@ -190,7 +208,10 @@ function checkConnection(){
 	var port=document.getElementById("port").value;
 	var username=document.getElementById("username").value;
 	var userpassword=document.getElementById("userpassword").value;
+	port=port.trim();
 	
+	username=username.trim();
+	url=url.trim();	
 	
 	  if(url==""){
 		alert(zm.getMessage("connector_configuration_urlblank"));

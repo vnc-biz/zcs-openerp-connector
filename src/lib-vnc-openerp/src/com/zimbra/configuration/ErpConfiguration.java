@@ -577,7 +577,10 @@ public class ErpConfiguration
 			nameList.add("email");
 			nameList.add("mobile");
 			nameList.add("partner_id");*/
-			BufferedReader br=new BufferedReader(new FileReader("/tmp/contactFields.properties"));
+			//BufferedReader br=new BufferedReader(new FileReader("/com/zimbra/configuration/contactFields.properties"));
+			InputStream is=getClass().getResourceAsStream("/com/zimbra/configuration/contactFields.properties");
+
+			BufferedReader br=new BufferedReader(new InputStreamReader(is));
 			String[] cField;
 			Vector heading=new Vector();
 			String str;
