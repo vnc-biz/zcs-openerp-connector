@@ -142,6 +142,13 @@ select
 	height:16px;
 }
 
+.ImgCalSync
+{
+	background:url(resources/interact.png) no-repeat 0 0;
+	width:20px;
+	height:16px;
+}
+
 #getdatabase
 {
 	font-family:Times New Roman;

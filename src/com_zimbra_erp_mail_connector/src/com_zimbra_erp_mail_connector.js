@@ -37,10 +37,80 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 		var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID, buttonArgs);
 		button.addSelectionListener(new AjxListener(this,this._handleToolbarBtnClick, controller));
 
-		
 	}
+	else if(view == "CLD" || view == "CLWW"){
+		
+		var buttonIndex1 = -1;
+                for ( var i = 0, count = toolbar.opList.length; i < count; i++) {
+                        if (toolbar.opList[i] == ZmOperation.VIEW_MENU) {
+                                buttonIndex1 = i + 1;
+                                break;
+                        }
+                }
+                // create params obj with button details
+                var buttonArgs = {
+                        text : "CalendarSync.",
+                        tooltip : "Synchronize contacts",
+                        index : buttonIndex, // position of the button
+                        image : "CalSync" // icon
+                };
+
+                // toolbar.createOp api creates the button with some id and params
+                // containing button details.
+                var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID, buttonArgs);
+                button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));
+
+	}
+
+
+
 };
 
+
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = function(controller) {
+
+        var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP");
+        alert(ftree);
+        if(ftree==null)
+        {
+                var soapDoc = AjxSoapDoc.create("CreateFolderRequest", "urn:zimbraMail");
+
+                var accountNode = soapDoc.set("folder");
+                accountNode.setAttribute("name","open_ERP");
+                accountNode.setAttribute("view","appointment");
+                /*var content = zimbra_sig_id.signature;
+
+                var subnode=soapDoc.set("content",content,accountNode);
+                subnode.setAttribute("type",type);*/
+
+                var params = {
+                soapDoc: soapDoc,
+                asyncMode: true,
+                callback: (new AjxCallback(this, this._handleSOAPResponseXML)),
+                errorCallback: (new AjxCallback(this, this._handleSOAPErrorResponseXML))
+                };
+
+
+                appCtxt.getAppController().sendRequest(params);
+                alert("Calendar created");
+
+        }
+        else{ alert("Calendar already exist")};
+	
+	new calsync(this);
+};
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype._handleSOAPErrorResponseXML = function(result) {
+		
+	if (result.isException()) {
+        // do something with exception
+        alert("exception is thrown from _handleSOAPErrorResponseXML");
+        var exception = result.getException();
+	return;
+    }
+
+};
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = function(controller) {
 

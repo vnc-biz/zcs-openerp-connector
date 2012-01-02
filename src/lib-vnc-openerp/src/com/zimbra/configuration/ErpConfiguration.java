@@ -1,5 +1,8 @@
 package com.zimbra.configuration;
+
 import redstone.xmlrpc.*;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import com.csvreader.*;
 import redstone.xmlrpc.XmlRpcClient;
 import java.nio.charset.Charset;
@@ -391,8 +394,6 @@ public class ErpConfiguration
 		HttpURLConnection connection = null,row_connection=null;
 		Vector attach_name=new Vector();
 		InputStream inputstream=null;
-		LmcMessage msg=null;
-		LmcSession lsession=null;
 		Vector mail_to=null;
 		Vector attach_encode=null;
 		Vector mail_cc=null;
@@ -525,7 +526,7 @@ public class ErpConfiguration
 			String fixurl="/xmlrpc/object";
 			XmlRpcClient lists;;
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
-
+			System.out.println("this is address----------->>>>>"+urladdress+":"+port+fixurl+"End of url<<<<<<<<<<--------");
 			s=new String();
 			dbname=dbname.trim();
 
@@ -664,7 +665,65 @@ public class ErpConfiguration
 		}
 	}
 
+
+
+	/*...............................................*/
+
+	public String getCal(String url)
+	{
+
+		try
+		{
+
+			//String strurl="http://jignesh.com/home/jignesh@jignesh.com/Calendar?fmt=ics";
+			HttpURLConnection connection = null;
+			URL url1=new URL(url);
+			connection=(HttpURLConnection)url1.openConnection();
+			connection.connect();
+			System.out.println("This is message---------------->>>>>"+connection.getResponseMessage()+"End of the message<<<<<<<<<<<<");
+			System.out.println("connection is successfull");
+			int calLength=connection.getContentLength();
+			Byte[] cal;
+			InputStream in=connection.getInputStream();
+
+			FileOutputStream fo=new FileOutputStream("/tmp/cal.ics");
+			int rowlineLength = 72;
+			StringBuffer rowstrbuffer=new StringBuffer();
+			byte[] rowbuf = new byte[rowlineLength/4*3];
+			while(true)
+			{
+
+				int rowlen = in.read();
+				if (rowlen <= -1) break;
+				fo.write(rowlen);
+
+			}
+
+			//int flag=in.read(cal,0,calLength);
+
+			System.out.println("----------->>>>>>Content length"+connection.getContentLength()+"Type------>"+connection.getContentType());
+			Runtime r=Runtime.getRuntime();
+			Process p=r.exec("curl --upload-file /tmp/cal.ics http://admin:admin@192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings?fmt=ics");
+
+			System.out.print("succeessssss----------------------->>>>>>>>>>>>>>");
+
+
+		}
+		catch(Exception e)
+		{
+			System.out.print("Exception");
+			e.printStackTrace();
+		}
+
+		return "success";
+	}
+	/*...............................*/
+
 }
+
+
+
+
 
 
 

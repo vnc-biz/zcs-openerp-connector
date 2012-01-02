@@ -7,6 +7,7 @@
 	<include>about_setting.js</include> 
 	<include>VncContactSync.js</include>
 	
+	<include>calsync.js</include>
 	<include>contactsync.js</include>	
 	<includeCSS>openerp.css</includeCSS>
 	<resource>resources/submit_please_wait.gif</resource> 
