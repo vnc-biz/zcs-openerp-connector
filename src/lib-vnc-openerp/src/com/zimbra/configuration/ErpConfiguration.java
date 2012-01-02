@@ -688,8 +688,6 @@ public class ErpConfiguration
 
 			FileOutputStream fo=new FileOutputStream("/tmp/cal.ics");
 			int rowlineLength = 72;
-			StringBuffer rowstrbuffer=new StringBuffer();
-			byte[] rowbuf = new byte[rowlineLength/4*3];
 			while(true)
 			{
 
@@ -699,13 +697,56 @@ public class ErpConfiguration
 
 			}
 
-			//int flag=in.read(cal,0,calLength);
 
-			System.out.println("----------->>>>>>Content length"+connection.getContentLength()+"Type------>"+connection.getContentType());
+			//System.out.println("----------->>>>>>Content length"+connection.getContentLength()+"Type------>"+connection.getContentType());
 			Runtime r=Runtime.getRuntime();
 			Process p=r.exec("curl --upload-file /tmp/cal.ics http://admin:admin@192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings?fmt=ics");
 
+			try
+			{
+				HttpURLConnection connection_erp = null;
+				String strurl="http://192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings.ics";
+				URL erpurl=new URL(strurl);
+				connection_erp=(HttpURLConnection)erpurl.openConnection();
+				String uname="admin";
+				String passwd="admin";
+				String authString =uname+":"+passwd;
+				authString = (new sun.misc.BASE64Encoder()).encode(authString.getBytes());
+				System.out.println("this is encoding------->>>>>"+authString);
+
+				connection_erp.setRequestProperty("Authorization","Basic "+authString);
+
+
+				connection_erp.connect();
+				calLength=connection_erp.getContentLength();
+				InputStream inerp=connection_erp.getInputStream();
+				FileOutputStream fo1=new FileOutputStream("/tmp/calfromerp.ics");
+				while(true)
+				{
+
+					int rowlen1 = inerp.read();
+					if (rowlen1 <= -1) break;
+					fo1.write(rowlen1);
+
+				}
+
+
+
+				System.out.println("----------->>>>>>Content length"+connection_erp.getContentLength()+"Type------>"+connection.getContentType());
+			}
+			catch(Exception ex)
+			{
+				System.out.print("Exception ------>>>>");
+				ex.printStackTrace();
+			}
+
+
+
+
 			System.out.print("succeessssss----------------------->>>>>>>>>>>>>>");
+
+
+
 
 
 		}
