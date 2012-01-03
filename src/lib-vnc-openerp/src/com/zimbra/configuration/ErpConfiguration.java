@@ -669,15 +669,16 @@ public class ErpConfiguration
 
 	/*...............................................*/
 
-	public String getCal(String url)
+	public String getCal(String z_calurl,String erp_calurl)
 	{
 
+		/*Export calendar from zimbra.........*/
 		try
 		{
 
 			//String strurl="http://jignesh.com/home/jignesh@jignesh.com/Calendar?fmt=ics";
 			HttpURLConnection connection = null;
-			URL url1=new URL(url);
+			URL url1=new URL(z_calurl);
 			connection=(HttpURLConnection)url1.openConnection();
 			connection.connect();
 			System.out.println("This is message---------------->>>>>"+connection.getResponseMessage()+"End of the message<<<<<<<<<<<<");
@@ -697,68 +698,116 @@ public class ErpConfiguration
 
 			}
 
-
-			//System.out.println("----------->>>>>>Content length"+connection.getContentLength()+"Type------>"+connection.getContentType());
+			/*Import to Calendar to open ERP*/
 			Runtime r=Runtime.getRuntime();
-			Process p=r.exec("curl --upload-file /tmp/cal.ics http://admin:admin@192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings?fmt=ics");
-
-			try
-			{
-				HttpURLConnection connection_erp = null;
-				String strurl="http://192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings.ics";
-				URL erpurl=new URL(strurl);
-				connection_erp=(HttpURLConnection)erpurl.openConnection();
-				String uname="admin";
-				String passwd="admin";
-				String authString =uname+":"+passwd;
-				authString = (new sun.misc.BASE64Encoder()).encode(authString.getBytes());
-				System.out.println("this is encoding------->>>>>"+authString);
-
-				connection_erp.setRequestProperty("Authorization","Basic "+authString);
-
-
-				connection_erp.connect();
-				calLength=connection_erp.getContentLength();
-				InputStream inerp=connection_erp.getInputStream();
-				FileOutputStream fo1=new FileOutputStream("/tmp/calfromerp.ics");
-				while(true)
-				{
-
-					int rowlen1 = inerp.read();
-					if (rowlen1 <= -1) break;
-					fo1.write(rowlen1);
-
-				}
-
-
-
-				System.out.println("----------->>>>>>Content length"+connection_erp.getContentLength()+"Type------>"+connection.getContentType());
-			}
-			catch(Exception ex)
-			{
-				System.out.print("Exception ------>>>>");
-				ex.printStackTrace();
-			}
-
-
-
-
-			System.out.print("succeessssss----------------------->>>>>>>>>>>>>>");
-
-
-
-
+			Process p=r.exec("curl --upload-file /tmp/cal.ics"+erp_calurl);
 
 		}
 		catch(Exception e)
 		{
-			System.out.print("Exception");
+			System.out.print("Exception in Export calendar from zimbra");
 			e.printStackTrace();
 		}
 
+		/*Export calendar from open ERP*/
+
+		try
+		{
+			HttpURLConnection connection_erp = null;
+			String strurl="http://192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings.ics";
+			URL erpurl=new URL(erp_calurl);
+			connection_erp=(HttpURLConnection)erpurl.openConnection();
+			String uname="admin";
+			String passwd="admin";
+			String authString =uname+":"+passwd;
+			authString = (new sun.misc.BASE64Encoder()).encode(authString.getBytes());
+			System.out.println("this is encoding------->>>>>"+authString);
+
+			connection_erp.setRequestProperty("Authorization","Basic "+authString);
+
+
+			connection_erp.connect();
+			InputStream inerp=connection_erp.getInputStream();
+			FileOutputStream fo1=new FileOutputStream("/tmp/calfromerp.ics");
+			while(true)
+			{
+
+				int rowlen1 = inerp.read();
+				if (rowlen1 <= -1) break;
+				fo1.write(rowlen1);
+
+			}
+
+
+
+			/*Import to Calendar to zimbra*/
+			Runtime r=Runtime.getRuntime();
+			String command="curl --upload-file /tmp/calfromerp.ics"+" "+z_calurl;
+			System.out.println("z_calurl----------------------->>>>>>>"+command);
+			Process p=r.exec(command);
+			System.out.print("------------>>>>>successs Import");
+
+
+		}
+		catch(Exception ex)
+		{
+			System.out.print("Exception ------>>>>");
+			ex.printStackTrace();
+		}
+
+
+
+
+		System.out.print("succeessssss----------------------->>>>>>>>>>>>>>");
+
+
 		return "success";
+
+
+
 	}
 	/*...............................*/
+
+	public String checkCalurl(String uname,String passwd,String url)
+	{
+		String response=null;
+
+		try
+		{
+			HttpURLConnection connection_url = null;
+			//String strurl="http://192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings.ics";
+			URL chkurl=new URL(URLEncoder.encode(url.toString(),"UTF-8"));
+
+			connection_url=(HttpURLConnection)chkurl.openConnection();
+
+			connection_url.setConnectTimeout(200);
+
+			String authString =uname+":"+passwd;
+			authString = (new sun.misc.BASE64Encoder()).encode(authString.getBytes());
+			System.out.println("this is encoding------->>>>>"+authString);
+
+			connection_url.setRequestProperty("Authorization","Basic "+authString);
+
+			connection_url.connect();
+			response=connection_url.getResponseMessage();
+			System.out.println("this is response code---------->>>>"+connection_url.getResponseCode());
+			System.out.println("----------->>>>>>Content response"+response);
+
+		}
+		catch(Exception ex)
+		{
+			System.out.print("Exception ------>>>>");
+			ex.printStackTrace();
+
+		}
+
+		return response;
+
+	}
+
+
+
+
 
 }
 

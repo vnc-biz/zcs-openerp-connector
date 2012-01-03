@@ -35,7 +35,8 @@
 		<property type="string" name="getdatabase" value="select any database"/>
 		<property type="string" name="username" value="admin"/>
 		<property type="string" name="userpassword" value="admin"/>
-		
+		<property type="string" name="cal_url" value=""/>
+			
 	</userProperties>
 	
 	

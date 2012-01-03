@@ -7,24 +7,23 @@ calsync=function(zimlet) {
     	var password=zmlt.getUserProperty("userpassword");
     	var urladdress=zmlt.getUserProperty("urladdress");
     	var port=zmlt.getUserProperty("port");
+	var erp_calurl=zmlt.getUserProperty("cal_url");
         var proto="http://";
-        var urladd=appCtxt.getFolderTree().getByName("open_ERP").getRestUrl();
-	urladd=urladd+"?fmt=ics"
-	alert(urladd);
-        /* var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladd="+urladd+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim();
-                 var response = AjxRpc.invoke(null,jspurl, null, null, true);
-                if(response.text=="success"){
-                        var vnc = new VncContactSync();
-                        var abc=vnc.getContacts(0,[]);
-                        alert("Contacts are synchronized successfully");
+        var z_calurl=appCtxt.getFolderTree().getByName("open_ERP").getRestUrl();
+	z_calurl=z_calurl+"?fmt=ics"
+	alert(z_calurl);
+	alert(flag);
+	if(erp_calurl==""){
+		alert("Please enter proper URL to ERP configuration window by clicking on open ERP connector");
+		return;
+	}	
+	else{
 
-                }else{
-                        alert(zmlt.getMessage("chk_connection"));
-                }*/
 
-	url="/service/zimlet/com_zimbra_erp_mail_connector/CalAuthntication.jsp?zcalurl="+urladd+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim();
+	url="/service/zimlet/com_zimbra_erp_mail_connector/CalAuthntication.jsp?z_calurl="+z_calurl+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&erp_calurl="+erp_calurl;
         var response = AjxRpc.invoke(null,url, null, null, true);
-
+	alert("from calsync.js"+response.text);
+	}
 
 }
 

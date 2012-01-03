@@ -7,11 +7,11 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
     <%
 
         try {
-		
+
                 String urladdress=request.getParameter("urladdress");
-                String port=request.getParameter("port");
-                String z_calurl=request.getParameter("z_calurl");
-		String erp_calurl=request.getParameter("erp_calurl");	
+                String uname=request.getParameter("uname");
+                String passwd=request.getParameter("passwd");
+                System.out.println("this is Data------------------>>>>"+uname+urladdress+passwd);
          Cookie cookies [] = request.getCookies();
              String auth_token=new String();
                         if (cookies != null)
@@ -23,15 +23,13 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
                                         }
                                 }
                          }
-	
-		ErpConfiguration configuration=new ErpConfiguration();
 
-		z_calurl=z_calurl+"&auth=qp&zauthtoken="+auth_token;
-            out.print(configuration.getCal(z_calurl,erp_calurl));	
+                ErpConfiguration configuration=new ErpConfiguration();
+            out.print(configuration.checkCalurl(uname,passwd,urladdress));
 
 
 
-    
+
 
             } catch (Exception e) {
                 out.println(e.getMessage());

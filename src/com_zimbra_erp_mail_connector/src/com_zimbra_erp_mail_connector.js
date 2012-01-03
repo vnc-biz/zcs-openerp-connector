@@ -38,7 +38,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 		button.addSelectionListener(new AjxListener(this,this._handleToolbarBtnClick, controller));
 
 	}
-	else if(view == "CLD" || view == "CLWW"){
+	else if(view == "CLD"){
 		
 		var buttonIndex1 = -1;
                 for ( var i = 0, count = toolbar.opList.length; i < count; i++) {
@@ -71,7 +71,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = function(controller) {
 
         var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP");
-        alert(ftree);
         if(ftree==null)
         {
                 var soapDoc = AjxSoapDoc.create("CreateFolderRequest", "urn:zimbraMail");
@@ -93,7 +92,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = f
 
 
                 appCtxt.getAppController().sendRequest(params);
-                alert("Calendar created");
 
         }
         else{ alert("Calendar already exist")};
@@ -194,7 +192,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	this.tabView = new DwtTabView(view,"SideStepTabView");
 	
 	 this.about_setting= new about_setting(this.tabView,this);
-
 	this.configuration_setting = new configuration_setting(this.tabView,this,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password);
 	this.document_setting= new document_setting(this.tabView,this,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank);
 

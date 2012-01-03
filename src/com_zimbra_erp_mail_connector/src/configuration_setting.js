@@ -8,21 +8,12 @@ configuration_setting.prototype.constructor = configuration_setting;
 	var config_lbl_password;
 	var zm;
 	var proto="http://";
-
+	var flag=0;
 	
 String.prototype.trim = function() {
     return this.replace(/^\s+|\s+$/g,"");
 }
 
-/*function trim(s)
-{
- var l=0; var r=s.length -1;
- while(l < s.length && s[l] == ' ')
- { l++; }
- while(r > l && s[r] == ' ')
- { r-=1; }
- return s.substring(l, r+1);
-}*/
 
 
 
@@ -51,6 +42,8 @@ function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,c
 	document.getElementById("username").value=zm.getUserProperty("username");
 	document.getElementById("userpassword").value=zm.getUserProperty("userpassword");
 	
+	//zm.setUserProperty("cal_url","");	
+	document.getElementById("cal_url").value=zm.getUserProperty("cal_url");	
 	
 	this.setScrollStyle(Dwt.SCROLL);
 }
@@ -116,6 +109,30 @@ configuration_setting.prototype._createHTML = function() {
 
 		html[i++]="</fieldset>";
 	
+/*----------------------------------------------------------------------*/
+		 html[i++]="<fieldset>";
+                html[i++]="<legend>";
+                html[i++]=this.zimlet.getMessage("cal_sync_url");
+                html[i++]="</legend>";
+                html[i++]="<table style='padding-left:76px;' class='marginIE'>";
+                html[i++]="<tr>";
+                html[i++]="<td>";
+                html[i++]="URL:";
+                html[i++]="</td>";
+                html[i++]="<td>";
+                html[i++]="<input type='text' style='width:250%;' id='cal_url' value=''/>";
+                html[i++]="</td>";
+                html[i++]="</tr>";
+
+
+                html[i++]="</table>";
+		html[i++]="<table><tr><td>";
+                html[i++]="<button onClick='save_cal_url()' id='connect'>"+this.zimlet.getMessage("connector_configuration_lbl_calurl_save")+"</button>";
+                html[i++]="</td></tr></table>";
+
+                html[i++]="</fieldset>";
+
+		
 
 	
 	this.getHtmlElement().innerHTML = html.join("");
@@ -202,14 +219,14 @@ function getDatabase(){
 
 function checkConnection(){
 
-
+	flag=0;
 	var url=document.getElementById("urladdress").value;
 	var database=document.getElementById("getdatabase").value;
 	var port=document.getElementById("port").value;
 	var username=document.getElementById("username").value;
 	var userpassword=document.getElementById("userpassword").value;
 	port=port.trim();
-	
+		
 	username=username.trim();
 	url=url.trim();	
 	
@@ -273,7 +290,7 @@ function checkConnection(){
 			zm.setUserProperty("username",username);
 			zm.setUserProperty("userpassword",userpassword);
 			zm.saveUserProperties();
-			
+			flag=1;
 
 			
 			
@@ -295,3 +312,58 @@ function checkConnection(){
 
 }
 
+
+function save_cal_url(){
+
+		var cal_url=document.getElementById("cal_url").value;
+		if(flag==0){
+			alert("check your connection first");
+			return;
+		}
+		else{
+		
+			 
+			if(cal_url==""){
+				alert("URL can not be blank");
+			}
+			else{
+		
+				//var urlregex = new RegExp("^(http:\/\/|https:\/\/|ftp:\/\/)+[]");
+				var urlregex=/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?(\.ics)/		
+				var res=urlregex.test(cal_url);
+				if(res==true){
+					
+					var uname=zm.getUserProperty("username");
+        				var passwd=zm.getUserProperty("userpassword");
+					
+        				url="/service/zimlet/com_zimbra_erp_mail_connector/UrlAuthntication.jsp?urladdress="+cal_url+"&uname="+uname+"&passwd="+passwd;
+        				var response = AjxRpc.invoke(null,url, null, null, true);
+					
+					if(response.text=='OK'){
+
+						zm.setUserProperty("cal_url",cal_url);
+						zm.saveUserProperties();
+						alert(zm.getMessage("connector_configuration_urlsaved"));
+						var temp=zm.getUserProperty("cal_url");
+						alert(temp);
+					}else if(response.text=='null'){
+						alert("Invalid url");
+					}
+					else{
+						alert(response.text);
+
+					}	
+				
+									
+
+				}
+				else{
+					alert(zm.getMessage("connector_configuration_invalid"));
+					return;	
+				}	
+							
+			}	
+		}
+
+
+}
