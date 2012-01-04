@@ -349,24 +349,6 @@ function pushEmail(push_random){
 	}
 
 
-	/*record_check=document.getElementsByName("records"+push_random+"");
-		
-	var flg=0;
-	for(var i=0;i<record_check.length;i++){
-		
-		if(record_check[i].checked){
-			flg=1;
-		}
-		
-	}
-		
-	if(flg==0){
-		alert(zmlt.getMessage("connector_pushopenerp_moduleselect"));
-		return;
-	}*/
-	
-		
-	
 		
 		var record_ids=document.getElementsByName("record_names"+push_random+"");
 		

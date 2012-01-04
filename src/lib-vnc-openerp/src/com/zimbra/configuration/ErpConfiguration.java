@@ -776,7 +776,8 @@ public class ErpConfiguration
 		{
 			HttpURLConnection connection_url = null;
 			//String strurl="http://192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings.ics";
-			URL chkurl=new URL(URLEncoder.encode(url.toString(),"UTF-8"));
+			URL chkurl=new URL(url);
+			System.out.println("This is url in checkURL----------->>>>>"+url);
 
 			connection_url=(HttpURLConnection)chkurl.openConnection();
 
@@ -784,13 +785,13 @@ public class ErpConfiguration
 
 			String authString =uname+":"+passwd;
 			authString = (new sun.misc.BASE64Encoder()).encode(authString.getBytes());
-			System.out.println("this is encoding------->>>>>"+authString);
+			System.out.println("This is encoding in check URL------->>>>>"+authString);
 
 			connection_url.setRequestProperty("Authorization","Basic "+authString);
 
 			connection_url.connect();
 			response=connection_url.getResponseMessage();
-			System.out.println("this is response code---------->>>>"+connection_url.getResponseCode());
+			System.out.println("This is response code---------->>>>"+connection_url.getResponseCode());
 			System.out.println("----------->>>>>>Content response"+response);
 
 		}
@@ -810,11 +811,6 @@ public class ErpConfiguration
 
 
 }
-
-
-
-
-
 
 
 

@@ -151,30 +151,41 @@ function getDatabase(){
 
 	urladdress=urladdress.trim();
 	if(urladdress==""){
-		alert(zm.getMessage("connector_configuration_urlblank"));
+		var a =  appCtxt.getMsgDialog();
+ 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+ 		a.popup();
 		document.getElementById("urladdress").focus();
 		return;
 			
 	  }
 	if(urladdress==""){
-		alert(zm.getMessage("connector_configuration_urlblank"));
+		
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("urladdress").focus();
 		return;
 			
 	  }
 	  if(document.getElementById("urladdress").value.match(/^\s*$/)){
-		alert(zm.getMessage("connector_configuration_urlblank"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("urladdress").focus();
 		return;		
 	  }
 	   if(port==""){
-		alert(zm.getMessage("connector_configuration_port"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("port").focus();
 		return;
 		
 	  }	  
 	  if(document.getElementById("port").value.match(/^\s*$/)){
-		alert(zm.getMessage("connector_configuration_port"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("port").focus();
 		return;
 		
@@ -191,7 +202,9 @@ function getDatabase(){
 						
 			if(res.length<=0){
 
-				alert(zm.getMessage("connector_configuration_lbl_database_notfound"));
+				var a =  appCtxt.getMsgDialog();
+                		a.setMessage(zm.getMessage("connector_configuration_lbl_database_notfound"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                		a.popup();
 				document.getElementById("getdatabase").innerHTML=""+"<option>select any database</option>";
 
 
@@ -208,7 +221,9 @@ function getDatabase(){
 			
 	}
 	else{
-		alert(zm.getMessage("time_out"));
+		var a =  appCtxt.getMsgDialog();
+                 a.setMessage(zm.getMessage("time_out"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
+                 a.popup();
 		document.getElementById("getdatabase").innerHTML=""+"<option>select any database</option>";
 	}	
 	
@@ -231,46 +246,67 @@ function checkConnection(){
 	url=url.trim();	
 	
 	  if(url==""){
-		alert(zm.getMessage("connector_configuration_urlblank"));
+		
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("urladdress").focus();
 		return;
 			
 	  }
 	  if(document.getElementById("urladdress").value.match(/^\s*$/)){
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		alert(zm.getMessage("connector_configuration_urlblank"));
 		document.getElementById("urladdress").focus();
 		return;
 		
 	  }
 	  if(port==""){
-		alert(zm.getMessage("connector_configuration_port"));
+	
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("port").focus();
 		return;
 		
 	  }	  
 	  if(document.getElementById("port").value.match(/^\s*$/)){
-		alert(zm.getMessage("connector_configuration_port"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("port").focus();
 		return;		
 	  }
 	  if(database=="select any database"){
-		alert(zm.getMessage("connector_configuration_selectdatabase"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_selectdatabase"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("warning"));
+                a.popup();
 		return;
 	  }
 	  if(username==""){
-		alert(zm.getMessage("connector_configuration_username"));
+	
+		 var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("username").focus();
 		return;
 		
 	  }
 	  if(document.getElementById("username").value.match(/^\s*$/)){
-		alert(zm.getMessage("connector_configuration_username"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("username").focus();
+
 		return;
 		
 	  }
 	  if(userpassword==""){
-		alert(zm.getMessage("connector_configuration_password"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_configuration_password"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("userpassword").focus();
 		return;
 		
@@ -283,7 +319,10 @@ function checkConnection(){
 
 			
 		if(response.text.trim()=="true"){
-			alert(zm.getMessage("connector_configuration_lbl_conection_saved"));
+		
+			var a =  appCtxt.getMsgDialog();
+                	a.setMessage(zm.getMessage("connector_configuration_lbl_conection_saved"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+                	a.popup();
 			zm.setUserProperty("urladdress",url);
 			zm.setUserProperty("getdatabase",database);
 			zm.setUserProperty("port",port);
@@ -301,7 +340,9 @@ function checkConnection(){
 			zm.setUserProperty("username",null);
 			zm.setUserProperty("userpassword",null);
 			zm.saveUserProperties();
-			alert(zm.getMessage("connector_configuration_userandpassword"));
+			var a =  appCtxt.getMsgDialog();
+                        a.setMessage(zm.getMessage("connector_configuration_userandpassword"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+                        a.popup();
 		}
 			
 
@@ -322,12 +363,13 @@ function save_cal_url(){
 		}
 		else{
 		
-			 
 			if(cal_url==""){
-				alert("URL can not be blank");
+				zm.setUserProperty("cal_url","");
+				return;
 			}
 			else{
-		
+	 
+				
 				//var urlregex = new RegExp("^(http:\/\/|https:\/\/|ftp:\/\/)+[]");
 				var urlregex=/(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?(\.ics)/		
 				var res=urlregex.test(cal_url);
@@ -335,7 +377,6 @@ function save_cal_url(){
 					
 					var uname=zm.getUserProperty("username");
         				var passwd=zm.getUserProperty("userpassword");
-					
         				url="/service/zimlet/com_zimbra_erp_mail_connector/UrlAuthntication.jsp?urladdress="+cal_url+"&uname="+uname+"&passwd="+passwd;
         				var response = AjxRpc.invoke(null,url, null, null, true);
 					
@@ -343,11 +384,17 @@ function save_cal_url(){
 
 						zm.setUserProperty("cal_url",cal_url);
 						zm.saveUserProperties();
-						alert(zm.getMessage("connector_configuration_urlsaved"));
 						var temp=zm.getUserProperty("cal_url");
-						alert(temp);
+						var a =  appCtxt.getMsgDialog();
+                        			a.setMessage(zm.getMessage("url_saved"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+                        			a.popup();
+							
 					}else if(response.text=='null'){
-						alert("Invalid url");
+					
+						var a =  appCtxt.getMsgDialog();
+                                                a.setMessage(zm.getMessage("invalid_url"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                                                a.popup();
+					
 					}
 					else{
 						alert(response.text);
@@ -358,12 +405,15 @@ function save_cal_url(){
 
 				}
 				else{
-					alert(zm.getMessage("connector_configuration_invalid"));
+				
+					var a =  appCtxt.getMsgDialog();
+                                        a.setMessage(zm.getMessage("connector_configuration_invalid"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                                         a.popup();
 					return;	
 				}	
 							
-			}	
+			}
+	
 		}
-
 
 }

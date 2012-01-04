@@ -47,12 +47,14 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
                                 break;
                         }
                 }
-                // create params obj with button details
+                
+		var btn_Name=this.getMessage("btn_cal_sync");
+		// create params obj with button details
                 var buttonArgs = {
-                        text : "CalendarSync.",
-                        tooltip : "Synchronize contacts",
+                        text :btn_Name,
+                        tooltip : "Synchronize Calendar",
                         index : buttonIndex, // position of the button
-                        image : "CalSync" // icon
+                        image : "refresh" // icon
                 };
 
                 // toolbar.createOp api creates the button with some id and params
@@ -70,40 +72,23 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = function(controller) {
 
-        var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP");
-        if(ftree==null)
-        {
-                var soapDoc = AjxSoapDoc.create("CreateFolderRequest", "urn:zimbraMail");
 
-                var accountNode = soapDoc.set("folder");
-                accountNode.setAttribute("name","open_ERP");
-                accountNode.setAttribute("view","appointment");
-                /*var content = zimbra_sig_id.signature;
-
-                var subnode=soapDoc.set("content",content,accountNode);
-                subnode.setAttribute("type",type);*/
-
-                var params = {
-                soapDoc: soapDoc,
-                asyncMode: true,
-                callback: (new AjxCallback(this, this._handleSOAPResponseXML)),
-                errorCallback: (new AjxCallback(this, this._handleSOAPErrorResponseXML))
-                };
-
-
-                appCtxt.getAppController().sendRequest(params);
-
+	var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP");
+        if(ftree == null){
+                var oc = appCtxt.getOverviewController();
+                oc.getTreeController(ZmOrganizer.CALENDAR)._doCreate({"name":"open_ERP"});
         }
-        else{ alert("Calendar already exist")};
+
 	
 	new calsync(this);
 };
+
+
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleSOAPErrorResponseXML = function(result) {
 		
 	if (result.isException()) {
         // do something with exception
-        alert("exception is thrown from _handleSOAPErrorResponseXML");
         var exception = result.getException();
 	return;
     }
@@ -311,7 +296,9 @@ try{
 
 
 }catch(e){
-	alert(e);
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(this.getMessage("Exception in main_js"),DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
+                a.popup();
 	}
 
 
@@ -401,40 +388,9 @@ function(convSrcObj) {
 	
 	download_link=baseURL;
 	  
-	 // var jspurl = this.getResource("Getemailrecord.jsp?msgid="+ids+"&sessionid="+ZmCsfeCommand.getSessionId()+"&urldownload="+baseURL);
-
-	  //var response = AjxRpc.invoke(null,jspurl, null, null, true);
 
 	 
-	  /*if (response.success == true) {
 
-
-		alert("----->"+response.text);		
-	  }*/
-/*
-	if (convSrcObj.hasAttach) {
-		
-		var tmpAtt = convSrcObj.getFirstHotMsg().attachments;
-		for (var i = 0; i < tmpAtt.length; i++) {
-			if (tmpAtt[i].filename != undefined) {
-				mail_attachment.push(tmpAtt[i].filename);
-				jspUrl=baseURL+tmpAtt[i].filename+"?auth=co&loc=en_US&id="+convSrcObj.msgIds+"&part=2&disp=a";
-	`			var jss="/service/zimlet/com_zimbra_erp_mail_connector/attachmentToBase64.jsp?messageUrl="+AjxStringUtil.urlComponentEncode(jspUrl);
-							
-				response = AjxRpc.invoke(null, jss, null, null, true, null);
-				attachment_binary.push(response.text.trim().replace(/(\r\n|[\r\n])/g,"")); 
-				
-				
-			}
-		}
-		
-
-	} 
-
-	
-	mailRecordJson(mail_subject,mail_contant,mail_sentdate,mail_cc,mail_from,mail_bcc,mail_sender,mail_to,mail_replyto,mail_attachment,attachment_binary,ids);
-
-*/	
 	
 };
 
@@ -529,31 +485,7 @@ download_link=baseURL;
 	  //var response = AjxRpc.invoke(null,jspurl, null, null, true);
 
 
-	 /* if (response.success == true) {
-		out.println("---->"+response.text);
-	 }*/
 
-	/*if (convSrcObj.hasAttach) {
-		
-		var tmpAtt = convSrcObj.getFirstHotMsg().attachments;
-		for (var i = 0; i < tmpAtt.length; i++) {
-			if (tmpAtt[i].filename != undefined) {
-				mail_attachment.push(tmpAtt[i].filename);
-				jspUrl=baseURL+tmpAtt[i].filename+"?auth=co&loc=en_US&id="+convSrcObj.msgIds+"&part=2&disp=a";
-				var jss="/service/zimlet/com_zimbra_erp_mail_connector/attachmentToBase64.jsp?messageUrl="+AjxStringUtil.urlComponentEncode(jspUrl);				
-				response = AjxRpc.invoke(null, jss, null, null, true, null);
-				attachment_binary.push(response.text.trim().replace(/(\r\n|[\r\n])/g,"")); 
-			        alert("aaa" + attachment_binary[0]);	
-				
-				
-			}
-		}
-		
-
-	} 
-
-	mailRecordJson(mail_subject,mail_contant,mail_sentdate,mail_cc,mail_from,mail_bcc,mail_sender,mail_to,mail_replyto,mail_attachment,attachment_binary);
-*/	
 		
 };
 
