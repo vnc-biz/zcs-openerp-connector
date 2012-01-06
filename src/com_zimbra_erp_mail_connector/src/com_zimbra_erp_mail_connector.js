@@ -8,9 +8,9 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype= new ZmZimletBase;
 
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID="Contact Sync.";
 
+com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID="cal_sync";
 com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = function(app, toolbar, controller,
 		view) {
-
 	// only add this button for the following 3 views
 	if (view == "CNS") {
 		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID)) {
@@ -25,8 +25,9 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 			}
 		}
 		// create params obj with button details
+		var contact_sync_btn=this.getMessage("contact_sync_btn");
 		var buttonArgs = {
-			text : "ContactSync.",
+			text :contact_sync_btn,
 			tooltip : "Synchronize contacts",
 			index : buttonIndex, // position of the button
 			image : "refresh" // icon
@@ -38,8 +39,13 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 		button.addSelectionListener(new AjxListener(this,this._handleToolbarBtnClick, controller));
 
 	}
-	else if(view == "CLD"){
+	else if(view == "CLD" || view=="CLWW"){
 		
+		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
+			 return;
+                }		
+	
+
 		var buttonIndex1 = -1;
                 for ( var i = 0, count = toolbar.opList.length; i < count; i++) {
                         if (toolbar.opList[i] == ZmOperation.VIEW_MENU) {
@@ -48,10 +54,10 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
                         }
                 }
                 
-		var btn_Name=this.getMessage("btn_cal_sync");
+		var cal_sync_btn=this.getMessage("btn_cal_sync");
 		// create params obj with button details
                 var buttonArgs = {
-                        text :btn_Name,
+                        text :cal_sync_btn,
                         tooltip : "Synchronize Calendar",
                         index : buttonIndex, // position of the button
                         image : "refresh" // icon
@@ -59,7 +65,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 
                 // toolbar.createOp api creates the button with some id and params
                 // containing button details.
-                var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID, buttonArgs);
+                var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID, buttonArgs);
                 button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));
 
 	}
@@ -76,12 +82,33 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = f
 	var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP");
         if(ftree == null){
                 var oc = appCtxt.getOverviewController();
-                oc.getTreeController(ZmOrganizer.CALENDAR)._doCreate({"name":"open_ERP"});
+                var te=oc.getTreeController(ZmOrganizer.CALENDAR)._doCreate({"name":"open_ERP"});
         }
-
 	
-	new calsync(this);
+		new calsync(this);
+	/*  var folderId=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP").id;
+        var soapDoc = AjxSoapDoc.create("FolderActionRequest", "urn:zimbraMail");
+        var actionNode = soapDoc.set("action");
+        actionNode.setAttribute("op","check");
+        actionNode.setAttribute("id",folderId);
+        var callback = new AjxCallback(this,_callback);
+        var params = {
+                soapDoc: soapDoc,
+                asyncMode: true,
+                callback: callback,
+        };
+        appCtxt.getAppController().sendRequest(params);*/
+
+
 };
+
+
+/*_callback=function(response){
+
+		new calsync(this);
+
+}*/
+
 
 
 
@@ -96,6 +123,12 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleSOAPErrorResponseXM
 };
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = function(controller) {
+
+	var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("openERP");
+        if(ftree == null){
+                var oc = appCtxt.getOverviewController();
+                oc.getTreeController(ZmOrganizer.ADDRBOOK)._doCreate({"name":"openERP"});
+        }
 
 	new contactsync(this);
 
@@ -112,6 +145,7 @@ function com_zimbra_erp_mail_connector_HandlerObject() {
                 var oc = appCtxt.getOverviewController();
                 oc.getTreeController(ZmOrganizer.ADDRBOOK)._doCreate({"name":"openERP"});
         }
+	
 
 	com_zimbra_erp_mail_connector_HandlerObject._instance=this;
 	tagcreate();

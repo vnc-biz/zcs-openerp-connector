@@ -651,6 +651,7 @@ public class ErpConfiguration
 			csvFile.close();
 
 			Runtime r=Runtime.getRuntime();
+			System.out.println("This is curl---------------------->>>>>>>>>>>>"+"curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
 			Process p=r.exec("curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
 			//System.out.println("****************"+auth_token+"------------------------> End of file...\n");
 			return "success";
@@ -669,7 +670,7 @@ public class ErpConfiguration
 
 	/*...............................................*/
 
-	public String getCal(String z_calurl,String erp_calurl)
+	public String getCal(String z_calurl,String erp_calurl,String erp_uname,String erp_passwd)
 	{
 
 		/*Export calendar from zimbra.........*/
@@ -700,26 +701,23 @@ public class ErpConfiguration
 
 			/*Import to Calendar to open ERP*/
 			Runtime r=Runtime.getRuntime();
-			Process p=r.exec("curl --upload-file /tmp/cal.ics"+erp_calurl);
+			String com="curl -u"+" "+erp_uname+":"+erp_passwd+" "+"--upload-file /tmp/cal.ics"+" "+erp_calurl;
+			System.out.println("This is open ERP url for curl"+com);
+			Process p=r.exec(com);
 
-		}
-		catch(Exception e)
-		{
-			System.out.print("Exception in Export calendar from zimbra");
-			e.printStackTrace();
-		}
+			p.waitFor();
+			System.out.println("Exit status for export ICS to openERP is : " + p.exitValue());
 
-		/*Export calendar from open ERP*/
 
-		try
-		{
+			/*Export calendar from open ERP*/
+
 			HttpURLConnection connection_erp = null;
-			String strurl="http://192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings.ics";
+			//String strurl="http://192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings.ics";
 			URL erpurl=new URL(erp_calurl);
 			connection_erp=(HttpURLConnection)erpurl.openConnection();
-			String uname="admin";
-			String passwd="admin";
-			String authString =uname+":"+passwd;
+			//String uname="admin";
+			//String passwd="admin";
+			String authString =erp_uname+":"+erp_passwd;
 			authString = (new sun.misc.BASE64Encoder()).encode(authString.getBytes());
 			System.out.println("this is encoding------->>>>>"+authString);
 
@@ -741,27 +739,29 @@ public class ErpConfiguration
 
 
 			/*Import to Calendar to zimbra*/
-			Runtime r=Runtime.getRuntime();
+			Runtime r1=Runtime.getRuntime();
 			String command="curl --upload-file /tmp/calfromerp.ics"+" "+z_calurl;
 			System.out.println("z_calurl----------------------->>>>>>>"+command);
-			Process p=r.exec(command);
+			Process p1=r1.exec(command);
+			p1.waitFor();
+			System.out.println("ICS Import from openERP is : " + p1.exitValue());
 			System.out.print("------------>>>>>successs Import");
 
+			return "success";
 
 		}
 		catch(Exception ex)
 		{
 			System.out.print("Exception ------>>>>");
 			ex.printStackTrace();
+			return "fail";
 		}
 
 
 
 
-		System.out.print("succeessssss----------------------->>>>>>>>>>>>>>");
 
 
-		return "success";
 
 
 

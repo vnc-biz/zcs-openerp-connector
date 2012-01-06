@@ -137,27 +137,35 @@ function addRecord(){
 	
 	  
 	if(title==""){
-	        alert(zm.getMessage("connector_document_title_blank"));
+	       	var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("document_title").focus();
 		return;
 		
 	}
 	if(document.getElementById("document_title").value.match(/^\s*$/)){
-		alert(zm.getMessage("connector_document_title_blank"));
+	       	var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("document_title").focus();
 		return;
 			
 		
 	}
 	if(docname=="" ){
-		alert(zm.getMessage("connector_document_document_blank"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("document_docname").focus();
 		return;
 		
 			
 	}
 	if(document.getElementById("document_docname").value.match(/^\s*$/)){
-		alert(zm.getMessage("connector_document_document_blank"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
 		document.getElementById("document_docname").focus();
 		return;
 		
@@ -171,9 +179,9 @@ function addRecord(){
         	var port=zm.getUserProperty("port");
 		
 		if(dbname=="" || password=="" || urladdress=="" || port=="" ){
-                	alert(zm.getMessage("connector_pushopenerp_checkconection"));
-                	/*document.getElementById("document_name"+push_random+"").innerHTML=""+fixheading;
-                	document.getElementById("mailsearch"+push_random+"").focus();*/
+                	var a =  appCtxt.getMsgDialog();
+                	a.setMessage(zm.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
+                	a.popup();
                 	return;
         	}		
 
@@ -183,14 +191,18 @@ function addRecord(){
 
                 var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		if(response.text.trim()=="Fail"){
-			alert(zm.getMessage("invalid_record_name"));
+			var a =  appCtxt.getMsgDialog();
+                	a.setMessage(zm.getMessage("invalid_record_name"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+               		 a.popup();
 			return;
 		}
 		
 		
 	}
 	catch(e){
-		alert(zm.getMessage("invalid_doc_or_connection"));
+		var a =  appCtxt.getMsgDialog();
+                 a.setMessage(zm.getMessage("invalid_doc_or_connection"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                  a.popup();
 		return;
 	
 	}
@@ -201,13 +213,18 @@ var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/AddDocumentRecord.jsp?
 	if (response.success == true) {
 	     
 		if(response.text.trim()=="true"){
-			alert(success_insert);
+			 var a =  appCtxt.getMsgDialog();
+                        a.setMessage(success_insert,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+                         a.popup();	
 			getTableRecords();
 	
 		}else{
 			
 			if(response.text.trim()=="duplicate"){
-				alert(zm.getMessage("duplicate_error"));
+			
+				var a =  appCtxt.getMsgDialog();
+                 		a.setMessage(zm.getMessage("duplicate_error"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                  		a.popup();
 				
 			}else{
 
@@ -242,7 +259,9 @@ function deleteRecord(){
 	}
 	
 	if(flg==0){
-		alert(zm.getMessage("connector_document_select_record"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("connector_document_select_record"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
+                a.popup();
 		return;
 	}
 
@@ -258,7 +277,9 @@ function deleteRecord(){
 	  if (response.success == true) {
 		if(response.text.trim()=="true"){
 			getTableRecords();
-			alert(success_delete);
+			var a =  appCtxt.getMsgDialog();
+                        a.setMessage(success_delete,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+                         a.popup();
 			
 		}
 		

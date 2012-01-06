@@ -210,7 +210,9 @@ function getDocumentRecord(){
         }
 
         if(flg==0){
-                alert(zmlt.getMessage("connector_pushopenerp_moduleselect"));
+                 var a =  appCtxt.getMsgDialog();
+                 a.setMessage(zmlt.getMessage("connector_pushopenerp_moduleselect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
+                 a.popup();
                 return;
         }
 
@@ -245,7 +247,10 @@ function getDocumentRecord(){
 	
 	
 	if(dbname=="" || password=="" || urladdress=="" || port=="" ){
-		alert(zmlt.getMessage("connector_pushopenerp_checkconection"));
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zmlt.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
+                a.popup();	
+		
 		document.getElementById("document_name"+push_random+"").innerHTML=""+fixheading;
 		document.getElementById("mailsearch"+push_random+"").focus();
 		return;
@@ -298,14 +303,25 @@ function getDocumentRecord(){
 				else{
 
 					if(response.text.trim()=="Exception"){
-						alert("Error while getting records"+tot_obj[j]);
+					
+						var a =  appCtxt.getMsgDialog();
+                				a.setMessage(zmlt.getMessage("error_in_gettingrecords")+tot_obj[j],DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
+              					  a.popup();	
+						
 					}
-					else{alert("No records found for:"+tot_obj[j])}
+					else{
+
+						var a =  appCtxt.getMsgDialog();    
+                                                a.setMessage(zmlt.getMessage("no_records_founds")+tot_obj[j],DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
+                                                  a.popup();	
+					}
 				}
 			
 				
 		 	}else{
-				alert(zmlt.getMessage("connector_pushopenerp_responseproblem"));
+				var a =  appCtxt.getMsgDialog();
+                        	a.setMessage(zmlt.getMessage("connector_pushopenerp_responseproblem"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
+                        	a.popup();
 				document.getElementById("document_name"+push_random+"").innerHTML=""+fixheading;
 				document.getElementById("wait"+push_random+"").innerHTML="";
 				return;
@@ -342,7 +358,10 @@ function pushEmail(push_random){
 
 	
 	if(dbname=="" || password=="" || urladdress=="" || port=="" ){
-		alert(zmlt.getMessage("connector_pushopenerp_checkconection"));
+	
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zmlt.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
+                a.popup();
 		document.getElementById("document_name"+push_random+"").innerHTML=""+fixheading;
 		document.getElementById("mailsearch"+push_random+"").focus();
 		return;
@@ -371,7 +390,9 @@ function pushEmail(push_random){
 
 		if(flag==1){
 
-		             alert(zmlt.getMessage("connector_pushopenerp_sel_name"));
+		            	var a =  appCtxt.getMsgDialog();
+                                a.setMessage(zmlt.getMessage("connector_pushopenerp_sel_name"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
+                                a.popup();
                              return 0;	
 	
 		}
@@ -423,10 +444,15 @@ function pushEmail(push_random){
 						}
 						else{
 							if(response.text.trim()=="2"){
-								alert("Reconnect to the databese and try again");
+							
+								var a =  appCtxt.getMsgDialog();
+                        					a.setMessage(zmlt.getMessage("reconnect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
+                        					a.popup();
 							}else{
 			
-								alert(zmlt.getMessage("duplicate_mail_not_allowed"));
+								 var a =  appCtxt.getMsgDialog();
+                						a.setMessage(zmlt.getMessage("duplicate_mail_not_allowed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
+               							 a.popup();
 								flag=1;
 							}
 						}
@@ -439,7 +465,10 @@ function pushEmail(push_random){
 		if(flag==1){
 			//alert(zmlt.getMessage("connector_pushopenerp_process_unsuccess"));
 		}else{
-			alert(zmlt.getMessage("connector_pushopenerp_process_success"));
+		
+			var a =  appCtxt.getMsgDialog();
+                       a.setMessage(zmlt.getMessage("connector_pushopenerp_process_success"),DwtMessageDialog.INFO_STYLE,zmlt.getMessage("msg"));
+                       a.popup();
 
 		}
 
