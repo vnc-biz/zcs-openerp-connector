@@ -71,7 +71,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="<input type='text' id='port'>";
 		html[i++]="</td>";
 		html[i++]="<td>";
-		html[i++]="<button onClick='getDatabase()'>"+config_btn_database+"</button>";
+		html[i++]="<button onClick='getDatabase()' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/get_database.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+config_btn_database+"</font></button>";
 		html[i++]="</td>";
 		html[i++]="</tr>";
 		html[i++]="<tr>";
@@ -104,7 +104,7 @@ configuration_setting.prototype._createHTML = function() {
 
 		html[i++]="</table>";
 		html[i++]="<table><tr><td>";
-		html[i++]="<button onClick='checkConnection()' id='connect'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</button>";
+		html[i++]="<button onClick='checkConnection()' id='connect' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
 		html[i++]="</td></tr></table>";
 
 		html[i++]="</fieldset>";
@@ -127,7 +127,7 @@ configuration_setting.prototype._createHTML = function() {
 
                 html[i++]="</table>";
 		html[i++]="<table><tr><td>";
-                html[i++]="<button onClick='save_cal_url()' id='connect'>"+this.zimlet.getMessage("connector_configuration_lbl_calurl_save")+"</button>";
+                html[i++]="<button onClick='save_cal_url()' id='connect' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/save_and_validate.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_calurl_save")+"</font></button>";
                 html[i++]="</td></tr></table>";
 
                 html[i++]="</fieldset>";
@@ -258,7 +258,6 @@ function checkConnection(){
 		var a =  appCtxt.getMsgDialog();
                 a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
                 a.popup();
-		alert(zm.getMessage("connector_configuration_urlblank"));
 		document.getElementById("urladdress").focus();
 		return;
 		
@@ -358,7 +357,10 @@ function save_cal_url(){
 
 		var cal_url=document.getElementById("cal_url").value;
 		if(flag==0){
-			alert("check your connection first");
+
+			var a =  appCtxt.getMsgDialog();
+                	a.setMessage(zm.getMessage("chk_connection_first"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                	a.popup();
 			return;
 		}
 		else{
@@ -397,7 +399,9 @@ function save_cal_url(){
 					
 					}
 					else{
-						alert(response.text);
+						var a =  appCtxt.getMsgDialog();
+                                                a.setMessage(response.text,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+                                                a.popup();
 
 					}	
 				

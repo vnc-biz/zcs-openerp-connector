@@ -178,11 +178,11 @@ public class ErpConfiguration
 		{
 			docname=docname.toLowerCase();
 			Class.forName("com.mysql.jdbc.Driver");
-			con =DriverManager.getConnection("jdbc:mysql://localhost:7306/openerp_connector","zimbra",MYSQL_PASSWORD);
+			con =DriverManager.getConnection("jdbc:mysql://localhost:7306/zimbra","zimbra",MYSQL_PASSWORD);
 			stmt = con.createStatement();
 			Statement stmtread;
 
-			String sqlread="select * from document_setting where docname='" + docname +"'";
+			String sqlread="select * from tbl_document_setting where docname='" + docname +"'";
 			stmtread=con.createStatement();
 			ResultSet rs=stmtread.executeQuery(sqlread);
 			if(rs.next())
@@ -193,7 +193,7 @@ public class ErpConfiguration
 			}
 
 
-			String sql = "insert into document_setting(title,docname) values(?,?)";
+			String sql = "insert into tbl_document_setting(title,docname) values(?,?)";
 
 			prest = con.prepareStatement(sql);
 			prest.setString(1,title);
@@ -225,10 +225,10 @@ public class ErpConfiguration
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			con =DriverManager.getConnection("jdbc:mysql://localhost:7306/openerp_connector","zimbra",MYSQL_PASSWORD);
+			con =DriverManager.getConnection("jdbc:mysql://localhost:7306/zimbra","zimbra",MYSQL_PASSWORD);
 			stmt = con.createStatement();
 
-			String sql = "delete from document_setting where id in ("+record_id+")";
+			String sql = "delete from tbl_document_setting where id in ("+record_id+")";
 			exec=stmt.executeUpdate(sql);
 
 
@@ -259,10 +259,10 @@ public class ErpConfiguration
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver");
-			con =DriverManager.getConnection("jdbc:mysql://localhost:7306/openerp_connector","zimbra",MYSQL_PASSWORD);
+			con =DriverManager.getConnection("jdbc:mysql://localhost:7306/zimbra","zimbra",MYSQL_PASSWORD);
 			stmt = con.createStatement();
 
-			String sql="select * from document_setting";
+			String sql="select * from tbl_document_setting";
 			prest = con.prepareStatement(sql);
 			ResultSet rs=prest.executeQuery();
 

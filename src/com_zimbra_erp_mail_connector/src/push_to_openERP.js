@@ -175,14 +175,18 @@ push_to_openERP.prototype._createDialogView = function() {
 	html[i++]="<input type='text' id='mailsearch"+push_random+"' />";
 	html[i++]="</td>";
 	html[i++]="<td>";
-	html[i++]="<input type=button onclick=getDocumentRecord() value="+this.zimlet.getMessage("connector_pushopenerp.search")+" />"
+	//html[i++]="<input type=button onclick=getDocumentRecord() value="+this.zimlet.getMessage("connector_pushopenerp.search")+" style='padding-left:0px;' />"
+
+	html[i++]="<button onClick='getDocumentRecord()' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/get_database.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_pushopenerp.search")+"</font></button>";
 	html[i++]="</td>";
 	html[i++]="</tr>";
 	html[i++]="</table>";
 	html[i++]="<div id='push_documents"+push_random+"' name='push_documents"+push_random+"' style='width:98%;height:70px;overflow:auto;'></div>";
 	html[i++]="Documents";
 	html[i++]="<div id='document_name"+push_random+"' name='document_name"+push_random+"' style='width:100%;height:50%;overflow:scroll;'></div>";
-	html[i++]="<input type='button' name='push' value='push' onclick='pushEmail("+push_random+")' />"
+	//html[i++]="<input type='button' name='push' value='push' onclick='pushEmail("+push_random+")' />"
+
+	html[i++]="<button onClick='pushEmail("+push_random+")' name='push' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/push.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("push_button")+"</font></button>";
 	html[i++]="<div id='wait"+push_random+"' align='center'></div>";
 	html[i++]="</div>";
 
