@@ -84,7 +84,7 @@ function(response) {
         var params = {
                 soapDoc: soapDoc,
                 asyncMode: true,
-                callback: callback,
+                callback: callback
         };
         appCtxt.getAppController().sendRequest(params);
 }

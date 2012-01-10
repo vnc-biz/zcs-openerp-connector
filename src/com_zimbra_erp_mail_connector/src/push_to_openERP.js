@@ -45,7 +45,7 @@ push_to_openERP.prototype._displayDailog=function(){
 	
 
 	this.pView=new DwtComposite(this.zimlet.getShell());
-	this.pView.setSize("380","400");
+	this.pView.setSize("400","400");
 	this.pView.getHtmlElement().style.overflow="auto";
 	
 	this.pView.getHtmlElement().innerHTML=this._createDialogView();
@@ -53,6 +53,7 @@ push_to_openERP.prototype._displayDailog=function(){
 	
 	this.pbDialog=new ZmDialog({title:dialogtitle, view:this.pView, parent:this.zimlet.getShell(), standardButtons:[DwtDialog.DISMISS_BUTTON]});
 	this.pbDialog.getButton(DwtDialog.DISMISS_BUTTON).setText(this.zimlet.getMessage("connector_project_close"));
+	//this.pbDialog.getButton(DwtDialog.DISMISS_BUTTON).setImage("zimbraicon");
 	this.pbDialog.setButtonListener(DwtDialog.DISMISS_BUTTON, new AjxListener(this, this._dismissBtnListener));
 	
 	getRecords();
@@ -82,20 +83,33 @@ function getRecords(){
 		var records=elJson.records;
 			
 		var s="";
+		s+="<table style='width:98%;'><tr><td style='width:33%;'>"
 		
+		s+="<input type='checkbox' id='sel"+push_random+"' name='sel"+push_random+"' onclick='checkdAll("+push_random+")' />select All";
+                document.getElementById("push_documents"+push_random+"").innerHTML=s;
+		s+="</td>";
+		var j=0; 		
 		for(var i=0;i<records.length;i++){
-			
+			j=j+1;
 			if(i==0){
+			s+="<td style='width:33%;'>";
 			s+="<input type='checkbox' id='records"+push_random+"' name='records"+push_random+"' value='"+records[i].docname+"' onclick='AllCheckbox()' checked/>"+records[i].title;
+			s+="</td>"
 				}else{
+					if(j%3==0){
+						s+="</tr><tr>"	
+					}
+					s+="<td style='width:32%;'>"
 					s+="<input type='checkbox' id='records"+push_random+"' name='records"+push_random+"' value='"+records[i].docname+"' onclick='AllCheckbox()'/>"+records[i].title;
-				}
+			
+					s+="</td>"
+					}
 				
 			
 			
 		}
-		
-		s+="<input type='checkbox' id='sel"+push_random+"' name='sel"+push_random+"' onclick='checkdAll("+push_random+")' />select All";
+		s+="</tr></table>"	
+		//s+="<input type='checkbox' id='sel"+push_random+"' name='sel"+push_random+"' onclick='checkdAll("+push_random+")' />select All";
 		document.getElementById("push_documents"+push_random+"").innerHTML=s;
 		
 
@@ -166,23 +180,31 @@ push_to_openERP.prototype._createDialogView = function() {
 	var html = new Array();
 	//html[i++]="<fieldset>";
 	html[i++]="<div style='float:left;width:100%;'>";
-	html[i++]="<table>";
+	html[i++]="<table style='width:auto;margin-left:1%'>";
 	html[i++]="<tr>";
 	html[i++]="<td>";
+	html[i++]="<font size='2'>"
 	html[i++]=this.zimlet.getMessage("connector_pushopenerp.search");
+	html[i++]="</font>"
 	html[i++]="</td>";
 	html[i++]="<td>";
-	html[i++]="<input type='text' id='mailsearch"+push_random+"' />";
+	html[i++]="<input type='text' id='mailsearch"+push_random+"' class='txt_from' />";
 	html[i++]="</td>";
 	html[i++]="<td>";
-	//html[i++]="<input type=button onclick=getDocumentRecord() value="+this.zimlet.getMessage("connector_pushopenerp.search")+" style='padding-left:0px;' />"
+	//html[i++]="<input type=button onclick=getDocumentRecord() value="+this.zimlet.getMessage("connector_pushopener_.search")+" style='padding-left:0px;' />"
 
-	html[i++]="<button onClick='getDocumentRecord()' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/get_database.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_pushopenerp.search")+"</font></button>";
+	html[i++]="<button onClick='getDocumentRecord()' class='btn_search'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/get_database.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_pushopener_.search")+"</font></button>";
 	html[i++]="</td>";
 	html[i++]="</tr>";
 	html[i++]="</table>";
-	html[i++]="<div id='push_documents"+push_random+"' name='push_documents"+push_random+"' style='width:98%;height:70px;overflow:auto;'></div>";
+	html[i++]="<div id='push_documents"+push_random+"' name='push_documents"+push_random+"' style='width:98%;height:25%;overflow:auto;'></div>";
+	html[i++]="<div style='height:5%'>";
+	html[i++]="<b>";
+	html[i++]="<font size='2'>";
 	html[i++]="Documents";
+	html[i++]="</font>";
+	html[i++]="</b>";
+	html[i++]="</div>";
 	html[i++]="<div id='document_name"+push_random+"' name='document_name"+push_random+"' style='width:100%;height:50%;overflow:scroll;'></div>";
 	//html[i++]="<input type='button' name='push' value='push' onclick='pushEmail("+push_random+")' />"
 

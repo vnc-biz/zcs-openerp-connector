@@ -37,6 +37,17 @@ table.gridtable tr.d1 td
 	background-color:#FEFEF2;
 }
 
+.textbox1
+{
+	width:250%;
+	width:96%;
+}
+
+.fieldsetsize
+{
+	width:65%;
+}
+
 #connect
 {
 	margin-left:250px;
@@ -163,4 +174,18 @@ select
 #temp
 {
 	background:red;
+}
+
+.btn_search
+{
+	padding-left:3px;
+	margin-left:56px;
+	margin-left:0;
+	padding-left:0;
+}
+
+.txt_from
+{
+	width:135%;
+	width:200px;
 }

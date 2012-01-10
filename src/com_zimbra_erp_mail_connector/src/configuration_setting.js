@@ -110,7 +110,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="</fieldset>";
 	
 /*----------------------------------------------------------------------*/
-		 html[i++]="<fieldset>";
+		 html[i++]="<fieldset class='fieldsetsize'>";
                 html[i++]="<legend>";
                 html[i++]=this.zimlet.getMessage("cal_sync_url");
                 html[i++]="</legend>";
@@ -120,7 +120,7 @@ configuration_setting.prototype._createHTML = function() {
                 html[i++]="URL:";
                 html[i++]="</td>";
                 html[i++]="<td>";
-                html[i++]="<input type='text' style='width:250%;' id='cal_url' value=''/>";
+                html[i++]="<input type='text' class='textbox1' id='cal_url' value=''/>";
                 html[i++]="</td>";
                 html[i++]="</tr>";
 

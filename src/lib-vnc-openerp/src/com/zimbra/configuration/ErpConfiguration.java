@@ -469,7 +469,7 @@ public class ErpConfiguration
 				XmlRpcClient client;
 				client=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 				dbname=dbname.trim();
-
+				System.out.println("Going to call histary_message from sendMail");
 				list=(Object)client.invoke("execute",new Object[] {dbname,1,password,"thunderbird.partner","history_message",main_vec});
 				row_connection.disconnect();
 				rowstrbuffer.delete(0,rowstrbuffer.length());
