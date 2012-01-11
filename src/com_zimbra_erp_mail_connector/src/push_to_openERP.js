@@ -45,8 +45,13 @@ push_to_openERP.prototype._displayDailog=function(){
 	
 
 	this.pView=new DwtComposite(this.zimlet.getShell());
-	this.pView.setSize("400","400");
-	this.pView.getHtmlElement().style.overflow="auto";
+	this.pView.setSize("420","470");
+	//this.pView.setScrollStyle(Dwt.VISIBLE);
+	this.pView.getHtmlElement().style.overflow="visible";
+	var browser=navigator.appName;
+	if(browser=="Microsoft Internet Explorer"){
+		this.pView.getHtmlElement().style.overflow="auto";
+	}
 	
 	this.pView.getHtmlElement().innerHTML=this._createDialogView();
 
@@ -197,19 +202,22 @@ push_to_openERP.prototype._createDialogView = function() {
 	html[i++]="</td>";
 	html[i++]="</tr>";
 	html[i++]="</table>";
+	html[i++]="<hr />";
 	html[i++]="<div id='push_documents"+push_random+"' name='push_documents"+push_random+"' style='width:98%;height:25%;overflow:auto;'></div>";
-	html[i++]="<div style='height:5%'>";
+	html[i++]="<hr />";
+	html[i++]="<div class='document_div'>";
 	html[i++]="<b>";
 	html[i++]="<font size='2'>";
-	html[i++]="Documents";
+	html[i++]=this.zimlet.getMessage("documents");
 	html[i++]="</font>";
 	html[i++]="</b>";
+	html[i++]="<div id='wait"+push_random+"' align='center'></div>";
 	html[i++]="</div>";
 	html[i++]="<div id='document_name"+push_random+"' name='document_name"+push_random+"' style='width:100%;height:50%;overflow:scroll;'></div>";
 	//html[i++]="<input type='button' name='push' value='push' onclick='pushEmail("+push_random+")' />"
-
+	html[i++]="<hr />";
 	html[i++]="<button onClick='pushEmail("+push_random+")' name='push' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/push.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("push_button")+"</font></button>";
-	html[i++]="<div id='wait"+push_random+"' align='center'></div>";
+	//html[i++]="<div id='wait"+push_random+"' align='center'></div>";
 	html[i++]="</div>";
 
 	//html[i++]="</fieldset>";

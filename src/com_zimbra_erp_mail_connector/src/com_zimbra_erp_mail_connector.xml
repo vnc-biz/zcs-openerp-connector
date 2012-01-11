@@ -16,10 +16,11 @@
 	<resource>resources/document.png</resource>
 	<resource>resources/VNC-Logo.png</resource>
 	<resource>sync.png</resource>
+	<resource>OpenERP.png</resource>
 	
 	<handlerObject>com_zimbra_erp_mail_connector_HandlerObject</handlerObject>
 	
-	<zimletPanelItem label="${msg.connector_panel_lbl}" icon="zimbraIcon">
+	<zimletPanelItem label="${msg.connector_panel_lbl}" icon="CalSync">
 		
 		<toolTipText>${msg.connector_panel_tooltip}</toolTipText>
 		<dragSource type="ZmAppt" />

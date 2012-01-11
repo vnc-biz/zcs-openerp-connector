@@ -54,13 +54,13 @@ function getTableRecords(){
 		var elJson =JSON.parse(response.text.trim());
 		var records=elJson.records;
 
-		var s="<table class='gridtable' align='right'><tr><td style='width:10%'><input type='checkbox' id='selectall' onclick='checkAll()' style='margin-left:35%'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
+		var s="<table class='gridtable' align='right'><tr><td class='doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='checkAll()' class='doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
 		for(var i=0;i<records.length;i++){
 			
 			if(i%2==0){
-			 s+="<tr class='d0'><td style='width:10%;'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' style='margin-left:35%;'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
+			 s+="<tr class='d0'><td class='doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
 			}else{
-			s+="<tr class='d1'><td style='width:10%'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' style='margin-left:35%'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
+			s+="<tr class='d1'><td class='doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
 			}
 					
 		}

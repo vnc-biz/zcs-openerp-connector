@@ -45,12 +45,7 @@ table.gridtable tr.d1 td
 
 .fieldsetsize
 {
-	width:65%;
-}
-
-#connect
-{
-	margin-left:250px;
+	width:100%;
 }
 
 #urladdress
@@ -155,8 +150,8 @@ select
 
 .ImgCalSync
 {
-	background:url(resources/interact.png) no-repeat 0 0;
-	width:20px;
+	background:url(resources/OpenERP.png) no-repeat 0 0;
+	width:16px;
 	height:16px;
 }
 
@@ -168,7 +163,8 @@ select
 
 .marginIE
 {
-	margin-left:12%;
+	padding-left:12%;
+	margin-left:8%;
 }
 
 #temp
@@ -188,4 +184,45 @@ select
 {
 	width:135%;
 	width:200px;
+}
+
+.document_div
+{
+	height:5%;
+	padding-bottom:5px;
+}
+
+.doc_setng_chkbx
+{
+	width:10%;
+	width:50px;
+}
+
+.doc_setng_chkbx2
+{
+	margin-left:31%;
+	margin-left:20%;
+}
+
+.Imgopen_erp
+{
+	background:url(resources/OpenERP.png) no-repeat 0 0;
+}
+
+.config_btn
+{
+	padding-left:0;
+	margin-left:62%;
+}
+
+.config_btn1
+{
+	padding-left:0;
+	margin-left:73%;
+	margin-left:35%;
+}
+
+.config_btnIE
+{
+	padding-left:45%;
 }

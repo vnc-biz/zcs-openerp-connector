@@ -330,9 +330,9 @@ try{
 
 
 }catch(e){
-		var a =  appCtxt.getMsgDialog();
+		/*var a =  appCtxt.getMsgDialog();
                 a.setMessage(this.getMessage("Exception in main_js"),DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
-                a.popup();
+                a.popup();*/
 	}
 
 

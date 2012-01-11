@@ -56,7 +56,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="<legend>";
 		html[i++]=this.zimlet.getMessage("connector_configuration_fieldset");
 		html[i++]="</legend>";
-		html[i++]="<table style='padding-left:76px;' class='marginIE'>";
+		html[i++]="<table class='marginIE'>";
 		html[i++]="<tr>";
 		html[i++]="<td>";
 		html[i++]=config_lbl_url;
@@ -104,7 +104,7 @@ configuration_setting.prototype._createHTML = function() {
 
 		html[i++]="</table>";
 		html[i++]="<table><tr><td>";
-		html[i++]="<button onClick='checkConnection()' id='connect' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
+		html[i++]="<button onClick='checkConnection()' id='connect' class='config_btn1'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
 		html[i++]="</td></tr></table>";
 
 		html[i++]="</fieldset>";
@@ -114,7 +114,7 @@ configuration_setting.prototype._createHTML = function() {
                 html[i++]="<legend>";
                 html[i++]=this.zimlet.getMessage("cal_sync_url");
                 html[i++]="</legend>";
-                html[i++]="<table style='padding-left:76px;' class='marginIE'>";
+                html[i++]="<table class='marginIE'>";
                 html[i++]="<tr>";
                 html[i++]="<td>";
                 html[i++]="URL:";
@@ -126,8 +126,8 @@ configuration_setting.prototype._createHTML = function() {
 
 
                 html[i++]="</table>";
-		html[i++]="<table><tr><td>";
-                html[i++]="<button onClick='save_cal_url()' id='connect' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/save_and_validate.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_calurl_save")+"</font></button>";
+		html[i++]="<table><tr><td class='config_btnIE'>";
+                html[i++]="<button onClick='save_cal_url()' id='connect' class='config_btn'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/save_and_validate.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_calurl_save")+"</font></button>";
                 html[i++]="</td></tr></table>";
 
                 html[i++]="</fieldset>";
@@ -310,7 +310,21 @@ function checkConnection(){
 		return;
 		
 	  }
-	  var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+database+"&username="+username+"&userpassword="+userpassword;	
+	 
+		
+		 var jspurl1="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+database.trim()+"&password="+userpassword.trim()+"&obj_name=thunderbird.partner&urladdress="+(proto+url.trim())+"&port="+port.trim();
+
+                var res = AjxRpc.invoke(null,jspurl1, null, null, true);
+                if(res.text.trim()=="Fail"){
+                        var a =  appCtxt.getMsgDialog();
+                        a.setMessage(zm.getMessage("module_not_installed"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                         a.popup();
+                        return;
+               }
+		
+	
+
+	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+database+"&username="+username+"&userpassword="+userpassword;	
 	  var response = AjxRpc.invoke(null,jspurl, null, null, true);
 
 	 
