@@ -39,8 +39,8 @@ _createDialogView =
 _rpcCallback1 =
 function(response) {
         this.pbDialog.popdown();
-        if(response.text="success"){
-
+        if(response.text=="success"){
+			
                 var a =  appCtxt.getMsgDialog();
                 a.setMessage(zmlt.getMessage("contact_sync_success"),DwtMessageDialog.INFO_STYLE,zmlt.getMessage("msg"));
                 a.popup();

@@ -22,7 +22,6 @@ import com.zimbra.cs.client.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.*;
-import biz.source_code.base64Coder.Base64Coder;
 import org.json.JSONArray;
 import java.text.SimpleDateFormat;
 import java.net.URLEncoder;
@@ -653,9 +652,20 @@ public class ErpConfiguration
 			Runtime r=Runtime.getRuntime();
 			System.out.println("This is curl---------------------->>>>>>>>>>>>"+"curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
 			Process p=r.exec("curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
-			//System.out.println("****************"+auth_token+"------------------------> End of file...\n");
-			return "success";
+			p.waitFor();
+			System.out.println("Exit status for export ICS to openERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 
+			if(p.exitValue()==0)
+			{
+				System.out.println("Inside success----------------------->>>>>>>>>>>>>>>>>>>>>>>");
+				return "success";
+			}
+			else
+			{
+
+				System.out.println("Inside success----------------------->>>>>>>>>>>>>>>>>>>>>>>");
+				return "fail";
+			}
 
 		}
 		catch (Exception e)
@@ -706,8 +716,11 @@ public class ErpConfiguration
 			Process p=r.exec(com);
 
 			p.waitFor();
-			System.out.println("Exit status for export ICS to openERP is : " + p.exitValue());
-
+			System.out.println("Exit status for export ICS to openERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
+			if(p.exitValue() !=0)
+			{
+				return "fail";
+			}
 
 			/*Export calendar from open ERP*/
 
@@ -746,9 +759,14 @@ public class ErpConfiguration
 			p1.waitFor();
 			System.out.println("ICS Import from openERP is : " + p1.exitValue());
 			System.out.print("------------>>>>>successs Import");
-
-			return "success";
-
+			if(p1.exitValue()==0)
+			{
+				return "success";
+			}
+			else
+			{
+				return "fail";
+			}
 		}
 		catch(Exception ex)
 		{
@@ -756,11 +774,6 @@ public class ErpConfiguration
 			ex.printStackTrace();
 			return "fail";
 		}
-
-
-
-
-
 
 
 

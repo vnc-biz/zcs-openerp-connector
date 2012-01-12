@@ -236,14 +236,21 @@ function getDocumentRecord(){
 	record_check=document.getElementsByName("records"+push_random+"");
         var flg=0;
         for(var i=0;i<record_check.length;i++){
-
                 if(record_check[i].checked){
                         flg=1;
                 }
 
         }
+       
+	if(record_check.length==0){
+		var ab =  appCtxt.getMsgDialog();
+                 ab.setMessage(zmlt.getMessage("no_document_added"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
+                 ab.popup();
+                return;
 
-        if(flg==0){
+	}
+	
+	 if(flg==0){
                  var a =  appCtxt.getMsgDialog();
                  a.setMessage(zmlt.getMessage("connector_pushopenerp_moduleselect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
                  a.popup();
