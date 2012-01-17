@@ -1,5 +1,6 @@
 package com.zimbra.configuration;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import redstone.xmlrpc.*;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -40,6 +41,10 @@ public class ErpConfiguration
 	ArrayList<Object> list;
 	private static String MYSQL_PASSWORD = null;
 	Object idList=null;
+
+	private Pattern pattern;
+	private Matcher matcher;
+	private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 	static
 	{
@@ -204,6 +209,7 @@ public class ErpConfiguration
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			return "false";
 		}
 		if(exec<=0)
 		{
@@ -250,7 +256,7 @@ public class ErpConfiguration
 	}
 
 
-	public String getRecord()
+	public String getRecord(String obj_name)
 	{
 		String temp=null;
 		list=new ArrayList<Object>();
@@ -262,10 +268,24 @@ public class ErpConfiguration
 			stmt = con.createStatement();
 
 			String sql="select * from tbl_document_setting";
-			prest = con.prepareStatement(sql);
+			String sql1="select * from tbl_document_setting where docname='"+obj_name+"'";
+			System.out.println("query is this---------->>>>>>>>>"+sql1);
+			if(obj_name.equals("fack"))
+			{
+
+				prest = con.prepareStatement(sql);
+
+
+			}
+			else
+			{
+				prest = con.prepareStatement(sql1);
+
+			}
 			ResultSet rs=prest.executeQuery();
 
 
+			System.out.println("result is this---------->>>>>>>>>"+rs.toString());
 			mainobj=new JSONObject();
 
 			while(rs.next())
@@ -279,6 +299,7 @@ public class ErpConfiguration
 
 			}
 			mainobj.put("records",list);
+
 
 		}
 		catch(Exception e)
@@ -306,65 +327,112 @@ public class ErpConfiguration
 		{
 			String fixurl="/xmlrpc/object";
 			Gson gson = new Gson();
-			//String [] object_name = obj_name.split(",");
-			XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-			Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search",new Vector()} );
-			if(token.toString().length()!=2)
+			Vector child=new Vector();
+			Vector parent=new Vector();
+
+			boolean valid;
+			valid=validate(emailsearch);
+			if(emailsearch.equals(""))
 			{
 
-				return gson.toJson(token);
+
+				XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
+				Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search",new Vector()} );
+				if(token.toString().length()!=2)
+				{
+
+					return gson.toJson(token);
+				}
+				else
+				{
+					return "bl";
+				}
+
 			}
 			else
 			{
-				return "bl";
+
+
+				if(valid==true)
+				{
+
+					if(obj_name.equals("res.partner") || obj_name.equals("res.partner.address"))
+					{
+
+						System.out.println("Inside if-------------->>>>>>>>>>>>>>>>>");
+						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
+						child.add("email");
+						child.add("=");
+						child.add(emailsearch);
+						parent.add(child);
+						Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search","",parent} );
+						System.out.println("Call success------------------->>>>>>>>>"+token.toString());
+						if(token.toString().length()!=2)
+						{
+
+							return gson.toJson(token);
+
+						}
+						else
+						{
+							return "bl";
+						}
+
+
+					}
+					else
+					{
+
+						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
+						Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search",emailsearch,new Vector()} );
+						if(token.toString().length()!=2)
+						{
+
+							return gson.toJson(token);
+						}
+						else
+						{
+							return "bl";
+						}
+
+					}
+				}
+				else
+				{
+
+					XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
+					Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search",emailsearch,new Vector()} );
+					if(token.toString().length()!=2)
+					{
+
+						return gson.toJson(token);
+					}
+					else
+					{
+						return "bl";
+					}
+
+
+				}
+
+
 			}
+
+
+
+
 
 		}
 		catch(Exception ex)
 		{
 			System.out.print(ex+"Exception in  getdocumenlist");
+			ex.printStackTrace();
 			return "Exception";
 		}
 
 
 
-		/*	Object lis=null;
-			Gson gson = new Gson();
-			String [] object_name = obj_name.split(",");
-			Vector params=null,condition=null,listvector=null;
 
-		int cnt=0;
-
-			try {
-				String fixurl="/xmlrpc/object";
-				XmlRpcClient lists;
-				params=new Vector();
-				listvector=new Vector();
-
-				lists=new XmlRpcClient(urladdress+":"+port+fixurl);
-
-					params.addElement(dbname);
-		                    	params.addElement(1);
-		                    	params.addElement(password);
-					params.addElement(obj_name);
-					params.addElement("name_search");
-					params.addElement(new Vector());
-
-					System.out.print(obj_name);
-		                    	lis=(Object)lists.execute("execute",params);
-					System.out.print(lis.toString());
-
-
-
-			 }
-			 catch (Exception e) {
-
-		      		 System.out.println(e.getMessage());
-				return("fail");
-		    	 }
-
-
-			return gson.toJson(lis);*/
 
 	}
 
@@ -469,7 +537,7 @@ public class ErpConfiguration
 				client=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 				dbname=dbname.trim();
 				System.out.println("Going to call histary_message from sendMail");
-				list=(Object)client.invoke("execute",new Object[] {dbname,1,password,"thunderbird.partner","history_message",main_vec});
+				list=(Object)client.invoke("execute",new Object[] {dbname,1,password,"zimbra.partner","history_message",main_vec});
 				row_connection.disconnect();
 				rowstrbuffer.delete(0,rowstrbuffer.length());
 
@@ -563,9 +631,9 @@ public class ErpConfiguration
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 
 			dbname=dbname.trim();
-
+			System.out.println("Before xmlrpc call------------->>>>>>>>>>>>>>>>>>>>");
 			Object objlist = lists.invoke("execute",new Object[] {dbname,1,password,"res.partner.address","search",new Vector()});
-			//System.out.println("----------------------------------> Id list:"+objlist.toString());
+			System.out.println("----------------------------------> Id list:"+objlist.toString());
 			Vector nameList = new Vector();
 			/*nameList.add("name");
 			nameList.add("city");
@@ -591,6 +659,7 @@ public class ErpConfiguration
 				{
 					cField=str.split("=");
 					nameList.add(cField[0].trim());
+
 					System.out.println("length of cField:"+cField.length+"   --------------- >key:"+cField[0].trim()+" value:"+cField[1].trim());
 
 
@@ -603,7 +672,6 @@ public class ErpConfiguration
 					r.printStackTrace();
 				}
 			}
-
 			System.out.println("------------------------------------>  End of file... Contacts heading read successfully from file...");
 			contact=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 
@@ -611,13 +679,12 @@ public class ErpConfiguration
 			//System.out.print("----> excuting  hi this is contact list============"+contactList.getArray("datas") +" ----> end new.");
 
 
-			int len1=contactList.getArray("datas").size();
-			int len2=nameList.size();
+			int len1=contactList.getArray("datas").size();/*This is number of Contacts*/
+			int len2=nameList.size();/*This is number of fields*/
 			String name,email;
 			XmlRpcArray arr=contactList.getArray("datas");
 			CsvWriter csvFile=new CsvWriter("/tmp/myData.csv",',',Charset.forName("UTF-8"));
 			csvFile.setForceQualifier(true);
-			/*	String[] heading={"Name","Home City","Home Street","Business Street","Home Postal Code","Home Phone","Home Fax","E-mail Address","Mobile Phone"};  */
 			for(int t=1; t<heading.size(); t++)
 			{
 				csvFile.write(heading.get(t).toString());
@@ -626,18 +693,27 @@ public class ErpConfiguration
 
 			for(int i=0; i<len1; i++)
 			{
-
+				int flag=0;
 				for(int j=1; j<len2; j++)
 				{
 
 					name=arr.getArray(i).get(j).toString();
-					if(j==0)
+					System.out.println("Name----------->>>>>>>>"+name);
+
+					if(j==1)
 					{
 						if(name.equals("false"))
 						{
 							name=arr.getArray(i).get(0).toString();
+							flag=1;
 							System.out.println("----------------- > partner ID:"+name);
 						}
+						else
+						{
+
+
+						}
+
 					}
 					if(name.equals("false"))
 						name="";
@@ -663,7 +739,7 @@ public class ErpConfiguration
 			else
 			{
 
-				System.out.println("Inside success----------------------->>>>>>>>>>>>>>>>>>>>>>>");
+				System.out.println("Inside fail----------------------->>>>>>>>>>>>>>>>>>>>>>>");
 				return "fail";
 			}
 
@@ -819,12 +895,12 @@ public class ErpConfiguration
 
 	}
 
+	public boolean validate(String hex)
+	{
 
+		pattern = Pattern.compile(EMAIL_PATTERN);
+		matcher = pattern.matcher(hex);
+		return matcher.matches();
 
-
-
+	}
 }
-
-
-
-

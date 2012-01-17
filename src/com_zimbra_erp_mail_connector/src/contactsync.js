@@ -44,6 +44,10 @@ function(response) {
                 var a =  appCtxt.getMsgDialog();
                 a.setMessage(zmlt.getMessage("contact_sync_success"),DwtMessageDialog.INFO_STYLE,zmlt.getMessage("msg"));
                 a.popup();
+
+		var vnc = new VncContactSync();
+		var abc = vnc.getContacts(0,[]);
+		
         }
         else{
 

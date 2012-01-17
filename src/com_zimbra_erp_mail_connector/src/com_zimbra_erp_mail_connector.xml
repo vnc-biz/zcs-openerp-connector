@@ -31,11 +31,11 @@
 	</zimletPanelItem>
 	
 	<userProperties>
-		<property type="string" name="urladdress" value="localhost"/>
-		<property type="string" name="port" value="8069"/>
-		<property type="string" name="getdatabase" value="select any database"/>
-		<property type="string" name="username" value="admin"/>
-		<property type="string" name="userpassword" value="admin"/>
+		<property type="string" name="urladdress" value=""/>
+		<property type="string" name="port" value=""/>
+		<property type="string" name="getdatabase" value="${msg.select_any_database}"/>
+		<property type="string" name="username" value=""/>
+		<property type="string" name="userpassword" value=""/>
 		<property type="string" name="cal_url" value=""/>
 			
 	</userProperties>

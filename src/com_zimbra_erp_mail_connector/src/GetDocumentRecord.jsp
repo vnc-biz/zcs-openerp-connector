@@ -10,11 +10,12 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 
 	<%
 		
-			
-
+			String obj_name=request.getParameter("obj_name");
+			System.out.println("This is from jsp-------->>>>>>>>>"+obj_name);				
+	
 			ErpConfiguration configuration=new ErpConfiguration();
 			
-			out.println(configuration.getRecord());
+			out.println(configuration.getRecord(obj_name));
 			
             	
 	%>

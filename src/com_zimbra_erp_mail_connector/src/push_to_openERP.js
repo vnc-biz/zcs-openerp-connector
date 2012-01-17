@@ -6,9 +6,9 @@ var message_type=[];
 var downloadlink;
 var pushfrom;
 var push_random="";
-var fixheading="<table class='gridtable'><tr><td><b>Select</b></td><td><b>Name</b></td></tr>";
+var fixheading;
+//var fixheading="<table class='gridtable'><tr><td><b>"+zmlt.getMessage("connector_pushopener_select")+"</b></td><td><b>"+zmlt.getMessage("connector_pushopener_name")+"</b></td><td><b>"+zmlt.getMessage("connector_pushopener_document")+"</b></td></tr>";
 var proto="http://";
-
 
 function encode(str) {
 	return encodeURIComponent(str);
@@ -27,12 +27,12 @@ push_to_openERP=function(zimlet,jsonArray,msgids,download_link,push_from,msgtype
 	push_random=Math.round(Math.random()*100);
 	pushfrom=push_from;
 	message_type=msgtype;
+	fixheading="<table class='gridtable'><tr><td style='width:12%'><b></b></td><td style='width:60%'><b>"+zmlt.getMessage("connector_pushopener_name")+"</b></td><td style='width:33%'><b>"+zmlt.getMessage("connector_pushopener_document")+"</b></td></tr>";
 	this._displayDailog();
 	
 	
 	};
 
-//var fixheading="<table class='gridtable'><tr><td><b>"+zmlt.getMessage("connector_pushopener_select")+"</b></td><td><b>Name</b></td></tr>";
 push_to_openERP.prototype=new ZmZimletBase;
 
 push_to_openERP.prototype.constructor = push_to_openERP;
@@ -65,6 +65,7 @@ push_to_openERP.prototype._displayDailog=function(){
 	document.getElementById("document_name"+push_random+"").innerHTML=fixheading;
 	
 	
+	
 		document.getElementById("mailsearch"+push_random+"").value=pushfrom;
 	
 	this.pbDialog.popup();
@@ -77,7 +78,7 @@ push_to_openERP.prototype._displayDailog=function(){
 function getRecords(){
 
 	 
-	  var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp";	
+	  var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp?obj_name=fack";	
 	  var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	
 	  if (response.success == true) {
@@ -90,7 +91,7 @@ function getRecords(){
 		var s="";
 		s+="<table style='width:98%;'><tr><td style='width:33%;'>"
 		
-		s+="<input type='checkbox' id='sel"+push_random+"' name='sel"+push_random+"' onclick='checkdAll("+push_random+")' />select All";
+		s+="<input type='checkbox' id='sel"+push_random+"' name='sel"+push_random+"' onclick='checkdAll("+push_random+")' />All";
                 document.getElementById("push_documents"+push_random+"").innerHTML=s;
 		s+="</td>";
 		var j=0; 		
@@ -118,6 +119,7 @@ function getRecords(){
 		document.getElementById("push_documents"+push_random+"").innerHTML=s;
 		
 
+	
 			
 	   }
 
@@ -234,7 +236,7 @@ function getDocumentRecord(){
 	
 
 	record_check=document.getElementsByName("records"+push_random+"");
-        var flg=0;
+	var flg=0;
         for(var i=0;i<record_check.length;i++){
                 if(record_check[i].checked){
                         flg=1;
@@ -319,20 +321,33 @@ function getDocumentRecord(){
 				if(response.text.trim().length>2 && response.text.trim()!="Exception"){
 				
 				var docrecord=JSON.parse(response.text.trim());
+			
+				var jspurl2="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp?obj_name="+tot_obj[j];
+
+                                var response2 = AjxRpc.invoke(null,jspurl2, null, null, true);
+				var firstparse =JSON.parse(response2.text.trim());
 				
+				var records2=firstparse.records;
+
+				
+				var title=records2[0].title
 			        for(var i = 0; i < docrecord.length; i++)
 				{
 					
+					
 					var record_id=docrecord[i].toString().split(',')[0];
 					var record_names=docrecord[i].toString().split(',')[1];
+					
 					if(i%2==0){             
 
-                  				documentrecord+="<tr class='d0'><td><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+push_random+"' name='record_names"+push_random+"'></td><td>"+record_names+"</td></tr>";
+                  				documentrecord+="<tr class='d0'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+push_random+"' name='record_names"+push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
+						
+		
                                         
 					}else{
 
                                 
-						documentrecord+="<tr class='d1'><td><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+push_random+"' name='record_names"+push_random+"'></td><td>"+record_names+"</td></tr>";
+						documentrecord+="<tr class='d1'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+push_random+"' name='record_names"+push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
 
 
 					}
@@ -352,9 +367,9 @@ function getDocumentRecord(){
 					}
 					else{
 
-						var a =  appCtxt.getMsgDialog();    
+						/*var a =  appCtxt.getMsgDialog();    
                                                 a.setMessage(zmlt.getMessage("no_records_founds")+tot_obj[j],DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
-                                                  a.popup();	
+                                                  a.popup();*/	
 					}
 				}
 			

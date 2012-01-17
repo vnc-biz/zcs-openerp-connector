@@ -45,7 +45,7 @@ String.prototype.trim = function() {
 function getTableRecords(){
 
 			
-	  var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp";	
+	  var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp?obj_name=fack";	
 	  var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	
 
@@ -230,7 +230,10 @@ var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/AddDocumentRecord.jsp?
                   		a.popup();
 				
 			}else{
-
+				
+				var a =  appCtxt.getMsgDialog();
+                                a.setMessage(zm.getMessage("duplicate_title_error"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                                a.popup();
 				getTableRecords();
 			}
 				

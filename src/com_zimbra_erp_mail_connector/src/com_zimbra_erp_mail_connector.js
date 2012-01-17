@@ -137,9 +137,27 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = f
 };
 
 
+com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
+
+	this.setUserProperty("urladdress","");
+        this.setUserProperty("getdatabase",this.getMessage("select_any_database"));
+        this.setUserProperty("port","");
+        this.setUserProperty("username","");
+        this.setUserProperty("userpassword","");
+	this.setUserProperty("cal_url","");
+        this.saveUserProperties();
+
+}
+
+
+
+
+
 /*   This is the init method     */
 
 function com_zimbra_erp_mail_connector_HandlerObject() {
+
+
 	var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("openERP");
         if(ftree == null){
                 var oc = appCtxt.getOverviewController();
