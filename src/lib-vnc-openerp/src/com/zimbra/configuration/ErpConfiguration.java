@@ -269,10 +269,10 @@ public class ErpConfiguration
 
 			String sql="select * from tbl_document_setting";
 			String sql1="select * from tbl_document_setting where docname='"+obj_name+"'";
-			System.out.println("query is this---------->>>>>>>>>"+sql1);
+			System.out.println("object name is this---------->>>>>>>>>"+obj_name);
 			if(obj_name.equals("fack"))
 			{
-
+				System.out.println("fack is present--------------->>>>");
 				prest = con.prepareStatement(sql);
 
 
@@ -485,10 +485,8 @@ public class ErpConfiguration
 				System.out.print("Inside msg is not null");
 
 				rowdata_path=downloadlink+"?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8");
-
-
 				URL urlrow=new URL(rowdata_path);
-
+				System.out.println("This is url row-------------->>>>>>>>>>>>>>>>>>>"+urlrow.toString());
 				row_connection = (HttpURLConnection)urlrow.openConnection();
 				row_connection.connect();
 
@@ -727,7 +725,7 @@ public class ErpConfiguration
 
 			Runtime r=Runtime.getRuntime();
 			System.out.println("This is curl---------------------->>>>>>>>>>>>"+"curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
-			Process p=r.exec("curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
+			Process p=r.exec("curl -k --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
 			p.waitFor();
 			System.out.println("Exit status for export ICS to openERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 
@@ -787,7 +785,7 @@ public class ErpConfiguration
 
 			/*Import to Calendar to open ERP*/
 			Runtime r=Runtime.getRuntime();
-			String com="curl -u"+" "+erp_uname+":"+erp_passwd+" "+"--upload-file /tmp/cal.ics"+" "+erp_calurl;
+			String com="curl -k -u"+" "+erp_uname+":"+erp_passwd+" "+"--upload-file /tmp/cal.ics"+" "+erp_calurl;
 			System.out.println("This is open ERP url for curl"+com);
 			Process p=r.exec(com);
 
@@ -829,7 +827,7 @@ public class ErpConfiguration
 
 			/*Import to Calendar to zimbra*/
 			Runtime r1=Runtime.getRuntime();
-			String command="curl --upload-file /tmp/calfromerp.ics"+" "+z_calurl;
+			String command="curl -k --upload-file /tmp/calfromerp.ics"+" "+z_calurl;
 			System.out.println("z_calurl----------------------->>>>>>>"+command);
 			Process p1=r1.exec(command);
 			p1.waitFor();

@@ -17,11 +17,11 @@ function decode(str) {
 	return decodeURIComponent(str.replace(/\+/g, " "));
 } 
 
-push_to_openERP=function(zimlet,jsonArray,msgids,download_link,push_from,msgtype){
+push_to_openERP=function(zimlet,msgids,download_link,push_from,msgtype){
 
 	this.zimlet=zimlet;
 	zmlt=this.zimlet;
-	emailrecord=jsonArray;
+	//emailrecord=jsonArray;
 	email_ids=msgids;
 	downloadlink=download_link;
 	push_random=Math.round(Math.random()*100);

@@ -34,7 +34,7 @@ function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,c
 	document.getElementById("urladdress").value=zm.getUserProperty("urladdress");
 	
 	if(zm.getUserProperty("getdatabase")==""){
-		document.getElementById("getdatabase").innerHTML=""+"<option>select any database</option>";
+		document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	}else{
 	document.getElementById("getdatabase").innerHTML="<option value="+zm.getUserProperty("getdatabase")+">"+zm.getUserProperty("getdatabase")+"</option>";
 	}
