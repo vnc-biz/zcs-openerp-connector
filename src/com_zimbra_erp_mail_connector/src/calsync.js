@@ -14,7 +14,6 @@ calsync=function(zimlet) {
 	var erp_uname=zmlt.getUserProperty("username");
        // var z_calurl=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP").getRestUrl();
 	//z_calurl=z_calurl+"?fmt=ics"
-	//alert("complete URL"+z_calurl);
 
 	if(erp_calurl==""){
 		var a =  appCtxt.getMsgDialog();
@@ -102,10 +101,8 @@ _callback=function(response){
         var resp = result && result._data && result._data.CreateFolderResponse;
         if (resp) {
                 dataSource.folderId = ZmOrganizer.normalizeId(resp.folder[0].id);
-                alert("Inside if"+dataSource.folderId);
         }
         else {
-                alert("else part");
                 // HACK: Don't know a better way to set an error condition
                // this.__hack_preSaveSuccess = false;
         }

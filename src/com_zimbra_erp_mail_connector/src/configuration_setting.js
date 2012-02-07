@@ -322,41 +322,14 @@ function checkConnection(){
 	  }
 	 
 		
-		 var jspurl1="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+database.trim()+"&password="+userpassword.trim()+"&obj_name=zimbra.partner&urladdress="+(proto+url.trim())+"&port="+port.trim();
-
-                var res = AjxRpc.invoke(null,jspurl1, null, null, true);
-                if(res.text.trim()=="Fail"){
-                        var a =  appCtxt.getMsgDialog();
-                        a.setMessage(zm.getMessage("module_not_installed"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-                         a.popup();
-                        return;
-               }
 		
 	
 
 	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+database+"&username="+username+"&userpassword="+userpassword;	
 	  var response = AjxRpc.invoke(null,jspurl, null, null, true);
+	
+	  if(response.text.trim() == 'false'){
 
-	 
-	  if (response.success == true) {
-
-			
-		if(response.text.trim()=="true"){
-		
-			var a =  appCtxt.getMsgDialog();
-                	a.setMessage(zm.getMessage("connector_configuration_lbl_conection_saved"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
-                	a.popup();
-			zm.setUserProperty("urladdress",url);
-			zm.setUserProperty("getdatabase",database);
-			zm.setUserProperty("port",port);
-			zm.setUserProperty("username",username);
-			zm.setUserProperty("userpassword",userpassword);
-			zm.saveUserProperties();
-			flag=1;
-
-			
-			
-		}else{
 			zm.setUserProperty("urladdress",null);
 			zm.setUserProperty("getdatabase",null);
 			zm.setUserProperty("port",null);
@@ -366,10 +339,43 @@ function checkConnection(){
 			var a =  appCtxt.getMsgDialog();
                         a.setMessage(zm.getMessage("connector_configuration_userandpassword"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
                         a.popup();
-		}
+		
+
+			
+			
+	}else{
+
+
+			
+			zm.setUserProperty("urladdress",url);
+			zm.setUserProperty("getdatabase",database);
+			zm.setUserProperty("port",port);
+			zm.setUserProperty("username",username);
+			zm.setUserProperty("userpassword",userpassword);
+			zm.setUserProperty("openerp_id",response.text);
+			zm.saveUserProperties();
+			var openerp_id=zm.getUserProperty("openerp_id");
+			
+		 var jspurl1="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+database.trim()+"&password="+userpassword.trim()+"&obj_name=zimbra.partner&urladdress="+(proto+url.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id.trim();
+
+                var res = AjxRpc.invoke(null,jspurl1, null, null, true);
+                if(res.text.trim()=="Fail"){
+                        var a =  appCtxt.getMsgDialog();
+                        a.setMessage(zm.getMessage("module_not_installed"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                         a.popup();
+                        return;
+               }
+
+			var a =  appCtxt.getMsgDialog();
+                	a.setMessage(zm.getMessage("connector_configuration_lbl_conection_saved"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+                	a.popup();
+			
+			flag=1;
+	
+
+	}
 			
 
-	  }
 		
 
 

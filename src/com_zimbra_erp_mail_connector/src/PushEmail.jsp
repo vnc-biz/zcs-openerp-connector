@@ -21,7 +21,7 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
                         String downloadlink=request.getParameter("downloadlink");
 			String push_id=request.getParameter("push_id");
 			String sessionid=request.getParameter("sessionid");
-		
+			String openerp_id=request.getParameter("openerp_id");	
                         
                         
 			Cookie cookies [] = request.getCookies();
@@ -38,7 +38,7 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 
 				
 			ErpConfiguration configuration=new ErpConfiguration();
-			out.print(configuration.sendMail(dbname,password,urladdress,port,msg_id,downloadlink,push_id,sessionid,auth_token));
+			out.print(configuration.sendMail(dbname,password,urladdress,port,msg_id,downloadlink,push_id,sessionid,auth_token,openerp_id));
 
 
 						

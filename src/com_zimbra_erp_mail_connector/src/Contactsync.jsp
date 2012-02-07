@@ -28,13 +28,14 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
          eAuthToken = authToken.getEncoded();
         System.out.println("eAuthToken------------------->>>>"+eAuthToken);
         ZMailbox client = ZMailbox.getByAuthToken(eAuthToken, "https://localhost:7071/service/admin/soap");
-        URI rest=client.getRestURI("openERP");
+        URI rest=client.getRestURI("OpenERP");
 	String urladd=rest.toString();
 
             String dbname=request.getParameter("dbname");
             String password=request.getParameter("password");
             String urladdress=request.getParameter("urladdress");
             String port=request.getParameter("port");
+	    String openerp_id=request.getParameter("openerp_id");
 	    	
 	    //String urladd=request.getParameter("urladd");
 	     Cookie cookies [] = request.getCookies();
@@ -52,7 +53,7 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 
             ErpConfiguration configuration=new ErpConfiguration();
 		System.out.println("This is urladdddd------------->>>>"+urladd);
-            out.print(configuration.getContacts(dbname,password,urladdress,port,auth_token,urladd));
+            out.print(configuration.getContacts(dbname,password,urladdress,port,auth_token,urladd,openerp_id));
 	//out.print("this is response from jsp"+dbname+password+urladdress+port);
 
             } catch (Exception e) {

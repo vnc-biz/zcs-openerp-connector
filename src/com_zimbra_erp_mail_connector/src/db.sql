@@ -13,4 +13,5 @@ CREATE TABLE `tbl_document_setting` (
 
 INSERT INTO `tbl_document_setting`(title,docname) VALUES ('Partner','res.partner');
 INSERT INTO `tbl_document_setting`(title,docname) VALUES ('Address','res.partner.address'); 
+INSERT INTO `tbl_document_setting`(title,docname) VALUES ('Lead','crm.lead'); 
  

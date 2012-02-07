@@ -6,12 +6,22 @@ contactsync=function(zimlet) {
 	var dbname=zmlt.getUserProperty("getdatabase");
     var password=zmlt.getUserProperty("userpassword");
     var urladdress=zmlt.getUserProperty("urladdress");
+    var openerp_id=zmlt.getUserProperty("openerp_id");
     var port=zmlt.getUserProperty("port");
 	var proto="http://";
-	//var urladd=appCtxt.getFolderTree().getByName("openERP").getRestUrl();		
+	//var urladd=appCtxt.getFolderTree().getByName("OpenERP").getRestUrl();		
 	
+	if(dbname=="" || password=="" || urladdress=="" || port=="" ){
+                var a =  appCtxt.getMsgDialog();
+                a.setMessage(zmlt.getMessage("no_database_configured"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
+                a.popup();
+
+                return;
+        }	
+
+
 	var acc_name=appCtxt.getUsername();	
-	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&acc_name="+acc_name;
+	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&acc_name="+acc_name+"&openerp_id="+openerp_id;
 
 		var callback = new AjxCallback(this,_rpcCallback1)
 		

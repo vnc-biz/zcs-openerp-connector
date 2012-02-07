@@ -17,9 +17,9 @@ import org.json.JSONObject;
 import com.google.gson.*;
 import com.google.gson.JsonParser;
 import java.net.URL;
-import com.zimbra.common.auth.*;
-import com.zimbra.cs.client.soap.*;
-import com.zimbra.cs.client.*;
+//import com.zimbra.common.auth.*;
+//import com.zimbra.cs.client.soap.*;
+//import com.zimbra.cs.client.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.*;
@@ -44,7 +44,9 @@ public class ErpConfiguration
 
 	private Pattern pattern;
 	private Matcher matcher;
-	private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	//private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	//private static final String EMAIL_PATTERN ="^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Za-z0-9]{2,4}$";
 
 	static
 	{
@@ -58,7 +60,7 @@ public class ErpConfiguration
 			InputStreamReader isr = new InputStreamReader(stdin);
 			BufferedReader br = new BufferedReader(isr);
 			MYSQL_PASSWORD = br.readLine();
-			System.out.println("Mysql password: " + MYSQL_PASSWORD);
+			//System.out.println("Mysql password: " + MYSQL_PASSWORD);
 
 		}
 		catch(Exception e)
@@ -90,7 +92,7 @@ public class ErpConfiguration
 
 		/*	Object list=null;
 			try{
-					System.out.print("url"+url);
+					//System.out.print("url"+url);
 					String fixurl="/xmlrpc";
 					XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 						config.setServerURL(new URL(url+":"+port+fixurl));
@@ -100,7 +102,7 @@ public class ErpConfiguration
 					Object[] params = new Object[]{};
 						String result = (String) client.execute("list", params);
 
-					System.out.print(result);
+					//System.out.print(result);
 
 
 
@@ -126,7 +128,7 @@ public class ErpConfiguration
 			Object token = (Object)client.invoke( "login", new Object[] {database,username,password} );
 			if(token instanceof java.lang.Integer)
 			{
-				return "true";
+				return token.toString();
 			}
 			else
 			{
@@ -269,10 +271,10 @@ public class ErpConfiguration
 
 			String sql="select * from tbl_document_setting";
 			String sql1="select * from tbl_document_setting where docname='"+obj_name+"'";
-			System.out.println("object name is this---------->>>>>>>>>"+obj_name);
+			//System.out.println("object name is this---------->>>>>>>>>"+obj_name);
 			if(obj_name.equals("fack"))
 			{
-				System.out.println("fack is present--------------->>>>");
+				//System.out.println("fack is present--------------->>>>");
 				prest = con.prepareStatement(sql);
 
 
@@ -285,7 +287,7 @@ public class ErpConfiguration
 			ResultSet rs=prest.executeQuery();
 
 
-			System.out.println("result is this---------->>>>>>>>>"+rs.toString());
+			//System.out.println("result is this---------->>>>>>>>>"+rs.toString());
 			mainobj=new JSONObject();
 
 			while(rs.next())
@@ -308,18 +310,18 @@ public class ErpConfiguration
 		}
 		if(mainobj == null)
 		{
-			System.out.println("Object is nullllllllllllllllllllllllllllll");
+			//System.out.println("Object is nullllllllllllllllllllllllllllll");
 		}
 		else
 		{
-			System.out.println("Object is not nulllllllllllllllllllllllll");
+			//System.out.println("Object is not nulllllllllllllllllllllllll");
 		}
 		return mainobj.toString();
 
 	}
 
 
-	public String getDocumentlist(String dbname,String password,String emailsearch,String urladdress,String port,String obj_name)
+	public String getDocumentlist(String dbname,String password,String emailsearch,String urladdress,String port,String obj_name,String openerp_id)
 	{
 
 
@@ -329,15 +331,16 @@ public class ErpConfiguration
 			Gson gson = new Gson();
 			Vector child=new Vector();
 			Vector parent=new Vector();
-
+			Integer op_id=Integer.parseInt(openerp_id);
 			boolean valid;
 			valid=validate(emailsearch);
 			if(emailsearch.equals(""))
 			{
 
+				//System.out.println("This is openerp_id--------->>>>>>"+openerp_id);
 
 				XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-				Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search",new Vector()} );
+				Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()} );
 				if(token.toString().length()!=2)
 				{
 
@@ -356,17 +359,17 @@ public class ErpConfiguration
 				if(valid==true)
 				{
 
-					if(obj_name.equals("res.partner") || obj_name.equals("res.partner.address"))
+					if(obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead"))
 					{
 
-						System.out.println("Inside if-------------->>>>>>>>>>>>>>>>>");
+						//System.out.println("Inside res.partner or res.partner.address-------------->>>>>>>>>>>>>>>>>");
 						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 						child.add("email");
 						child.add("=");
 						child.add(emailsearch);
 						parent.add(child);
-						Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search","",parent} );
-						System.out.println("Call success------------------->>>>>>>>>"+token.toString());
+						Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",parent} );
+						//System.out.println("Call success------------------->>>>>>>>>"+token.toString());
 						if(token.toString().length()!=2)
 						{
 
@@ -384,7 +387,7 @@ public class ErpConfiguration
 					{
 
 						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-						Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search",emailsearch,new Vector()} );
+						Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch,new Vector()} );
 						if(token.toString().length()!=2)
 						{
 
@@ -401,7 +404,7 @@ public class ErpConfiguration
 				{
 
 					XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-					Object token = (Object)client.invoke( "execute", new Object[] {dbname,1,password,obj_name,"name_search",emailsearch,new Vector()} );
+					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch,new Vector()} );
 					if(token.toString().length()!=2)
 					{
 
@@ -443,11 +446,11 @@ public class ErpConfiguration
 	JsonObject objectss;
 
 
-	public String sendMail(String dbname,String password,String urladdress,String port,String msg_id,String downloadlink,String push_id,String sessionid, String authToken)
+	public String sendMail(String dbname,String password,String urladdress,String port,String msg_id,String downloadlink,String push_id,String sessionid, String authToken,String openerp_id)
 	{
 
 
-		System.out.print("send mail called"+"database:"+dbname+"Password:"+password+"URLaddress:"+urladdress+"port:"+port+"msg_id:"+msg_id+"Link:"+downloadlink+"push_ID:"+push_id+"sessionid:"+sessionid+"AuthToken:"+authToken);
+		//System.out.print("send mail called"+"database:"+dbname+"Password:"+password+"URLaddress:"+urladdress+"port:"+port+"msg_id:"+msg_id+"Link:"+downloadlink+"push_ID:"+push_id+"sessionid:"+sessionid+"AuthToken:"+authToken);
 		String rowdata=null;
 		String rowdata_path=null;
 		JSONObject jso=null;
@@ -472,6 +475,7 @@ public class ErpConfiguration
 
 		Hashtable param=null;
 		Vector main_vec=null;
+		Integer op_id=Integer.parseInt(openerp_id);
 		try
 		{
 			String msgID = msg_id;
@@ -482,11 +486,11 @@ public class ErpConfiguration
 
 				/*Row data*/
 
-				System.out.print("Inside msg is not null");
+				//System.out.print("Inside msg is not null");
 
 				rowdata_path=downloadlink+"?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8");
 				URL urlrow=new URL(rowdata_path);
-				System.out.println("This is url row-------------->>>>>>>>>>>>>>>>>>>"+urlrow.toString());
+				//System.out.println("This is url row-------------->>>>>>>>>>>>>>>>>>>"+urlrow.toString());
 				row_connection = (HttpURLConnection)urlrow.openConnection();
 				row_connection.connect();
 
@@ -496,16 +500,16 @@ public class ErpConfiguration
 				int rowlineLength = 72;
 				StringBuffer rowstrbuffer=new StringBuffer();
 				byte[] rowbuf = new byte[rowlineLength/4*3];
-				while(true)
+				int rowlen = 0;
+				while((rowlen = rowis.read(rowbuf)) != -1)
 				{
-
-					int rowlen = rowis.read(rowbuf);
-					if (rowlen <= 0) break;
 					rowstrbuffer.append(new String(rowbuf));
-
+					rowbuf = null;
+					rowbuf = new byte[rowlineLength/4*3];
 				}
 
 				rowdata=new String(rowstrbuffer);
+				//System.out.println("This is rawdate======================="+rowdata);
 
 				/*End roe data*/
 
@@ -534,8 +538,8 @@ public class ErpConfiguration
 				XmlRpcClient client;
 				client=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 				dbname=dbname.trim();
-				System.out.println("Going to call histary_message from sendMail");
-				list=(Object)client.invoke("execute",new Object[] {dbname,1,password,"zimbra.partner","history_message",main_vec});
+				//System.out.println("Going to call histary_message from sendMail");
+				list=(Object)client.invoke("execute",new Object[] {dbname,op_id,password,"zimbra.partner","history_message",main_vec});
 				row_connection.disconnect();
 				rowstrbuffer.delete(0,rowstrbuffer.length());
 
@@ -555,23 +559,23 @@ public class ErpConfiguration
 			}
 			else
 			{
-				System.out.print("Else part of msg");
+				//System.out.print("Else part of msg");
 				Email="Damn message is null";
 			}
 		}
 		catch(Exception e)
 		{
-			System.out.print("inside Exception");
+			//System.out.print("inside Exception");
 			e.printStackTrace();
 		}
 
-		System.out.print("This is list"+list.toString()+"End of list");
+		//System.out.print("This is list"+list.toString()+"End of list");
 		return list.toString();
 
 
 	}
 
-	public String checkRecords(String dbname,String password,String urladdress,String port,String obj_name)
+	public String checkRecords(String dbname,String password,String urladdress,String port,String obj_name,String openerp_id)
 	{
 
 		Object list=null;
@@ -579,7 +583,7 @@ public class ErpConfiguration
 		Object lis=null;
 		Gson gson = new Gson();
 		String m=new String();
-
+		Integer op_id=Integer.parseInt(openerp_id);
 
 		Vector params=null;
 		String s=null;
@@ -591,12 +595,13 @@ public class ErpConfiguration
 			String fixurl="/xmlrpc/object";
 			XmlRpcClient lists;;
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
-			System.out.println("this is address----------->>>>>"+urladdress+":"+port+fixurl+"End of url<<<<<<<<<<--------");
+			//System.out.println("this is address----------->>>>>"+urladdress+":"+port+fixurl+"End of url<<<<<<<<<<--------");
 			s=new String();
 			dbname=dbname.trim();
 
 
-			lis=(Object)lists.invoke("execute",new Object[] {dbname,1,password,obj_name,"name_search",new Vector()});
+			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()});
+			System.out.println("this is Documentvarify-----response--->>"+lis.toString());
 
 
 
@@ -610,16 +615,25 @@ public class ErpConfiguration
 
 		}
 
+		if(lis.toString()!="")
+		{
+			return gson.toJson(lis);
 
-		return gson.toJson(lis);
+		}
+		else
+		{
+
+			return "Fail";
+		}
 
 	}
 
 
-	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd)
+	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd,String openerp_id)
 	{
 
 		Gson gson = new Gson();
+		Integer op_id=Integer.parseInt(openerp_id);
 		Object contactlist;
 		List<Integer> intList;
 		try
@@ -629,9 +643,11 @@ public class ErpConfiguration
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 
 			dbname=dbname.trim();
-			System.out.println("Before xmlrpc call------------->>>>>>>>>>>>>>>>>>>>");
-			Object objlist = lists.invoke("execute",new Object[] {dbname,1,password,"res.partner.address","search",new Vector()});
-			System.out.println("----------------------------------> Id list:"+objlist.toString());
+			//System.out.println("Before xmlrpc call------------->>>>>>>>>>>>>>>>>>>>");
+
+			//System.out.println("this is integer------>>>>>>"+op_id);
+			Object objlist = lists.invoke("execute",new Object[] {dbname,op_id,password,"res.partner.address","search",new Vector()});
+			//System.out.println("----------------------------------> Id list:"+objlist.toString());
 			Vector nameList = new Vector();
 			/*nameList.add("name");
 			nameList.add("city");
@@ -658,7 +674,7 @@ public class ErpConfiguration
 					cField=str.split("=");
 					nameList.add(cField[0].trim());
 
-					System.out.println("length of cField:"+cField.length+"   --------------- >key:"+cField[0].trim()+" value:"+cField[1].trim());
+					//System.out.println("length of cField:"+cField.length+"   --------------- >key:"+cField[0].trim()+" value:"+cField[1].trim());
 
 
 					heading.add(cField[1].trim());
@@ -666,14 +682,14 @@ public class ErpConfiguration
 				}
 				catch(Exception r)
 				{
-					System.out.print("--------------------------->>>>>Exception");
+					//System.out.print("--------------------------->>>>>Exception");
 					r.printStackTrace();
 				}
 			}
-			System.out.println("------------------------------------>  End of file... Contacts heading read successfully from file...");
+			//System.out.println("------------------------------------>  End of file... Contacts heading read successfully from file...");
 			contact=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 
-			XmlRpcStruct contactList=(XmlRpcStruct)lists.invoke("execute",new Object[] {dbname,1,password,"res.partner.address","export_data",objlist,nameList});
+			XmlRpcStruct contactList=(XmlRpcStruct)lists.invoke("execute",new Object[] {dbname,op_id,password,"res.partner.address","export_data",objlist,nameList});
 			//System.out.print("----> excuting  hi this is contact list============"+contactList.getArray("datas") +" ----> end new.");
 
 
@@ -696,15 +712,15 @@ public class ErpConfiguration
 				{
 
 					name=arr.getArray(i).get(j).toString();
-					System.out.println("Name----------->>>>>>>>"+name);
+					//System.out.println("Name----------->>>>>>>>"+name);
 
 					if(j==1)
 					{
 						if(name.equals("false"))
 						{
-							name=arr.getArray(i).get(0).toString();
+							//name=arr.getArray(i).get(0).toString();
 							flag=1;
-							System.out.println("----------------- > partner ID:"+name);
+							//System.out.println("----------------- > partner ID:"+name);
 						}
 						else
 						{
@@ -724,22 +740,33 @@ public class ErpConfiguration
 			csvFile.close();
 
 			Runtime r=Runtime.getRuntime();
-			System.out.println("This is curl---------------------->>>>>>>>>>>>"+"curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
-			Process p=r.exec("curl -k --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
-			p.waitFor();
-			System.out.println("Exit status for export ICS to openERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 
-			if(p.exitValue()==0)
+			//System.out.println("This is curl---------------------->>>>>>>>>>>>"+"curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
+			try
 			{
-				System.out.println("Inside success----------------------->>>>>>>>>>>>>>>>>>>>>>>");
+
+				Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
+				p.waitFor();
+				//System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
+
 				return "success";
-			}
-			else
-			{
 
-				System.out.println("Inside fail----------------------->>>>>>>>>>>>>>>>>>>>>>>");
-				return "fail";
 			}
+			catch(IllegalThreadStateException ex)
+			{
+				ex.printStackTrace();
+				return "fail";
+
+			}
+
+			/*if(p.exitValue()==0){
+						//System.out.println("Inside success----------------------->>>>>>>>>>>>>>>>>>>>>>>");
+						return "success";
+					}else{
+
+						//System.out.println("Inside fail----------------------->>>>>>>>>>>>>>>>>>>>>>>");
+						return "fail";
+					}*/
 
 		}
 		catch (Exception e)
@@ -766,8 +793,8 @@ public class ErpConfiguration
 			URL url1=new URL(z_calurl);
 			connection=(HttpURLConnection)url1.openConnection();
 			connection.connect();
-			System.out.println("This is message---------------->>>>>"+connection.getResponseMessage()+"End of the message<<<<<<<<<<<<");
-			System.out.println("connection is successfull");
+			//System.out.println("This is message---------------->>>>>"+connection.getResponseMessage()+"End of the message<<<<<<<<<<<<");
+			//System.out.println("connection is successfull");
 			int calLength=connection.getContentLength();
 			Byte[] cal;
 			InputStream in=connection.getInputStream();
@@ -786,11 +813,11 @@ public class ErpConfiguration
 			/*Import to Calendar to open ERP*/
 			Runtime r=Runtime.getRuntime();
 			String com="curl -k -u"+" "+erp_uname+":"+erp_passwd+" "+"--upload-file /tmp/cal.ics"+" "+erp_calurl;
-			System.out.println("This is open ERP url for curl"+com);
+			//System.out.println("This is open ERP url for curl"+com);
 			Process p=r.exec(com);
 
 			p.waitFor();
-			System.out.println("Exit status for export ICS to openERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
+			//System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 			if(p.exitValue() !=0)
 			{
 				return "fail";
@@ -806,7 +833,7 @@ public class ErpConfiguration
 			//String passwd="admin";
 			String authString =erp_uname+":"+erp_passwd;
 			authString = (new sun.misc.BASE64Encoder()).encode(authString.getBytes());
-			System.out.println("this is encoding------->>>>>"+authString);
+			//System.out.println("this is encoding------->>>>>"+authString);
 
 			connection_erp.setRequestProperty("Authorization","Basic "+authString);
 
@@ -828,11 +855,11 @@ public class ErpConfiguration
 			/*Import to Calendar to zimbra*/
 			Runtime r1=Runtime.getRuntime();
 			String command="curl -k --upload-file /tmp/calfromerp.ics"+" "+z_calurl;
-			System.out.println("z_calurl----------------------->>>>>>>"+command);
+			//System.out.println("z_calurl----------------------->>>>>>>"+command);
 			Process p1=r1.exec(command);
 			p1.waitFor();
-			System.out.println("ICS Import from openERP is : " + p1.exitValue());
-			System.out.print("------------>>>>>successs Import");
+			//System.out.println("ICS Import from openERP is : " + p1.exitValue());
+			//System.out.print("------------>>>>>successs Import");
 			if(p1.exitValue()==0)
 			{
 				return "success";
@@ -864,7 +891,7 @@ public class ErpConfiguration
 			HttpURLConnection connection_url = null;
 			//String strurl="http://192.168.1.106:8069/webdav/doc1/calendars/users/admin/c/Meetings.ics";
 			URL chkurl=new URL(url);
-			System.out.println("This is url in checkURL----------->>>>>"+url);
+			//System.out.println("This is url in checkURL----------->>>>>"+url);
 
 			connection_url=(HttpURLConnection)chkurl.openConnection();
 
@@ -872,14 +899,14 @@ public class ErpConfiguration
 
 			String authString =uname+":"+passwd;
 			authString = (new sun.misc.BASE64Encoder()).encode(authString.getBytes());
-			System.out.println("This is encoding in check URL------->>>>>"+authString);
+			//System.out.println("This is encoding in check URL------->>>>>"+authString);
 
 			connection_url.setRequestProperty("Authorization","Basic "+authString);
 
 			connection_url.connect();
 			response=connection_url.getResponseMessage();
-			System.out.println("This is response code---------->>>>"+connection_url.getResponseCode());
-			System.out.println("----------->>>>>>Content response"+response);
+			//System.out.println("This is response code---------->>>>"+connection_url.getResponseCode());
+			//System.out.println("----------->>>>>>Content response"+response);
 
 		}
 		catch(Exception ex)
@@ -901,4 +928,109 @@ public class ErpConfiguration
 		return matcher.matches();
 
 	}
+
+
+	/*...........................*/
+	public String sendAppt(String dbname,String password,String urladdress,String port,String msg_id,String downloadlink,String push_id,String sessionid, String authToken,String openerp_id)
+	{
+
+		try
+		{
+			System.out.println("-------------->>>>>>>Data from java"+dbname+password+urladdress+port+msg_id+downloadlink+sessionid);
+
+			String rowdata=null;
+			String rowdata_path=null;
+			JSONObject jso=null;
+			Object list=null;
+			HttpURLConnection connection = null,row_connection=null;
+			InputStream inputstream=null;
+			String ContentType=null;
+
+			Integer op_id=Integer.parseInt(openerp_id);
+			Hashtable param=null;
+			Vector main_vec=null;
+			String msgID = msg_id;
+			/*Row data*/
+
+			System.out.print("Inside msg is not null");
+
+			rowdata_path=downloadlink+"?auth=qp&id="+msgID+"&mime=text/plain&noAttach=1"+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8");
+			URL urlrow=new URL(rowdata_path);
+			System.out.println("This is url row for Appointment-------------->>>>>>>>>>>>>>>>>>>"+urlrow.toString());
+			row_connection = (HttpURLConnection)urlrow.openConnection();
+			row_connection.connect();
+
+			InputStream rowis =row_connection.getInputStream();
+
+			int rowlineLength = 72;
+			StringBuffer rowstrbuffer=new StringBuffer();
+			byte[] rowbuf = new byte[rowlineLength/4*3];
+			while(true)
+			{
+
+				int rowlen = rowis.read(rowbuf);
+				if (rowlen <= 0) break;
+				rowstrbuffer.append(new String(rowbuf));
+
+			}
+
+			rowdata=new String(rowstrbuffer);
+			System.out.println("This is rawdata Appt------------>>>>>"+rowdata);
+			/*End roe data*/
+
+			/*row data Hashtable*/
+
+			main_vec=new Vector();
+			Vector<String> module_vec=new Vector<String>();
+			Vector mail_vec=new Vector();
+
+			module_vec.add(new String("ref_ids"));
+			module_vec.add(push_id);
+
+			mail_vec.add("message");
+			mail_vec.add(rowdata);
+
+
+
+			main_vec.add(module_vec);
+			main_vec.add(mail_vec);
+			/*End of row data*/
+
+			/*send the mail to open-erp url*/
+
+			String fixurl="/xmlrpc/object";
+			XmlRpcClient client;
+			client=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
+			dbname=dbname.trim();
+			System.out.println("Going to call meeting_push from sendMail");
+			list=(Object)client.invoke("execute",new Object[] {dbname,op_id,password,"zimbra.partner","meeting_push",main_vec});
+			row_connection.disconnect();
+			rowstrbuffer.delete(0,rowstrbuffer.length());
+
+			rowis.close();
+			try
+			{
+				main_vec.clear();
+				mail_vec.clear();
+				module_vec.clear();
+			}
+			catch(Exception ex)
+			{
+				System.out.print(ex+"Exception in clear vector");
+			}
+			System.out.println("This is meeting push response-------->>>>>>>>>>"+list.toString());
+			return list.toString();
+
+
+		}
+		catch(Exception ex)
+		{
+
+			System.out.print("Exception---->>>>"+ex);
+			ex.printStackTrace();
+			return "fail";
+		}
+
+	}
+
 }

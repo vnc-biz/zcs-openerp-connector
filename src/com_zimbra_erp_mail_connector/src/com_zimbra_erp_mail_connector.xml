@@ -38,6 +38,7 @@
 		<property type="string" name="userpassword" value=""/>
 		<property type="string" name="cal_url" value=""/>
 			
+		<property type="string" name="openerp_id" value=""/>
 	</userProperties>
 	
 	

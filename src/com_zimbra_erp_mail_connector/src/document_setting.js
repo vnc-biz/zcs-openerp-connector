@@ -179,6 +179,7 @@ function addRecord(){
 		var dbname=zm.getUserProperty("getdatabase");
  	       	var password=zm.getUserProperty("userpassword");
 		var urladdress=zm.getUserProperty("urladdress");
+		var openerp_id=zm.getUserProperty("openerp_id");
         	var port=zm.getUserProperty("port");
 		
 		if(dbname=="" || password=="" || urladdress=="" || port=="" ){
@@ -190,7 +191,7 @@ function addRecord(){
 
 
 
-		 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&obj_name="+docname+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim();
+		 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&obj_name="+docname+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id;
 
                 var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		if(response.text.trim()=="Fail"){

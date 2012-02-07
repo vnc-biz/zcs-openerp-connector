@@ -9,7 +9,7 @@ VncContactSync = contactSync_HandlerObject;
 
 VncContactSync.prototype.init = function() {
 };
-VncContactSync.prototype.LIMIT = 500;
+VncContactSync.prototype.LIMIT = 5000;
 VncContactSync.prototype.requestCount = 0;
 
 /**
@@ -500,7 +500,7 @@ VncContactSync.prototype.getOpenERPContactId = function() {
     for (var i = 0; i < numfolders; i++) {
         var folder = folderList[i];
         if (folder.type == ZmOrganizer.ADDRBOOK) {
-			if(folder.name == "openERP"){
+			if(folder.name == "OpenERP"){
 				return folder.id;
 			}
         }
@@ -523,7 +523,7 @@ VncContactSync.prototype.getContacts = function(offset, contactList) {
     request.offset = 0;
     request.types = ZmSearch.TYPE[ZmItem.CONTACT];
     //request.query = this.getContactFolders();
-	request.query = 'in: "openERP"';
+	request.query = 'in: "OpenERP"';
     request.offset = offset || 0;
     request.limit = this.LIMIT;
     
