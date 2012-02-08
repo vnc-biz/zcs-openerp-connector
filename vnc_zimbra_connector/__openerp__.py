@@ -24,7 +24,7 @@
     "version" : "1.0",
     "author" : "OpenERP SA & Axelor",
     "website" : "http://www.openerp.com/",
-    "depends" : ["base","mail_gateway"],
+    "depends" : ["base","mail_gateway","crm_caldav"],
     "category" : "Generic Modules/Zimbra interface",
     "description": """
       This module is required for the thuderbird plug-in to work

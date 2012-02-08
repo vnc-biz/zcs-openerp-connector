@@ -19,14 +19,23 @@
 #
 ##############################################################################
 
-from osv import osv
+from osv import fields, osv
 import base64
 import email
 import tools
 import binascii
 import dateutil.parser
+import vobject
+from base_calendar import base_calendar
+from caldav import calendar
+from datetime import datetime
+import re
+import pooler
+
+
 class email_server_tools(osv.osv_memory):
     _inherit = "email.server.tools"
+    
     def history_message(self, cr, uid, model, res_id, message, context=None):
         #@param message: string of mail which is read from EML File
         attachment_pool = self.pool.get('ir.attachment')
@@ -154,6 +163,7 @@ class zimbra_partner(osv.osv_memory):
         msg = dictcreate.get('message')
         mail = msg
         msg = self.pool.get('email.server.tools').parse_message(msg)
+        print "<SSSSSS__________",msg
         server_tools_pool = self.pool.get('email.server.tools')
         message_id = msg.get('message-id', False)
         msg_pool = self.pool.get('mailgate.message')
@@ -371,5 +381,161 @@ class zimbra_partner(osv.osv_memory):
             else:
                 object += "null,"
         return object
-
+    
+    
+    def meeting_push(self,cr,uid,vals):
+        
+        vals_dict = dict(vals)
+        context = {}
+        print "VA_LS __________-",vals_dict
+        cal_pool = self.pool.get('crm.meeting')
+        obj_name = vals_dict['ref_ids'].split(',')[0]
+        obj_id = vals_dict['ref_ids'].split(',')[1]
+        obj_dict = {'crm.lead':'default_opportunity_id','res.partner':'default_partner_id'}
+        context[obj_dict[obj_name]]=int(obj_id)
+        if obj_name == 'crm.lead':
+            partner_id = self.pool.get('crm.lead').browse(cr,uid,int(obj_id)).partner_id.id or False
+            context.update({'default_partner_id':partner_id})
+        meeting_ids=cal_pool.import_cal(cr,uid,vals_dict['message'],context=context)
+        return True
+    
+    def check_calendar_existance(self,cr,uid,vals):
+        if not vals:
+            return False
+        self_ids = self.pool.get('crm.meeting').search(cr,uid,[('ext_meeting_id','=',vals)])
+        if self_ids:
+            return self_ids
+        else:
+            return False
+        
 zimbra_partner()
+
+
+class crm_meeting(osv.osv):
+    _inherit = 'crm.meeting'
+    _columns = {
+                'ext_meeting_id':fields.char('External Meeting ID',size=256)
+                }
+    
+    
+    def uid2openobjectid(self,cr, uidval, oomodel, rdate):
+        """ UID To Open Object Id
+            @param cr: the current row, from the database cursor,
+            @param uidval: Get USerId vale
+            @oomodel: Open Object ModelName
+            @param rdate: Get Recurrent Date
+        """
+        __rege = re.compile(r'OpenObject-([\w|\.]+)_([0-9]+)@(\w+)$')
+        if not uidval:
+            return (False, None)
+        wematch = __rege.match(uidval.encode('utf8'))
+        if not wematch:
+            if oomodel:
+                model_obj = pooler.get_pool(cr.dbname).get(oomodel)
+                sql = "SELECT DISTINCT(id) FROM "+model_obj._table+" where ext_meeting_id ilike '"+uidval+"'"
+                cr.execute(sql)
+                ex_id = cr.fetchone()
+                if ex_id:
+                    return (ex_id[0],None)
+                else:
+                    return (False, None)
+            else:
+                return (False, None)
+        else:
+            model, id, dbname = wematch.groups()
+            model_obj = pooler.get_pool(cr.dbname).get(model)
+            if (not model == oomodel) or (not dbname == cr.dbname):
+                return (False, None)
+            qry = 'SELECT DISTINCT(id) FROM %s' % model_obj._table
+            if rdate:
+                qry += " WHERE recurrent_id=%s"
+                cr.execute(qry, (rdate,))
+                r_id = cr.fetchone()
+                if r_id:
+                    return (id, r_id[0])
+                else:
+                    return (False, None)
+            cr.execute(qry)
+            ids = map(lambda x: str(x[0]), cr.fetchall())
+            if id in ids:
+                return (id, None)
+            return (False, None)
+
+    
+    
+    def import_cal(self, cr, uid, data, data_id=None, context=None):
+        """
+            @param self: The object pointer
+            @param cr: the current row, from the database cursor,
+            @param uid: the current user’s ID for security checks,
+            @param data: Get Data of CRM Meetings
+            @param data_id: calendar's Id
+            @param context: A standard dictionary for contextual values
+        """
+        if context is None:
+            context= {}
+        event_obj = self.pool.get('basic.calendar.event')
+        context.update({'model':'crm.meeting'})
+        vals = event_obj.import_cal(cr, uid, data, context=context)
+        return self.check_import(cr, uid, vals, context=context)
+
+    def check_import(self, cr, uid, vals, context=None):
+        """
+            @param self: The object pointer
+            @param cr: the current row, from the database cursor,
+            @param uid: the current user’s ID for security checks,
+            @param vals: Get Values
+            @param context: A standard dictionary for contextual values
+        """
+        if context is None:
+            context = {}
+        ids = []
+        model_obj = self.pool.get(context.get('model'))
+        recur_pool = {}
+        try:
+            for val in vals:
+                # Compute value of duration
+                if val.get('date_deadline', False) and 'duration' not in val:
+                    start = datetime.strptime(val['date'], '%Y-%m-%d %H:%M:%S')
+                    end = datetime.strptime(val['date_deadline'], '%Y-%m-%d %H:%M:%S')
+                    diff = end - start
+                    val['duration'] = (diff.seconds/float(86400) + diff.days) * 24
+                exists, r_id = self.uid2openobjectid(cr, val['id'], context.get('model'), \
+                                                                 val.get('recurrent_id'))
+                if val.has_key('create_date'):
+                    val.pop('create_date')
+                u_id = val.get('id', None)
+                val.pop('id')
+                if exists and r_id:
+                    val.update({'recurrent_uid': exists})
+                    model_obj.write(cr, uid, [r_id], val,context=context)
+                    ids.append(r_id)
+                elif exists:
+                    model_obj.write(cr, uid, [exists], val)
+                    ids.append(exists)
+                else:
+                    if u_id in recur_pool and val.get('recurrent_id'):
+                        val.update({'recurrent_uid': recur_pool[u_id]})
+                        val.update({'ext_meeting_id':u_id})
+                        revent_id = model_obj.create(cr, uid, val,context=context)
+                        ids.append(revent_id)
+                    else:
+                        __rege = re.compile(r'OpenObject-([\w|\.]+)_([0-9]+)@(\w+)$')
+                        wematch = __rege.match(u_id.encode('utf8'))
+                        if wematch:
+                            model, recur_id, dbname = wematch.groups()
+                            val.update({'recurrent_uid': recur_id})
+                        val.update({'ext_meeting_id':u_id})
+                        event_id = model_obj.create(cr, uid, val,context=context)
+                        recur_pool[u_id] = event_id
+                        ids.append(event_id)
+        except Exception:
+            raise
+        return ids
+
+    def check_calendar_existance(self,cr,uid,ids,data):
+        if data:
+            self_ids =  self.search(cr,uid,[('ext_meeting_id','=',data)])
+        return True
+    
+crm_meeting()
