@@ -37,9 +37,6 @@ echo -n "Deploying zimlets...."
 do_run zmzimletctl deploy $OPEN_ERP_ZIMLET
 echo "Done"
 
-echo -n "Creating new database..."
-do_run mysql < $DB_FILE
-echo "Done"
 echo -n "Do you want to restart mailbox service?[Y/N]:"
 read ans
 if [ "$ans" = "Y" -o "$ans" = "y" ]; then
