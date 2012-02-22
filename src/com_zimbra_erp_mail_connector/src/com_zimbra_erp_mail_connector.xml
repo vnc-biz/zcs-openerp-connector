@@ -1,4 +1,4 @@
-<zimlet name="com_zimbra_erp_mail_connector" version="1.0" description="OpenERP  Configuration Settings">
+<zimlet name="com_zimbra_erp_mail_connector" version="1.0" label="${msg.connector_panel_lbl}" description="VNC OpenERP Zimlet (VOZ)">
 	<include>json2.js</include>
 	<include>com_zimbra_erp_mail_connector.js</include>
 	<include>configuration_setting.js</include>	
@@ -39,6 +39,9 @@
 		<property type="string" name="cal_url" value=""/>
 			
 		<property type="string" name="openerp_id" value=""/>
+		<property type="string" name="doc_list" value=""/>
+		<property type="string" name="addBook" value=""/>
+		
 	</userProperties>
 	
 	

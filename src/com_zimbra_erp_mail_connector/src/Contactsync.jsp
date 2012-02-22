@@ -22,13 +22,15 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
         	soap = new SoapProvisioning(options);
 		
 		String acc_name=request.getParameter("acc_name");
+	    	String addressBook=request.getParameter("addressBook");	    	
         Account acc=soap.get(Provisioning.AccountBy.name,acc_name);
         ZimbraAuthToken authToken = new ZimbraAuthToken(acc);
         String eAuthToken=null;
          eAuthToken = authToken.getEncoded();
         System.out.println("eAuthToken------------------->>>>"+eAuthToken);
         ZMailbox client = ZMailbox.getByAuthToken(eAuthToken, "https://localhost:7071/service/admin/soap");
-        URI rest=client.getRestURI("OpenERP");
+        URI rest=client.getRestURI(addressBook);
+	System.out.println("This is rest URI for Contact----->>>>>"+addressBook);
 	String urladd=rest.toString();
 
             String dbname=request.getParameter("dbname");
@@ -36,7 +38,7 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
             String urladdress=request.getParameter("urladdress");
             String port=request.getParameter("port");
 	    String openerp_id=request.getParameter("openerp_id");
-	    	
+
 	    //String urladd=request.getParameter("urladd");
 	     Cookie cookies [] = request.getCookies();
              String auth_token=new String();

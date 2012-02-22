@@ -11,8 +11,49 @@ com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID="Contact Sync.";
 
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID="cal_sync";
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON2_ID="send_and_push";
-com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = function(app, toolbar, controller,
-		view) {
+com_zimbra_erp_mail_connector_HandlerObject.BUTTON3_ID="push_to_erp";
+
+var currentApt;
+var attendeesFlag;
+var zmlt;
+String.prototype.ltrim=function(){return this.replace(/^\s+/,'');}
+pushMeeting = function(){
+
+		var dbname=zmlt.getUserProperty("getdatabase");
+                dbname=dbname.ltrim();
+                var password=zmlt.getUserProperty("userpassword");
+                var urladdress=zmlt.getUserProperty("urladdress");
+                var port=zmlt.getUserProperty("port");
+                var openerp_id=zmlt.getUserProperty("openerp_id");
+                //appt = appCtxt.getCurrentController().getSelection();
+                var aptDataLink=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(currentApt.getFolder().getName()).getRestUrl();
+                var appt_jspurl="/service/zimlet/com_zimbra_erp_mail_connector/PushAppt.jsp?dbname="+dbname+"&password="+password+"&urladdress="+(proto+urladdress)+"&port="+port+"&msgid="+currentApt.id+"&downloadlink="+aptDataLink+"&push_id=&sessionid="+ZmCsfeCommand.getSessionId()+"&openerp_id="+openerp_id.trim();
+
+                var appt_response = AjxRpc.invoke(null,appt_jspurl, null, null, true);
+
+		
+}
+com_zimbra_erp_mail_connector_HandlerObject.prototype.onApptDrop = function(appt,startDate,endDate){
+		
+		currentApt=appt;
+		if(!appt.hasAttendees()){ 
+			pushMeeting();
+		}
+
+
+		
+}
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype.onAction = function(type,action,currentView,lastView){
+        if(type.match("button") && action.match("No") && currentView.match("CAL")){
+		setTimeout("pushMeeting()",6000);
+
+	}
+
+}
+
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = function(app, toolbar, controller,view) {
 
 	
 	var patt="COMPOSE";
@@ -47,7 +88,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 	}
 	else if(view == "CLD" || view=="CLWW"){
 		
-		/*if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
+		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
 			 return;
                 }		
 	
@@ -72,7 +113,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
                 // toolbar.createOp api creates the button with some id and params
                 // containing button details.
                 var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID, buttonArgs);
-                button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));*/
+                button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));
 
 	}
 	else if(view.match(patt)=="COMPOSE"){
@@ -102,6 +143,32 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 
 	}
 
+
+
+};
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = function(controller) {
+
+
+        var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP");
+        if(ftree == null){
+                var oc = appCtxt.getOverviewController();
+                var te=oc.getTreeController(ZmOrganizer.CALENDAR)._doCreate({"name":"open_ERP"});
+        }
+
+                new calsync(this);
+        /*  var folderId=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP").id;
+        var soapDoc = AjxSoapDoc.create("FolderActionRequest", "urn:zimbraMail");
+        var actionNode = soapDoc.set("action");
+        actionNode.setAttribute("op","check");
+        actionNode.setAttribute("id",folderId);
+        var callback = new AjxCallback(this,_callback);
+        var params = {
+                soapDoc: soapDoc,
+                asyncMode: true,
+                callback: callback,
+        };
+        appCtxt.getAppController().sendRequest(params);*/
 
 
 };
@@ -147,24 +214,126 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleSOAPErrorResponseXM
 
 };
 
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype.getFolderDialog=function(){
+		var title=this.getMessage("title_Contact_Dialog");
+                var dialog = appCtxt.getChooseFolderDialog();
+                dialog.registerCallback(DwtDialog.OK_BUTTON, new AjxCallback(this, this._handleChooseFolder));
+                var params = {
+                        overviewId:     dialog.getOverviewId(ZmApp.CONTACTS),
+                        title:          title,
+                        treeIds:        [ZmOrganizer.ADDRBOOK],
+                        skipReadOnly:   true,
+                        skipRemote:     false,
+                        noRootSelect:   true,
+                        appName:        ZmApp.CONTACTS
+                };
+                params.omit = {};
+                params.omit[ZmFolder.ID_TRASH] = true;
+                params.omit[addBook_ContactId]=true;
+                params.omit[addBook_EcontactId]=true;
+                dialog.popup(params);
+
+}
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = function(controller) {
 
-	var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("OpenERP");
-        if(ftree == null){
-                var oc = appCtxt.getOverviewController();
-                oc.getTreeController(ZmOrganizer.ADDRBOOK)._doCreate({"name":"OpenERP"});
-        }
+	addBook=this.getUserProperty("addBook");
+	var addBook_Contact = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("Contacts");
+	addBook_ContactId=addBook_Contact.id;
+	var addBook_Econtact=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("Emailed Contacts");
+	addBook_EcontactId=addBook_Econtact.id;
+	if(addBook.trim()==""){
+			this.getFolderDialog()
+	}else{
 
-	new contactsync(this);
+			var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(addBook);
+			if(ftree != null){
+        			var trashCheck=ftree.isInTrash();	
+			}else{
+				this.getFolderDialog()	
+			}
+			if(trashCheck==false){
+				new contactsync(this,addBook); 
+			}else{
+				this.getFolderDialog()
+			}
+	}
+	
 
 
 
 };
 
-
-com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
+com_zimbra_erp_mail_connector_HandlerObject.prototype._handleChooseFolder = function(organizer) {
+		
+	var addBook=organizer.getName();
+		
+	this.setUserProperty("addBook",addBook);
+	this.saveUserProperties();
+	if(addBook !="" || addBook !="Folders"){
+		var dialog = appCtxt.getChooseFolderDialog();
+    		dialog.popdown();	
+		new contactsync(this,addBook);
+	}
 
 	
+
+
+		
+}
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype.onParticipantActionMenuInitialized = function(controller, menu) {
+        this.onActionMenuInitialized(controller, menu);
+};
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype.onActionMenuInitialized = function(controller, menu) {
+        this.addMenuButton(controller, menu);
+
+
+};
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype.addMenuButton = function(controller, menu) {
+        var ID = com_zimbra_erp_mail_connector_HandlerObject.BUTTON3_ID;
+        var btnName=this.getMessage("push_to_btn");
+        var btnTooltip=this.getMessage("push_to_btn_tooltip");
+        if (!menu.getMenuItem(ID)) {
+                var op = {
+                        id : ID,
+                        text : btnName,
+                        tooltip: btnTooltip,
+                        image : "NewMessage"
+                };
+                var opDesc = ZmOperation.defineOperation(null, op);
+                menu.addOp(ID, 1000);// add the button at the bottom
+                menu.addSelectionListener(ID, new AjxListener(this,this._menuButtonListener, controller));
+        }
+};
+
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = function(controller) {
+
+        var con=appCtxt.getCurrentController();
+        var msg=con.getMsg();
+        if(msg != null){
+                this.doDrop(msg);
+        }
+
+
+
+}; 
+com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
+
+	docList=this.getUserProperty("doc_list");
+	var json=JSON.parse(docList);
+	if(json.records.length==0){
+		var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"res\",\"docname\":\"res.partner\"},{\"id\":\"2\",\"title\":\"Address\",\"docname\":\"res.partner.address\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
+	
+	this.setUserProperty("doc_list",doclist.trim());
+        this.saveUserProperties();	
+	}
+
+zmlt=this;	
 
 }
 
@@ -177,17 +346,15 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 function com_zimbra_erp_mail_connector_HandlerObject() {
 
 
-	var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("OpenERP");
+	/*var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("OpenERP");
         if(ftree == null){
                 var oc = appCtxt.getOverviewController();
                 oc.getTreeController(ZmOrganizer.ADDRBOOK)._doCreate({"name":"OpenERP"});
-        }
+        }*/
 	
 
 	com_zimbra_erp_mail_connector_HandlerObject._instance=this;
 	tagcreate();
-	
-	
 }
 
 function tagcreate(){
@@ -309,43 +476,14 @@ var msgtype;
 var g_aptId;
 var dialog=null;
 com_zimbra_erp_mail_connector_HandlerObject.prototype.onSaveApptSuccess = function(obj,calItem,result){
-	try{
 
-		g_aptId=result.apptId;
-
-		//DBG.println(AjxDebug.DBG3, "Hello----->>>This calteam modified==="+calItem.id);
-        	dialog = appCtxt.getYesNoMsgDialog();;
-        	dialog.setButtonListener(DwtDialog.YES_BUTTON, new AjxListener(this, this._yesBtnListener,[calItem])); // listens for YES button events
-        	dialog.setButtonListener(DwtDialog.NO_BUTTON, new AjxListener(this, this._noBtnListener)); // listens for NO button events
-        	dialog.setMessage(this.getMessage("push_apt_confirmation"),DwtMessageDialog.INFO_STYLE,this.getMessage("msg"));
-        	dialog.popup();
-       }catch(e){
-
-
-	}
+		currentApt=calItem;
+		pushMeeting();
 
 }
 
 
-com_zimbra_erp_mail_connector_HandlerObject.prototype._yesBtnListener =
-function(calItem,obj) {
-	try{	
-        	dialog.popdown();
-	
-		DBG.println(AjxDebug.DBG3, "calItem: " + calItem);
-        	this.doDrop(calItem);
-	
-	}catch(e){
 
-
-	}
-
-};
-
-com_zimbra_erp_mail_connector_HandlerObject.prototype._noBtnListener =
-function(obj) {
-        dialog.popdown(); // close the dialog
-};
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop =
 function(droppedItem) {
@@ -446,9 +584,13 @@ try{
                 a.popup();*/
 	}
 
+if(obj.type != "APPT") {
 
-new push_to_openERP(this,msgids,download_link,mail_from[0],msgtype);
-
+	new push_to_openERP(this,msgids,download_link,mail_from[0],msgtype);
+	
+}
+		
+return;
 };
 
 	var mail_subject;

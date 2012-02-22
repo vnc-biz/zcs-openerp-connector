@@ -1,3 +1,4 @@
+var contactBook;
 function contactSync_HandlerObject() {
 }
 contactSync_HandlerObject.prototype = new ZmZimletBase();
@@ -500,7 +501,7 @@ VncContactSync.prototype.getOpenERPContactId = function() {
     for (var i = 0; i < numfolders; i++) {
         var folder = folderList[i];
         if (folder.type == ZmOrganizer.ADDRBOOK) {
-			if(folder.name == "OpenERP"){
+			if(folder.name == contactBook){
 				return folder.id;
 			}
         }
@@ -513,8 +514,10 @@ VncContactSync.prototype.getOpenERPContactId = function() {
  * @param offset the position to start from in the query
  * @param contactList the array containing the contacts requested previously
  */
-VncContactSync.prototype.getContacts = function(offset, contactList) {
+VncContactSync.prototype.getContacts = function(offset, contactList,addressBook) {
     // create the json object for the search request
+	contactBook=addressBook;	
+	//temp="\"in:"+addressBook+\";
     var jsonObj = {SearchRequest:{_jsns:"urn:zimbraMail"}};
     var request = jsonObj.SearchRequest;
     request.sortBy = ZmSearch.NAME_ASC;
@@ -523,7 +526,7 @@ VncContactSync.prototype.getContacts = function(offset, contactList) {
     request.offset = 0;
     request.types = ZmSearch.TYPE[ZmItem.CONTACT];
     //request.query = this.getContactFolders();
-	request.query = 'in: "OpenERP"';
+	request.query = 'in:'+contactBook;
     request.offset = offset || 0;
     request.limit = this.LIMIT;
     

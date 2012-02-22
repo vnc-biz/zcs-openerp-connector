@@ -1,8 +1,10 @@
 var zmlt;
-contactsync=function(zimlet) {
+var addressBook;
+contactsync=function(zimlet,addBook) {
 
 	this.zimlet=zimlet;
 	zmlt=this.zimlet;
+	addressBook=addBook;
 	var dbname=zmlt.getUserProperty("getdatabase");
     var password=zmlt.getUserProperty("userpassword");
     var urladdress=zmlt.getUserProperty("urladdress");
@@ -21,13 +23,10 @@ contactsync=function(zimlet) {
 
 
 	var acc_name=appCtxt.getUsername();	
-	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&acc_name="+acc_name+"&openerp_id="+openerp_id;
+	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&acc_name="+acc_name+"&openerp_id="+openerp_id+"&addressBook="+addressBook;
 
 		var callback = new AjxCallback(this,_rpcCallback1)
-		
 	        AjxRpc.invoke(null,jspurl, null,callback, true);
-
-
 		this.pView = new DwtComposite(zmlt.getShell());
         	this.pView.setSize("50", "50");
         	this.pView.getHtmlElement().innerHTML = _createDialogView();
@@ -56,7 +55,7 @@ function(response) {
                 a.popup();
 
 		var vnc = new VncContactSync();
-		var abc = vnc.getContacts(0,[]);
+		var abc = vnc.getContacts(0,[],addressBook);
 		
         }
         else{

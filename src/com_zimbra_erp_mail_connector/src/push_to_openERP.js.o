@@ -78,10 +78,13 @@ push_to_openERP.prototype._displayDailog=function(){
 function getRecords(){
 
 	 
+	  var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp?obj_name=fack";	
+	  var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	
+	  if (response.success == true) {
 	
-		var dl_list=zmlt.getUserProperty("doc_list");
-	        var elJson =JSON.parse(dl_list);
+		
+	        var elJson =JSON.parse(response.text.trim());
 		
 		var records=elJson.records;
 			
@@ -118,6 +121,7 @@ function getRecords(){
 
 	
 			
+	   }
 
 }
 
@@ -310,7 +314,7 @@ function getDocumentRecord(){
 
    	  	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	
-		/*response will have documents list*/	
+		/*response will have users list*/	
                 	if (response.success == true) {
 
 			
@@ -318,23 +322,16 @@ function getDocumentRecord(){
 				
 				var docrecord=JSON.parse(response.text.trim());
 			
-				/*var jspurl2="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp?obj_name="+tot_obj[j];
+				var jspurl2="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp?obj_name="+tot_obj[j];
 
                                 var response2 = AjxRpc.invoke(null,jspurl2, null, null, true);
 				var firstparse =JSON.parse(response2.text.trim());
 				
-				var records2=firstparse.records;*/
+				var records2=firstparse.records;
 
-				var title;
-				dd_list=zmlt.getUserProperty("doc_list");
-				dd_json=JSON.parse(dd_list);
-				for(var k=0;k<dd_json.records.length;k++){
-					if(dd_json.records[k].docname==tot_obj[j]){
-						title=dd_json.records[k].title;
-					}
-				}
-						
-					
+				
+				var title=records2[0].title
+				alert("this is title"+title+"response"+response2.text+"onjeeee"+tot_obj[j]);
 			        for(var i = 0; i < docrecord.length; i++)
 				{
 					

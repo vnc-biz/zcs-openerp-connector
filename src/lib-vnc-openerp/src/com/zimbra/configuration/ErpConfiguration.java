@@ -316,6 +316,7 @@ public class ErpConfiguration
 		{
 			//System.out.println("Object is not nulllllllllllllllllllllllll");
 		}
+		System.out.println("This is record list----->>>>>"+mainobj.toString());
 		return mainobj.toString();
 
 	}
@@ -793,7 +794,7 @@ public class ErpConfiguration
 			URL url1=new URL(z_calurl);
 			connection=(HttpURLConnection)url1.openConnection();
 			connection.connect();
-			//System.out.println("This is message---------------->>>>>"+connection.getResponseMessage()+"End of the message<<<<<<<<<<<<");
+			System.out.println("This is message---------------->>>>>"+connection.getResponseMessage()+"End of the message<<<<<<<<<<<<");
 			//System.out.println("connection is successfull");
 			int calLength=connection.getContentLength();
 			Byte[] cal;
@@ -813,11 +814,11 @@ public class ErpConfiguration
 			/*Import to Calendar to open ERP*/
 			Runtime r=Runtime.getRuntime();
 			String com="curl -k -u"+" "+erp_uname+":"+erp_passwd+" "+"--upload-file /tmp/cal.ics"+" "+erp_calurl;
-			//System.out.println("This is open ERP url for curl"+com);
+			System.out.println("This is open ERP url for curl"+com);
 			Process p=r.exec(com);
 
 			p.waitFor();
-			//System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
+			System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 			if(p.exitValue() !=0)
 			{
 				return "fail";
@@ -858,8 +859,8 @@ public class ErpConfiguration
 			//System.out.println("z_calurl----------------------->>>>>>>"+command);
 			Process p1=r1.exec(command);
 			p1.waitFor();
-			//System.out.println("ICS Import from openERP is : " + p1.exitValue());
-			//System.out.print("------------>>>>>successs Import");
+			System.out.println("ICS Import from openERP is : " + p1.exitValue());
+			System.out.print("------------>>>>>successs Import");
 			if(p1.exitValue()==0)
 			{
 				return "success";
@@ -953,8 +954,8 @@ public class ErpConfiguration
 			/*Row data*/
 
 			System.out.print("Inside msg is not null");
-
-			rowdata_path=downloadlink+"?auth=qp&id="+msgID+"&mime=text/plain&noAttach=1"+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8");
+			URL downloadlinkURL= new URL(downloadlink);
+			rowdata_path=downloadlinkURL+"?auth=qp&id="+msgID+"&mime=text/plain&noAttach=1"+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8");
 			URL urlrow=new URL(rowdata_path);
 			System.out.println("This is url row for Appointment-------------->>>>>>>>>>>>>>>>>>>"+urlrow.toString());
 			row_connection = (HttpURLConnection)urlrow.openConnection();

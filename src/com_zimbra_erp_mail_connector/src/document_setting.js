@@ -45,13 +45,10 @@ String.prototype.trim = function() {
 function getTableRecords(){
 
 			
-	  var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp?obj_name=fack";	
-	  var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	
-
-	  if (response.success == true) {
+		var data=zm.getUserProperty("doc_list");
 		
-		var elJson =JSON.parse(response.text.trim());
+		var elJson =JSON.parse(data);
 		var records=elJson.records;
 
 		var s="<table class='gridtable' align='right'><tr><td class='doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='checkAll()' class='doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
@@ -68,7 +65,6 @@ function getTableRecords(){
 		document.getElementById('doc_record').innerHTML=s;
 		
 			
-	   }
 
 }
 
@@ -194,6 +190,7 @@ function addRecord(){
 		 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&obj_name="+docname+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id;
 
                 var response = AjxRpc.invoke(null,jspurl, null, null, true);
+		
 		if(response.text.trim()=="Fail"){
 			var a =  appCtxt.getMsgDialog();
                 	a.setMessage(zm.getMessage("invalid_record_name"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
@@ -212,14 +209,45 @@ function addRecord(){
 	}
 
 
-var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/AddDocumentRecord.jsp?title="+title+"&docname="+docname;	
-	  var response = AjxRpc.invoke(null,jspurl, null, null, true);
-	if (response.success == true) {
+
+			var oldList=zm.getUserProperty("doc_list");
+			var elJson =JSON.parse(oldList);
+			var oldListLength=elJson.records.length;
+			var i;
+			var duplicateFlag=0;
+			for(i=0;i<oldListLength;i++){
+				if(docname==elJson.records[i].docname){
+					
+					var a =  appCtxt.getMsgDialog();
+                                	a.setMessage(zm.getMessage("duplicate_error"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                               		a.popup();
+					duplicateFlag=1;
+					document.getElementById("document_title").value="";
+					document.getElementById("document_docname").value="";
+					return;	
+				}
+			}
+			
+			if(duplicateFlag==0){
+				
+					elJson.records[oldListLength]={"id":oldListLength+1,"title":title,"docname":docname};
+					var newRecordString=JSON.stringify(elJson);
+					zm.setUserProperty("doc_list",newRecordString);
+					zm.saveUserProperties();
+					var a =  appCtxt.getMsgDialog();
+                        		a.setMessage(success_insert,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+                         		a.popup();
+                        		getTableRecords();
+				
+			}
+
+	/*if (response.success == true) {
 	     
 		if(response.text.trim()=="true"){
 			 var a =  appCtxt.getMsgDialog();
                         a.setMessage(success_insert,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
                          a.popup();	
+			
 			getTableRecords();
 	
 		}else{
@@ -240,7 +268,8 @@ var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/AddDocumentRecord.jsp?
 				
 		}	
 		
-	}
+	}*/
+
 	document.getElementById("document_title").value="";
 	document.getElementById("document_docname").value="";
 	
@@ -271,15 +300,32 @@ function deleteRecord(){
                 a.popup();
 		return;
 	}
-
+	var dl_String=zm.getUserProperty("doc_list");
+	var dl_Json=JSON.parse(dl_String);
+	var new_String="{\"records\":[]}";
+	var new_Json=JSON.parse(new_String);
+	var count=0;
 	for(var i=0;i<record_id.length;i++){
+		 
 		if(record_id[i].checked){
-			param+=record_id[i].value+",";
+			//alert(i+"record");
+		}else{
+			//alert("count="+count+"record="+i);
+			new_Json.records[count]=dl_Json.records[i];
+			count=count+1;	
 		}
 	
 	}
-
-	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/DeleteDocumentRecord.jsp?record_id="+param.substr(0,param.length-1);	
+	var new_dl_String=JSON.stringify(new_Json);
+	zm.setUserProperty("doc_list",new_dl_String);
+	zm.saveUserProperties();
+	var a =  appCtxt.getMsgDialog();
+        a.setMessage(success_delete,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+        a.popup();
+	
+	getTableRecords();
+	
+	/*var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/DeleteDocumentRecord.jsp?record_id="+param.substr(0,param.length-1);	
 	  var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	  if (response.success == true) {
 		if(response.text.trim()=="true"){
@@ -290,9 +336,8 @@ function deleteRecord(){
 			
 		}
 		
-	}
+	}*/
 
 }
-
 
 

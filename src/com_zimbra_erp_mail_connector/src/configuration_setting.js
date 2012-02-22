@@ -43,7 +43,7 @@ function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,c
 	document.getElementById("userpassword").value=zm.getUserProperty("userpassword");
 	
 	//zm.setUserProperty("cal_url","");	
-	document.getElementById("cal_url").value=zm.getUserProperty("cal_url");	
+	//document.getElementById("cal_url").value=zm.getUserProperty("cal_url");	
 	
 	this.setScrollStyle(Dwt.SCROLL);
 }
@@ -125,7 +125,7 @@ configuration_setting.prototype._createHTML = function() {
                 html[i++]="URL:";
                 html[i++]="</td>";
                 html[i++]="<td>";
-                html[i++]="<input type='text' class='textbox1' id='cal_url' value=''/>";
+                html[i++]="<input type='text' class='textbox1' id='cal_url' value='Comming soon.....'/>";
                 html[i++]="</td>";
                 html[i++]="</tr>";
 
