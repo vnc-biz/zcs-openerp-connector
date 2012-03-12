@@ -1,18 +1,33 @@
 var zmlt;
 var addressBook;
-contactsync=function(zimlet,addBook) {
+contactsync=function(zimlet,addBook,addBookPath) {
 
 	this.zimlet=zimlet;
 	zmlt=this.zimlet;
 	addressBook=addBook;
+	addressBookPath=addBookPath;
 	var dbname=zmlt.getUserProperty("getdatabase");
-    var password=zmlt.getUserProperty("userpassword");
-    var urladdress=zmlt.getUserProperty("urladdress");
-    var openerp_id=zmlt.getUserProperty("openerp_id");
-    var port=zmlt.getUserProperty("port");
+    	var password=zmlt.getUserProperty("userpassword");
+    	var urladdress=zmlt.getUserProperty("urladdress");
+    	var openerp_id=zmlt.getUserProperty("openerp_id");
+    	var port=zmlt.getUserProperty("port");
 	var proto="http://";
-	//var urladd=appCtxt.getFolderTree().getByName("OpenERP").getRestUrl();		
+	var acc_name=appCtxt.getUsername();	
+	addressBook=AjxStringUtil.urlComponentEncode(addressBook);
+	var zimbraProtocol="http:";
+	zimbraProtocol=location.protocol;
+	domainName=appCtxt.getUserDomain();
+	if(zimbraProtocol== "http:"){
+		z_portNumber=appCtxt.get(ZmSetting.HTTP_PORT);
+	}else if(zimbraProtocol == "https:"){
+
+		z_portNumber=appCtxt.get(ZmSetting.HTTPS_PORT);
+                	
+	}
 	
+	
+	var rest=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(AjxStringUtil.urlComponentDecode(addressBook)).getRestUrl();
+
 	if(dbname=="" || password=="" || urladdress=="" || port=="" ){
                 var a =  appCtxt.getMsgDialog();
                 a.setMessage(zmlt.getMessage("no_database_configured"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
@@ -22,8 +37,7 @@ contactsync=function(zimlet,addBook) {
         }	
 
 
-	var acc_name=appCtxt.getUsername();	
-	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&acc_name="+acc_name+"&openerp_id="+openerp_id+"&addressBook="+addressBook;
+	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&acc_name="+acc_name+"&openerp_id="+openerp_id+"&addressBook="+addressBookPath+"&rest="+rest+"&zimbraProtocol="+zimbraProtocol+"&z_portNumber="+z_portNumber+"&domainName="+domainName;
 
 		var callback = new AjxCallback(this,_rpcCallback1)
 	        AjxRpc.invoke(null,jspurl, null,callback, true);
@@ -53,9 +67,8 @@ function(response) {
                 var a =  appCtxt.getMsgDialog();
                 a.setMessage(zmlt.getMessage("contact_sync_success"),DwtMessageDialog.INFO_STYLE,zmlt.getMessage("msg"));
                 a.popup();
-
 		var vnc = new VncContactSync();
-		var abc = vnc.getContacts(0,[],addressBook);
+		var abc = vnc.getContacts(0,[],addressBookPath);
 		
         }
         else{

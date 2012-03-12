@@ -41,6 +41,7 @@
 		<property type="string" name="openerp_id" value=""/>
 		<property type="string" name="doc_list" value=""/>
 		<property type="string" name="addBook" value=""/>
+		<property type="string" name="addBookPath" value=""/>
 		
 	</userProperties>
 	

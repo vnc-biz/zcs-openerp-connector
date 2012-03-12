@@ -308,9 +308,7 @@ function deleteRecord(){
 	for(var i=0;i<record_id.length;i++){
 		 
 		if(record_id[i].checked){
-			//alert(i+"record");
 		}else{
-			//alert("count="+count+"record="+i);
 			new_Json.records[count]=dl_Json.records[i];
 			count=count+1;	
 		}

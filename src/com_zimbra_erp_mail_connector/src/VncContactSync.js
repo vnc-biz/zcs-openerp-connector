@@ -301,8 +301,8 @@ VncContactSync.prototype.parseContactList = function (contactList) {
         this.populateContactRows();
         //this.contactList = contactList;
     } else {
-        this.showNoContacts();
-    }
+    		//this.showNoContacts();
+	}
 };
 
 /**
@@ -516,17 +516,20 @@ VncContactSync.prototype.getOpenERPContactId = function() {
  */
 VncContactSync.prototype.getContacts = function(offset, contactList,addressBook) {
     // create the json object for the search request
-	contactBook=addressBook;	
-	//temp="\"in:"+addressBook+\";
+	contactBook=addressBook
+	contactBook=AjxStringUtil.urlComponentDecode(addressBook);
     var jsonObj = {SearchRequest:{_jsns:"urn:zimbraMail"}};
+	
     var request = jsonObj.SearchRequest;
+	
     request.sortBy = ZmSearch.NAME_ASC;
     ZmTimezone.set(request, AjxTimezone.DEFAULT);
     request.locale = { _content: AjxEnv.DEFAULT_LOCALE };
     request.offset = 0;
     request.types = ZmSearch.TYPE[ZmItem.CONTACT];
     //request.query = this.getContactFolders();
-	request.query = 'in:'+contactBook;
+	//request.query = 'in:'+contactBook;
+	request.query = "in:\""+contactBook+"\"";
     request.offset = offset || 0;
     request.limit = this.LIMIT;
     

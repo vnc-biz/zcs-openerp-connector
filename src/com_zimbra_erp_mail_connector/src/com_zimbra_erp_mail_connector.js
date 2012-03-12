@@ -88,7 +88,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 	}
 	else if(view == "CLD" || view=="CLWW"){
 		
-		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
+		/*if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
 			 return;
                 }		
 	
@@ -113,7 +113,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
                 // toolbar.createOp api creates the button with some id and params
                 // containing button details.
                 var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID, buttonArgs);
-                button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));
+                button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));*/
 
 	}
 	else if(view.match(patt)=="COMPOSE"){
@@ -239,9 +239,11 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.getFolderDialog=function()
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = function(controller) {
 
 	addBook=this.getUserProperty("addBook");
-	var addBook_Contact = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("Contacts");
+	addBookPath=this.getUserProperty("addBookPath");
+	var addBook_Contact = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getById(ZmFolder.ID_CONTACTS);
+	
 	addBook_ContactId=addBook_Contact.id;
-	var addBook_Econtact=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("Emailed Contacts");
+	var addBook_Econtact=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getById(ZmFolder.ID_AUTO_ADDED);
 	addBook_EcontactId=addBook_Econtact.id;
 	if(addBook.trim()==""){
 			this.getFolderDialog()
@@ -254,7 +256,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = f
 				this.getFolderDialog()	
 			}
 			if(trashCheck==false){
-				new contactsync(this,addBook); 
+				new contactsync(this,addBook,addBookPath); 
 			}else{
 				this.getFolderDialog()
 			}
@@ -268,13 +270,16 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = f
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleChooseFolder = function(organizer) {
 		
 	var addBook=organizer.getName();
-		
+	addBook = addBook.replace(/&nbsp;/gi,' ');
+	var addBookPath=organizer.getPath();
+	addBookPath=addBookPath.replace(/&nbsp;/gi,' ');
 	this.setUserProperty("addBook",addBook);
+	this.setUserProperty("addBookPath",addBookPath);
 	this.saveUserProperties();
 	if(addBook !="" || addBook !="Folders"){
 		var dialog = appCtxt.getChooseFolderDialog();
     		dialog.popdown();	
-		new contactsync(this,addBook);
+		new contactsync(this,addBook,addBookPath);
 	}
 
 	

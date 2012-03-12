@@ -630,11 +630,12 @@ public class ErpConfiguration
 	}
 
 
-	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd,String openerp_id)
+	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd,String openerp_id,String acc_name,String zimbraProtocol,String z_portNumber,String addressBook,String domainName)
 	{
 
 		Gson gson = new Gson();
 		Integer op_id=Integer.parseInt(openerp_id);
+		Integer zimbraPort=Integer.parseInt(z_portNumber);
 		Object contactlist;
 		List<Integer> intList;
 		try
@@ -644,11 +645,11 @@ public class ErpConfiguration
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 
 			dbname=dbname.trim();
-			//System.out.println("Before xmlrpc call------------->>>>>>>>>>>>>>>>>>>>");
+			System.out.println("Before xmlrpc call------------->>>>>>>>>>>>>>>>>>>>"+dbname+password);
 
-			//System.out.println("this is integer------>>>>>>"+op_id);
+			System.out.println("this is integer------>>>>>>"+op_id);
 			Object objlist = lists.invoke("execute",new Object[] {dbname,op_id,password,"res.partner.address","search",new Vector()});
-			//System.out.println("----------------------------------> Id list:"+objlist.toString());
+			System.out.println("----------------------------------> Id list:"+objlist.toString());
 			Vector nameList = new Vector();
 			/*nameList.add("name");
 			nameList.add("city");
@@ -675,7 +676,7 @@ public class ErpConfiguration
 					cField=str.split("=");
 					nameList.add(cField[0].trim());
 
-					//System.out.println("length of cField:"+cField.length+"   --------------- >key:"+cField[0].trim()+" value:"+cField[1].trim());
+					System.out.println("length of cField:"+cField.length+"   --------------- >key:"+cField[0].trim()+" value:"+cField[1].trim());
 
 
 					heading.add(cField[1].trim());
@@ -687,11 +688,11 @@ public class ErpConfiguration
 					r.printStackTrace();
 				}
 			}
-			//System.out.println("------------------------------------>  End of file... Contacts heading read successfully from file...");
+			System.out.println("------------------------------------>  End of file... Contacts heading read successfully from file...");
 			contact=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 
 			XmlRpcStruct contactList=(XmlRpcStruct)lists.invoke("execute",new Object[] {dbname,op_id,password,"res.partner.address","export_data",objlist,nameList});
-			//System.out.print("----> excuting  hi this is contact list============"+contactList.getArray("datas") +" ----> end new.");
+			System.out.print("----> excuting  hi this is contact list============"+contactList.getArray("datas") +" ----> end new.");
 
 
 			int len1=contactList.getArray("datas").size();/*This is number of Contacts*/
@@ -741,14 +742,21 @@ public class ErpConfiguration
 			csvFile.close();
 
 			Runtime r=Runtime.getRuntime();
+			String[] z_Protocol=zimbraProtocol.split(":");
+			System.out.println("Thi is protocol--->>>"+z_Protocol);
+			//URI uri = new URI("http",null,"jignesh.com",80,"/booksearch/first book.pdf/","fmt=csv&auth=qp",null);
 
-			//System.out.println("This is curl---------------------->>>>>>>>>>>>"+"curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
+			URI uri = new URI(z_Protocol[0],null,domainName,zimbraPort,"/home/"+acc_name+"/"+addressBook,"fmt=csv&auth=qp&zauthtoken="+auth_token,null);
+			URL url = uri.toURL();
+			System.out.println("This is url=====>>>>>>"+url);
+			System.out.println("This is curl with rest from js---------------------->>>>>>>>>>>>"+"curl --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
+
 			try
 			{
 
-				Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token);
+				Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+url);
 				p.waitFor();
-				//System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
+				System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 
 				return "success";
 
