@@ -586,7 +586,9 @@ public class ErpConfiguration
 		String m=new String();
 		Integer op_id=Integer.parseInt(openerp_id);
 
-		Vector params=null;
+		Vector parent=new Vector();
+		Vector child1=new Vector();
+		Vector child2=new Vector();
 		String s=null;
 
 		int cnt=0;
@@ -599,10 +601,18 @@ public class ErpConfiguration
 			//System.out.println("this is address----------->>>>>"+urladdress+":"+port+fixurl+"End of url<<<<<<<<<<--------");
 			s=new String();
 			dbname=dbname.trim();
+			child1.add("name");
+			child1.add("=");
+			child1.add("vnc_zimbra_connector");
+			child2.add("state");
+			child2.add("=");
+			child2.add("installed");
+			parent.add(child1);
+			parent.add(child2);
+			//lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()});
 
-
-			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()});
-			System.out.println("this is Documentvarify-----response--->>"+lis.toString());
+			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,"ir.module.module","search",parent});
+			System.out.println("this is Documentvarify-----response su vat che--->>"+lis.toString()+lis.toString().length());
 
 
 
@@ -616,7 +626,7 @@ public class ErpConfiguration
 
 		}
 
-		if(lis.toString()!="")
+		if((lis.toString()!="") && (lis.toString().length()>2))
 		{
 			return gson.toJson(lis);
 
