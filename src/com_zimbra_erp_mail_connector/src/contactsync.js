@@ -1,5 +1,6 @@
 var zmlt;
 var addressBook;
+var addressBookPath;
 contactsync=function(zimlet,addBook,addBookPath) {
 
 	this.zimlet=zimlet;
@@ -11,12 +12,14 @@ contactsync=function(zimlet,addBook,addBookPath) {
     	var urladdress=zmlt.getUserProperty("urladdress");
     	var openerp_id=zmlt.getUserProperty("openerp_id");
     	var port=zmlt.getUserProperty("port");
-	var proto="http://";
+	var proto=zmlt.getUserProperty("proto");
 	var acc_name=appCtxt.getUsername();	
 	addressBook=AjxStringUtil.urlComponentEncode(addressBook);
+	addressBookPath=AjxStringUtil.urlComponentEncode(addressBookPath);
 	var zimbraProtocol="http:";
 	zimbraProtocol=location.protocol;
 	domainName=appCtxt.getUserDomain();
+	z_portNumber="80";
 	if(zimbraProtocol== "http:"){
 		z_portNumber=appCtxt.get(ZmSetting.HTTP_PORT);
 	}else if(zimbraProtocol == "https:"){
@@ -24,9 +27,8 @@ contactsync=function(zimlet,addBook,addBookPath) {
 		z_portNumber=appCtxt.get(ZmSetting.HTTPS_PORT);
                 	
 	}
-	
-	
-	var rest=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(AjxStringUtil.urlComponentDecode(addressBook)).getRestUrl();
+	var rest="heee";
+	//var rest=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(AjxStringUtil.urlComponentDecode(addressBook)).getRestUrl();
 
 	if(dbname=="" || password=="" || urladdress=="" || port=="" ){
                 var a =  appCtxt.getMsgDialog();
@@ -68,8 +70,9 @@ function(response) {
                 a.setMessage(zmlt.getMessage("contact_sync_success"),DwtMessageDialog.INFO_STYLE,zmlt.getMessage("msg"));
                 a.popup();
 		var vnc = new VncContactSync();
+		addressBookPath=AjxStringUtil.urlComponentDecode(addressBookPath);
+		addressBookPath=AjxStringUtil.htmlDecode(addressBookPath,true)
 		var abc = vnc.getContacts(0,[],addressBookPath);
-		
         }
         else{
 
@@ -79,5 +82,46 @@ function(response) {
         }
 }
 
+/*checkContacts = function(offset, contactList,addressBook) {
+    // create the json object for the search request
+        contactBook=addressBook
+        //contactBook=AjxStringUtil.urlComponentDecode(addressBook);
+    var jsonObj = {SearchRequest:{_jsns:"urn:zimbraMail"}};
+
+    var request = jsonObj.SearchRequest;
+
+    request.sortBy = ZmSearch.NAME_ASC;
+    ZmTimezone.set(request, AjxTimezone.DEFAULT);
+    request.locale = { _content: AjxEnv.DEFAULT_LOCALE };
+    request.offset = 0;
+    request.types = ZmSearch.TYPE[ZmItem.CONTACT];
+    //request.query = this.getContactFolders();
+        //request.query = 'in:'+contactBook;
+        request.query = "in:\""+contactBook+"\"";
+    request.offset = offset || 0;
+    request.limit = this.LIMIT;
+
+    contactList = contactList || [];
+    var searchParams = {
+            jsonObj:jsonObj,
+            asyncMode:true,
+            callback:new AjxCallback(this, this.checkContactResponse, [contactList]),
+    };
+    appCtxt.getAppController().sendRequest(searchParams);
+};
+
+checkContactResponse=function(contactList, result){
+	var response = result.getResponse().SearchResponse;
+        var responseContactList = response[ZmList.NODE[ZmItem.CONTACT]];
+	var addPath=zmlt.getUserProperty("addBookPath");
+	if (responseContactList) {
+		var vncObj = new VncContactSync();
+		var abcObj = vncObj.getContacts(0,[],addressBookPath);
+	}else{
+		return;
+
+	}
+	
+}*/
 
 

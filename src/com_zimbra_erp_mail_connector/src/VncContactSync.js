@@ -10,7 +10,7 @@ VncContactSync = contactSync_HandlerObject;
 
 VncContactSync.prototype.init = function() {
 };
-VncContactSync.prototype.LIMIT = 5000;
+VncContactSync.prototype.LIMIT = 100;
 VncContactSync.prototype.requestCount = 0;
 
 /**
@@ -517,7 +517,11 @@ VncContactSync.prototype.getOpenERPContactId = function() {
 VncContactSync.prototype.getContacts = function(offset, contactList,addressBook) {
     // create the json object for the search request
 	contactBook=addressBook
-	contactBook=AjxStringUtil.urlComponentDecode(addressBook);
+	if(contactBook == null){
+		return;
+		//contactBook=zmlt.getUserProperty("addBookPath");
+	}
+	//contactBook=AjxStringUtil.urlComponentDecode(addressBook);
     var jsonObj = {SearchRequest:{_jsns:"urn:zimbraMail"}};
 	
     var request = jsonObj.SearchRequest;
@@ -549,6 +553,9 @@ VncContactSync.prototype.getContacts = function(offset, contactList,addressBook)
  * @param contactList the current list of contacts
  * @param result the result object
  */
+ff=function(){
+
+}
 VncContactSync.prototype.handleGetContactsResponse = function(contactList, result) {
     if (result) {
         var response = result.getResponse().SearchResponse;        
@@ -558,9 +565,16 @@ VncContactSync.prototype.handleGetContactsResponse = function(contactList, resul
             for (var i = 0; i < numContacts; i++) {
                 contactList.push(responseContactList[i]);
             }
-        }
+        }else{
+		
+		/*var a =  appCtxt.getMsgDialog();
+                a.setMessage("Unexpected error has occured",DwtMessageDialog.CRITICAL_STYLE,"Error");
+                a.popup();*/
+		//setTimeout("ff()",500);
+		
+	}
         if (response.more) {
-            this.getContacts(response.offset + this.LIMIT, contactList);
+            this.getContacts(response.offset + this.LIMIT, contactList,contactBook);
         } else {
 		    this.parseContactList(contactList);			
 			this.cleanUp({mergeRemaining:true});

@@ -21,6 +21,7 @@ push_to_openERP=function(zimlet,msgids,download_link,push_from,msgtype){
 
 	this.zimlet=zimlet;
 	zmlt=this.zimlet;
+	proto=zmlt.getUserProperty("proto");
 	//emailrecord=jsonArray;
 	email_ids=msgids;
 	downloadlink=download_link;
@@ -495,9 +496,7 @@ function pushEmail(push_random){
 			document.getElementById("wait"+push_random+"").innerHTML="<img src='"+zmlt.getResource("resources/submit_please_wait.gif")+"'/>"; 
    	  	
 				var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/PushEmail.jsp?dbname="+dbname+"&password="+password+"&urladdress="+(proto+urladdress)+"&port="+port+"&push_id="+push_id+"&msgid="+email_ids[i]+"&downloadlink="+downloadlink+"&sessionid="+ZmCsfeCommand.getSessionId()+"&openerp_id="+openerp_id;
-								
 				var response = AjxRpc.invoke(null,jspurl, null, null, true);
-				
 				if(response.success==true){
 
 					if(response.text.trim()=="1"){

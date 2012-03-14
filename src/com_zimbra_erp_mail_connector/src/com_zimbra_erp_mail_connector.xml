@@ -42,7 +42,8 @@
 		<property type="string" name="doc_list" value=""/>
 		<property type="string" name="addBook" value=""/>
 		<property type="string" name="addBookPath" value=""/>
-		
+		<property type="string" name="proto" value="http://"/>
+			
 	</userProperties>
 	
 	

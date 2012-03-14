@@ -19,7 +19,7 @@ var zmlt;
 String.prototype.ltrim=function(){return this.replace(/^\s+/,'');}
 pushMeeting = function(){
 
-		var dbname=zmlt.getUserProperty("getdatabase");
+		/*var dbname=zmlt.getUserProperty("getdatabase");
                 dbname=dbname.ltrim();
                 var password=zmlt.getUserProperty("userpassword");
                 var urladdress=zmlt.getUserProperty("urladdress");
@@ -29,7 +29,7 @@ pushMeeting = function(){
                 var aptDataLink=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(currentApt.getFolder().getName()).getRestUrl();
                 var appt_jspurl="/service/zimlet/com_zimbra_erp_mail_connector/PushAppt.jsp?dbname="+dbname+"&password="+password+"&urladdress="+(proto+urladdress)+"&port="+port+"&msgid="+currentApt.id+"&downloadlink="+aptDataLink+"&push_id=&sessionid="+ZmCsfeCommand.getSessionId()+"&openerp_id="+openerp_id.trim();
 
-                var appt_response = AjxRpc.invoke(null,appt_jspurl, null, null, true);
+                var appt_response = AjxRpc.invoke(null,appt_jspurl, null, null, true);*/
 
 		
 }
@@ -245,11 +245,12 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = f
 	addBook_ContactId=addBook_Contact.id;
 	var addBook_Econtact=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getById(ZmFolder.ID_AUTO_ADDED);
 	addBook_EcontactId=addBook_Econtact.id;
-	if(addBook.trim()==""){
+	if(addBookPath.trim()==""){
 			this.getFolderDialog()
 	}else{
 
-			var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(addBook);
+			var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByPath(addBookPath);
+			//alert("This is check for existance="+ftree);
 			if(ftree != null){
         			var trashCheck=ftree.isInTrash();	
 			}else{
@@ -330,9 +331,9 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 
 	docList=this.getUserProperty("doc_list");
-	var json=JSON.parse(docList);
-	if(json.records.length==0){
-		var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"res\",\"docname\":\"res.partner\"},{\"id\":\"2\",\"title\":\"Address\",\"docname\":\"res.partner.address\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
+	//var json=JSON.parse(docList);
+	if(docList.length<=0){
+		var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"2\",\"title\":\"Address\",\"docname\":\"res.partner.address\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
 	
 	this.setUserProperty("doc_list",doclist.trim());
         this.saveUserProperties();	
@@ -517,7 +518,15 @@ try{
 	 }	
 
 
-	port = Number(location.port);
+	//port = Number(location.port);
+	proto=location.protocol;
+	if(proto == "http:"){
+		port=appCtxt.get(ZmSetting.HTTP_PORT);
+		
+	}else if(proto == "https:"){	
+		port=appCtxt.get(ZmSetting.HTTPS_PORT);
+	}
+
         baseURL =
         [       location.protocol,
                 '//',
@@ -528,10 +537,9 @@ try{
                         ":"+port:''),
                 "/service/home/~/"
         ].join("");
-
-        download_link=baseURL;
-
 	
+        download_link=baseURL;
+		
 	if(droppedItem instanceof Array) {
 		
 		for(var i =0; i < droppedItem.length; i++) {
@@ -571,7 +579,7 @@ try{
 				
 			}
                         var download_link=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(obj.getFolder().getName()).getRestUrl();
-                        new push_to_openERP(this,aptId,download_link,"","APPT");
+                        //new push_to_openERP(this,aptId,download_link,"","APPT");
                         //new push_to_openERP(this,msgids,download_link,mail_from[0],msgtype);
                         return;
                 }

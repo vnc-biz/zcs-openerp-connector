@@ -23,8 +23,8 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 		String acc_name=request.getParameter("acc_name");
 	    	String addressBook=request.getParameter("addressBook");	    	
 		System.out.println("THis is addressbook name from jsp--fdsfdfsfdsf------>>>>"+addressBook);
-		String encodedURL=URLEncoder.encode(addressBook,"UTF-8");
-		System.out.println("This is encoded url--->>>>"+encodedURL);
+		//String encodedURL=URLDecoder.decode(addressBook,"UTF-8");
+		//System.out.println("This is encoded url--->>>>"+encodedURL);
         Account acc=soap.get(Provisioning.AccountBy.name,acc_name);
         ZimbraAuthToken authToken = new ZimbraAuthToken(acc);
         String eAuthToken=null;
