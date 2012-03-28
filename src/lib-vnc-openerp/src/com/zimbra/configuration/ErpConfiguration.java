@@ -17,9 +17,6 @@ import org.json.JSONObject;
 import com.google.gson.*;
 import com.google.gson.JsonParser;
 import java.net.URL;
-//import com.zimbra.common.auth.*;
-//import com.zimbra.cs.client.soap.*;
-//import com.zimbra.cs.client.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.*;
@@ -27,7 +24,6 @@ import org.json.JSONArray;
 import java.text.SimpleDateFormat;
 import java.net.URLEncoder;
 import java.io.*;
-
 import java.lang.Exception;
 
 public class ErpConfiguration
@@ -75,6 +71,16 @@ public class ErpConfiguration
 
 		try
 		{
+
+			/*HttpsURLConnection con = null;
+			con = (HttpsURLConnection) server.openConnection();
+			con.setHostnameVerifier(new HostnameVerifier()
+			{
+				public boolean verify(String hostname, SSLSession session) {
+				return true;
+			}
+			});*/
+
 			String fixurl="/xmlrpc/db";
 			System.out.println("getDataBase---->>>"+url+":"+port+fixurl);
 			XmlRpcClient client = new XmlRpcClient(new URL(url+":"+port+fixurl),true);
@@ -85,7 +91,7 @@ public class ErpConfiguration
 		}
 		catch(Exception ex)
 		{
-			System.out.print(ex+"Exception in  getDatabase-------->>>>>");
+			System.out.print(ex.toString()+"Exception in  getDatabase-------->>>>>");
 			ex.printStackTrace();
 			return "fail";
 		}
