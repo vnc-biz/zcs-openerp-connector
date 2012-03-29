@@ -88,7 +88,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 	}
 	else if(view == "CLD" || view=="CLWW"){
 		
-		/*if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
+		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
 			 return;
                 }		
 	
@@ -105,15 +105,15 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 		// create params obj with button details
                 var buttonArgs = {
                         text :cal_sync_btn,
-                        tooltip : "Synchronize Calendar",
+                        tooltip : "Reload all remote calendars",
                         index : buttonIndex, // position of the button
-                        image : "refresh" // icon
+                        image : "refresh" // icoN
                 };
 
                 // toolbar.createOp api creates the button with some id and params
                 // containing button details.
                 var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID, buttonArgs);
-                button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));*/
+                button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));
 
 	}
 	else if(view.match(patt)=="COMPOSE"){
@@ -148,29 +148,13 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 };
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = function(controller) {
-
-
-        var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP");
-        if(ftree == null){
-                var oc = appCtxt.getOverviewController();
-                var te=oc.getTreeController(ZmOrganizer.CALENDAR)._doCreate({"name":"open_ERP"});
-        }
-
-                new calsync(this);
-        /*  var folderId=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName("open_ERP").id;
-        var soapDoc = AjxSoapDoc.create("FolderActionRequest", "urn:zimbraMail");
-        var actionNode = soapDoc.set("action");
-        actionNode.setAttribute("op","check");
-        actionNode.setAttribute("id",folderId);
-        var callback = new AjxCallback(this,_callback);
-        var params = {
-                soapDoc: soapDoc,
-                asyncMode: true,
-                callback: callback,
-        };
-        appCtxt.getAppController().sendRequest(params);*/
-
-
+	var calendars = appCtxt.getFolderTree().getByType(ZmOrganizer.CALENDAR);
+	for(var i in calendars){
+		if(calendars[i].url != undefined){
+			calendars[i].sync();
+		}
+	}
+		
 };
 
 
@@ -250,7 +234,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = f
 	}else{
 
 			var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByPath(addBookPath);
-			//alert("This is check for existance="+ftree);
 			if(ftree != null){
         			var trashCheck=ftree.isInTrash();	
 			}else{
@@ -399,14 +382,11 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 		return;
 	}
 
-
 	var confi_lbl_url=this.getMessage("connector_configuration_lbl_urladdress");
 	var confi_btn_database=this.getMessage("connector_configuration_btn_database");
 	var confi_lbl_database=this.getMessage("connector_configuration_lbl_database");
 	var confi_lbl_username=this.getMessage("connector_configuration_lbl_username");
 	var confi_lbl_password=this.getMessage("connector_configuration_lbl_password");
-
-
 
 	var document_lbl_title=this.getMessage("connector_document_lbl_title");
 	var document_lbl_docname=this.getMessage("connector_document_lbl_docname");
@@ -416,19 +396,15 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	var document_unsuccess_delete=this.getMessage("connector_document_unsuccess_delete");
 	var document_unsuccess_blank=this.getMessage("connector_document_unsuccess_blank");
 	
-	
 	var view = new DwtComposite(appCtxt.getShell());	
 	this.tabView = new DwtTabView(view,"SideStepTabView");
 	
 	 this.about_setting= new about_setting(this.tabView,this);
 	this.configuration_setting = new configuration_setting(this.tabView,this,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password);
 	this.document_setting= new document_setting(this.tabView,this,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank);
-
 	
-
-	
-	view.setSize("550px", "400px");
-	this.tabView.setSize("550px", "400px");	
+	view.setSize("550px", "335px");
+	this.tabView.setSize("550px", "345px");	
 	
 	this.tabkeys = [];
 
@@ -437,23 +413,47 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab3"),this.about_setting));
 		
 	 canvas = new TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),view);
-	
-canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_project_close"));
-
+	canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_project_close"));
+	//canvas.getButton(DwtDialog.YES_BUTTON).setVisibility(false) ;
+	canvas.getButton(DwtDialog.OK_BUTTON).setText(this.getMessage("reset_configuration"));
+	canvas.registerCallback(DwtDialog.OK_BUTTON, new AjxCallback(this, this._handleResetClick));
 	canvas.popup();
-		
 	this.tabView.getTabButton(this.tabkeys[0]).setImage("preferences");//SideStep-configuration
 	this.tabView.getTabButton(this.tabkeys[1]).setImage("edit");//SideStep-document	
 	this.tabView.getTabButton(this.tabkeys[2]).setImage("social-icon");//SideStep-about	
-
-
-
  
 }
 
+com_zimbra_erp_mail_connector_HandlerObject.prototype._handleResetClick=function(){
+
+	this._dialog = appCtxt.getYesNoMsgDialog();
+	this._dialog.setMessage(this.getMessage("configuration_clear_warning"),DwtMessageDialog.WARNING_STYLE,this.getMessage("warning"));
+	this._dialog.setButtonListener(DwtDialog.YES_BUTTON, new AjxListener(this, this._yesBtnListener));
+	this._dialog.setButtonListener(DwtDialog.NO_BUTTON, new AjxListener(this, this._noBtnListener));
+	this._dialog.popup();
+}
+com_zimbra_erp_mail_connector_HandlerObject.prototype._yesBtnListener=function(){
+
+	this.setUserProperty("urladdress","");
+        this.setUserProperty("getdatabase","");
+       	this.setUserProperty("port","");
+        this.setUserProperty("username","");
+        this.setUserProperty("userpassword","");
+        this.setUserProperty("addBook","");
+	this.setUserProperty("addBookPath","");
+        this.saveUserProperties();
+	document.getElementById("urladdress").innerHTML="";	
+	this._dialog.popdown();
+	this.configuration_setting.clearConfig();
+	
+}
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype._noBtnListener=function(){
+	this._dialog.popdown();
+	
+}
 com_zimbra_erp_mail_connector_HandlerObject.prototype._okBtnListener=function(){
 canvas.popdown();
-
 
 }
 
@@ -461,7 +461,7 @@ canvas.popdown();
 function TabDialog(parent,title,  view) {
 	if (arguments.length == 0) return;
 
-	DwtDialog.call(this, {parent:parent, title:title, standardButtons:[DwtDialog.CANCEL_BUTTON ]});
+	DwtDialog.call(this, {parent:parent, title:title, standardButtons:[DwtDialog.OK_BUTTON,DwtDialog.CANCEL_BUTTON]});
 	if (!view) {
 		this.setContent(this._contentHtml());
 	} else {
@@ -516,9 +516,7 @@ try{
                 return;
        
 	 }	
-
-
-	//port = Number(location.port);
+	
 	proto=location.protocol;
 	if(proto == "http:"){
 		port=appCtxt.get(ZmSetting.HTTP_PORT);
@@ -526,25 +524,10 @@ try{
 	}else if(proto == "https:"){	
 		port=appCtxt.get(ZmSetting.HTTPS_PORT);
 	}
-
-        baseURL =
-        [       location.protocol,
-                '//',
-                location.hostname,
-                (
-                 (port && ((proto == ZmSetting.PROTO_HTTP && port != ZmSetting.HTTP_DEFAULT_PORT)
-                || (proto == ZmSetting.PROTO_HTTPS && port != ZmSetting.HTTPS_DEFAULT_PORT)))?
-                        ":"+port:''),
-                "/service/home/~/"
-        ].join("");
-	
-        download_link=baseURL;
-		
+	//port = Number(location.port);
 	if(droppedItem instanceof Array) {
 		
 		for(var i =0; i < droppedItem.length; i++) {
-			
-		
 		
 			var obj = droppedItem[i].srcObj ?  droppedItem[i].srcObj :  droppedItem[i];
 			if(obj.type == "CONV" ) {
@@ -587,14 +570,35 @@ try{
 
  
 	}
+		
+	if(droppedItem[0] != undefined){	
+		if(droppedItem[0].srcObj.id.indexOf(':') > 0){
+			port = Number(location.port);
+		}
+        }else{
+		if(droppedItem.srcObj.id.indexOf(':') > 0){
+			port = Number(location.port);
+		}
+	}
+        baseURL =
+        [       location.protocol,
+                '//',
+                location.hostname,
+                (
+                 (port && ((proto == ZmSetting.PROTO_HTTP && port != ZmSetting.HTTP_DEFAULT_PORT)
+                || (proto == ZmSetting.PROTO_HTTPS && port != ZmSetting.HTTPS_DEFAULT_PORT)))?
+                        ":"+port:''),
+                "/service/home/~/"
+        ].join("");
 	
-
+        download_link=baseURL;
 
 
 }catch(e){
-		/*var a =  appCtxt.getMsgDialog();
-                a.setMessage(this.getMessage("Exception in main_js"),DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
-                a.popup();*/
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("exception"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
+                return
 	}
 
 if(obj.type != "APPT") {
@@ -633,19 +637,12 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=
 function(convSrcObj) {
 	
    try{	
+
 	msgids.push(convSrcObj.msgIds);
-	
 	msgtype.push(convSrcObj.type);
 	ids=convSrcObj.msgIds;
-	
-	mail_cc= [];
-	mail_bcc=[];
 	mail_sender=[];
-	mail_replyto = [];
-	//mail_from = [];
 	mail_to = [];
-	mail_attachment = [];
-	attachment_binary=[];
 
 	mail_subject=convSrcObj.getFirstHotMsg().subject;
 
@@ -669,7 +666,7 @@ function(convSrcObj) {
 	}	
 	
 
-	port = Number(location.port);
+	/*port = Number(location.port);
 	baseURL = 
 	[	location.protocol,
 		'//',
@@ -681,10 +678,14 @@ function(convSrcObj) {
 		"/service/home/~/"
 	].join("");
 	
-	download_link=baseURL;
+	download_link=baseURL;*/
 	  
     }catch(e){
 		
+		var a =  appCtxt.getMsgDialog();
+                a.setMessage(zm.getMessage("exception"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+                a.popup();
+                return
 	}
 	 
 
@@ -696,19 +697,15 @@ function(convSrcObj) {
 
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=function(convSrcObj) {
-
-	msgids.push(convSrcObj.id);
-	msgtype.push(convSrcObj.type);
-
-	ids=convSrcObj.id;
-       
-	 mail_subject=convSrcObj.subject;
-	// mail_contant=convSrcObj.getBodyContent();
+	
+		msgids.push(convSrcObj.id);
+		msgtype.push(convSrcObj.type);
+		ids=convSrcObj.id;
+		mail_subject=convSrcObj.subject;
+		//mail_contant=convSrcObj.getBodyContent();
 	
 	mail_cc = [];
 	mail_bcc = [];
-	mail_sender = [];
-	//mail_from = [];
 	mail_to = [];
 	mail_replyto = [];
 	mail_attachment = [];
@@ -717,19 +714,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 	 sentdate= new Date(convSrcObj.sentDate);
 
 	mail_sentdate=(sentdate.getMonth()+1)+"/"+sentdate.getDate()+"/"+(sentdate.getYear()+1900)+" "+sentdate.getHours()+":"+sentdate.getMinutes()+":"+sentdate.getSeconds();
-
-
-
-	 
-
-
-          //var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Getemailrecord.jsp?msgid="+ids;	
-	  //var jspurl="Getemailrecord.jsp?msgid="+ids;	
-	
-
-		
-	   
-
 
 	/*  Get the CC , FROM, TO, BCC, SENDER ,REPLY_TO from Email */
 
@@ -762,7 +746,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 
 
 	
-	port = Number(location.port);
+	/*port = Number(location.port);
 	baseURL = 
 	[	location.protocol,
 		'//',
@@ -775,7 +759,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 	].join("");
 	
          
-download_link=baseURL;
+download_link=baseURL;*/
 	// var jspurl = this.getResource("Getemailrecord.jsp?msgid="+ids+"&sessionid="+ZmCsfeCommand.getSessionId()+"&urldownload="+baseURL);
 
 	

@@ -23,28 +23,26 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 		String acc_name=request.getParameter("acc_name");
 	    	String addressBook=request.getParameter("addressBook");	    	
 		System.out.println("THis is addressbook name from jsp--fdsfdfsfdsf------>>>>"+addressBook);
-		//String encodedURL=URLDecoder.decode(addressBook,"UTF-8");
-		//System.out.println("This is encoded url--->>>>"+encodedURL);
-        Account acc=soap.get(Provisioning.AccountBy.name,acc_name);
-        ZimbraAuthToken authToken = new ZimbraAuthToken(acc);
-        String eAuthToken=null;
-         eAuthToken = authToken.getEncoded();
-        System.out.println("eAuthToken------------------->>>>"+eAuthToken);
-        ZMailbox client = ZMailbox.getByAuthToken(eAuthToken, SoapProvisioning.getLocalConfigURI());
-        //URI rest=client.getRestURI(encodedURL);
-	String urladd="hello";
+        	//Account acc=soap.get(Provisioning.AccountBy.name,acc_name);
+		//System.out.println("Account object has created");
+        	//ZimbraAuthToken authToken = new ZimbraAuthToken(acc);
+        	//String eAuthToken=null;
+		//System.out.println("auth token object created");
+         	//eAuthToken = authToken.getEncoded();
+        	//System.out.println("eAuthToken------------------->>>>"+eAuthToken);
+		//String urladd="hello";
 
-            String dbname=request.getParameter("dbname");
-            String password=request.getParameter("password");
-            String urladdress=request.getParameter("urladdress");
-            String port=request.getParameter("port");
-	    String openerp_id=request.getParameter("openerp_id");
-	    String restURL=request.getParameter("rest");
-	    String zimbraProtocol=request.getParameter("zimbraProtocol");
-	    String z_portNumber=request.getParameter("z_portNumber");	
-	    String domainName=request.getParameter("domainName");
-	     Cookie cookies [] = request.getCookies();
-             String auth_token=new String();
+            	String dbname=request.getParameter("dbname");
+            	String password=request.getParameter("password");
+            	String urladdress=request.getParameter("urladdress");
+            	String port=request.getParameter("port");
+	    	String openerp_id=request.getParameter("openerp_id");
+	    	String restURL=request.getParameter("rest");
+	    	String zimbraProtocol=request.getParameter("zimbraProtocol");
+	    	String z_portNumber=request.getParameter("z_portNumber");	
+	    	String domainName=request.getParameter("domainName");
+	     	Cookie cookies [] = request.getCookies();
+            	String auth_token=new String();
                         if (cookies != null)
                         {
                                 for (int i = 0; i < cookies.length; i++)
@@ -56,9 +54,9 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
                          }
 
 
-            ErpConfiguration configuration=new ErpConfiguration();
+            	ErpConfiguration configuration=new ErpConfiguration();
 		System.out.println("This is urladdddd------------->>>>"+restURL);
-            out.print(configuration.getContacts(dbname,password,urladdress,port,auth_token,restURL,openerp_id,acc_name,zimbraProtocol,z_portNumber,addressBook,domainName));
+            	out.print(configuration.getContacts(dbname,password,urladdress,port,auth_token,restURL,openerp_id,acc_name,zimbraProtocol,z_portNumber,addressBook,domainName));
 
             } catch (Exception e) {
                 out.println(e.getMessage());

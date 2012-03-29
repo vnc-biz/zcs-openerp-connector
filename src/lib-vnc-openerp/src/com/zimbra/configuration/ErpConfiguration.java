@@ -26,6 +26,9 @@ import java.net.URLEncoder;
 import java.io.*;
 import java.lang.Exception;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.MultipartPostMethod;
+
 public class ErpConfiguration
 {
 
@@ -495,17 +498,14 @@ public class ErpConfiguration
 
 				/*Row data*/
 
-				//System.out.print("Inside msg is not null");
+				System.out.print("Inside msg is not null");
 
 				rowdata_path=downloadlink+"?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8");
 				URL urlrow=new URL(rowdata_path);
-				//System.out.println("This is url row-------------->>>>>>>>>>>>>>>>>>>"+urlrow.toString());
+				System.out.println("This is url row-------------->>>>>>>>>>>>>>>>>>>"+urlrow.toString());
 				row_connection = (HttpURLConnection)urlrow.openConnection();
 				row_connection.connect();
-
 				InputStream rowis =row_connection.getInputStream();
-
-
 				int rowlineLength = 72;
 				StringBuffer rowstrbuffer=new StringBuffer();
 				byte[] rowbuf = new byte[rowlineLength/4*3];
@@ -518,7 +518,7 @@ public class ErpConfiguration
 				}
 
 				rowdata=new String(rowstrbuffer);
-				//System.out.println("This is rawdate======================="+rowdata);
+				System.out.println("This is rawdata======================="+rowdata);
 
 				/*End roe data*/
 
@@ -535,8 +535,6 @@ public class ErpConfiguration
 				mail_vec.add("message");
 				mail_vec.add(rowdata);
 
-
-
 				main_vec.add(module_vec);
 				main_vec.add(mail_vec);
 				/*End of row data*/
@@ -547,7 +545,7 @@ public class ErpConfiguration
 				XmlRpcClient client;
 				client=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 				dbname=dbname.trim();
-				//System.out.println("Going to call histary_message from sendMail");
+				System.out.println("Going to call histary_message from sendMail");
 				list=(Object)client.invoke("execute",new Object[] {dbname,op_id,password,"zimbra.partner","history_message",main_vec});
 				row_connection.disconnect();
 				rowstrbuffer.delete(0,rowstrbuffer.length());
@@ -568,17 +566,17 @@ public class ErpConfiguration
 			}
 			else
 			{
-				//System.out.print("Else part of msg");
+				System.out.print("Else part of msg");
 				Email="Damn message is null";
 			}
 		}
 		catch(Exception e)
 		{
-			//System.out.print("inside Exception");
+			System.out.print("inside Exceptionfsbv"+e);
 			e.printStackTrace();
 		}
 
-		//System.out.print("This is list"+list.toString()+"End of list");
+		System.out.print("This is list"+list.toString()+"End of list");
 		return list.toString();
 
 
@@ -772,10 +770,25 @@ public class ErpConfiguration
 			try
 			{
 
-				Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+url);
-				p.waitFor();
-				System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
+				//Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+url);
+				// p.waitFor();
+				//System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 
+				HttpClient client = new HttpClient();
+				MultipartPostMethod mPost = new MultipartPostMethod(url.toString());
+				client.setConnectionTimeout(10000);
+
+				// Send any XML file as the body of the POST request
+				File f1 = new File("/tmp/myData.csv");
+
+				System.out.println("File1 Length = " + f1.length());
+
+				mPost.addParameter(f1.getName(), f1);
+
+				int statusCode1 = client.executeMethod(mPost);
+
+				System.out.println("statusLine>>>" + mPost.getStatusLine());
+				mPost.releaseConnection();
 				return "success";
 
 			}
@@ -783,7 +796,6 @@ public class ErpConfiguration
 			{
 				ex.printStackTrace();
 				return "fail";
-
 			}
 
 			/*if(p.exitValue()==0){
@@ -798,7 +810,7 @@ public class ErpConfiguration
 		}
 		catch (Exception e)
 		{
-			System.out.print("Exception in xmlrpc contact");
+			System.out.println("Exception in xmlrpc contact " + e);
 			e.printStackTrace();
 			return "fail";
 		}

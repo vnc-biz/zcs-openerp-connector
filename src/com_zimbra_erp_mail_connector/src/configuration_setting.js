@@ -23,6 +23,7 @@ String.prototype.trim = function() {
 function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password){
 	
 	DwtTabViewPage.call(this,parent);
+	//this.resetSize("550px", "316px")
 	this.zimlet = zimlet;
 	zm=this.zimlet;
 
@@ -50,12 +51,25 @@ function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,c
 	
 	this.setScrollStyle(Dwt.SCROLL);
 }
+
+configuration_setting.prototype.clearConfig = function() {
+
+	document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+	document.getElementById("port").value="";
+	document.getElementById("username").value="";
+	document.getElementById("userpassword").value="";
+	document.getElementById("urladdress").value="";
+	var a =  appCtxt.getMsgDialog();
+        a.setMessage(zm.getMessage("configuration_cleared"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+        a.popup();
+	
+}
+
 configuration_setting.prototype._createHTML = function() {
 	var i = 0;
 
 	var html = new Array();
-
-		html[i++]="<fieldset>";
+		html[i++]="<fieldset class='fieldHeight'>";
 		html[i++]="<legend>";
 		html[i++]=this.zimlet.getMessage("connector_configuration_fieldset");
 		html[i++]="</legend>";
@@ -65,7 +79,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]=config_lbl_url;
 		html[i++]="</td>";		
 		html[i++]="<td>";
-		html[i++]="<input type='text' id='urladdress' value=''/>";
+		html[i++]="<input type='text' id='urladdress' value='' class='urlWidth'/>";
 		html[i++]="</td>";
 		html[i++]="<td>";
 		html[i++]=this.zimlet.getMessage("connector_configuration_lbl_port");
@@ -85,13 +99,17 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="<select id='getdatabase' style='width:145px;'></select>";
 		html[i++]="</td>";
 		html[i++]="</tr>";
-			
+		html[i++]="</table>";
+		html[i++]="</fieldset>";
+/*..........................................................*/			
+                html[i++]="<fieldset class='fieldHeight'>";
+		html[i++]="<table class='marginLogin'>";
 		html[i++]="<tr>";
 		html[i++]="<td>";
 		html[i++]=config_lbl_username;
 		html[i++]="</td>";
 		html[i++]="<td>";
-		html[i++]="<input type='text' id='username'/>"
+		html[i++]="<input type='text' id='username' class='textWidth'/>"
 		html[i++]="</td>";
 		html[i++]="</tr>";
 
@@ -100,12 +118,10 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]=config_lbl_password;
 		html[i++]="</td>";
 		html[i++]="<td>";
-		html[i++]="<input type='password' id='userpassword'/>"
+		html[i++]="<input type='password' id='userpassword' class='textWidth'/>"
 		html[i++]="</td>";
 		html[i++]="</tr>";
 
-
-		html[i++]="</table>";
 		html[i++]="<table><tr><td>";
 		if(navigator.userAgent.indexOf('Chrome')>-1){
 			html[i++]="<button onClick='checkConnection()' id='connect' style='margin-left:230px'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
@@ -113,42 +129,8 @@ configuration_setting.prototype._createHTML = function() {
 			html[i++]="<button onClick='checkConnection()' id='connect' class='config_btn1'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
 		
 		}
-		html[i++]="</td></tr></table>";
-
-		html[i++]="</fieldset>";
-	
-/*----------------------------------------------------------------------*/
-		 html[i++]="<fieldset class='fieldsetsize'>";
-                html[i++]="<legend>";
-                html[i++]=this.zimlet.getMessage("cal_sync_url");
-                html[i++]="</legend>";
-                html[i++]="<table class='marginIE'>";
-                html[i++]="<tr>";
-                html[i++]="<td>";
-                html[i++]="URL:";
-                html[i++]="</td>";
-                html[i++]="<td>";
-                html[i++]="<input type='text' class='textbox1' id='cal_url' value='Comming soon.....'/>";
-                html[i++]="</td>";
-                html[i++]="</tr>";
-
-
-                html[i++]="</table>";
-		html[i++]="<table><tr><td class='config_btnIE'>";
-                
-		 if(navigator.userAgent.indexOf('Chrome')>-1){
-                	 html[i++]="<button onClick='save_cal_url()' id='connect' style='margin-left:230px'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/save_and_validate.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_calurl_save")+"</font></button>";
-		 }else{
-			 html[i++]="<button onClick='save_cal_url()' id='connect' class='config_btn'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/save_and_validate.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_calurl_save")+"</font></button>";
-                }
-                html[i++]="</td></tr></table>";
-
-                html[i++]="</fieldset>";
-
-		
-
-	
-	this.getHtmlElement().innerHTML = html.join("");
+		html[i++]="</td></tr></table></fieldset>";
+		this.getHtmlElement().innerHTML = html.join("");
 
 };
 

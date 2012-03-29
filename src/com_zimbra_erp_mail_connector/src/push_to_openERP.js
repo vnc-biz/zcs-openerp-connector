@@ -490,7 +490,6 @@ function pushEmail(push_random){
 
 
 	  	
-
 		for(var i=0;i<email_ids.length;i++){
 	
 			document.getElementById("wait"+push_random+"").innerHTML="<img src='"+zmlt.getResource("resources/submit_please_wait.gif")+"'/>"; 
@@ -505,6 +504,9 @@ function pushEmail(push_random){
 							if(!tagObj)
 						    		return;
 							var tagId = tagObj.id;
+							if(tagId.indexOf(':') > 0){
+								tagId = tagId.split(':')[1];
+							}
 
 							var soapCmd = "MsgActionRequest";
 					

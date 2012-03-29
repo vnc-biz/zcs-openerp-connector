@@ -165,6 +165,14 @@ select
 {
 	padding-left:12%;
 	margin-left:8%;
+	margin-top:3%;
+}
+
+.marginLogin
+{
+	margin-left:12%;
+	margin-top:3%;
+	margin-left:8%;
 }
 
 #temp
@@ -218,11 +226,35 @@ select
 .config_btn1
 {
 	padding-left:0;
-	margin-left:73%;
+	margin-left:72%;
 	margin-left:35%;
 }
 
 .config_btnIE
 {
 	padding-left:45%;
+}
+
+.textWidth
+{
+	width:180%;
+	width:225px;
+}
+
+.fieldHeight
+{
+	height:47%;
+	height:45%;
+}
+
+.urlWidth
+{
+	width:100%;
+}
+
+.alignBtn
+{
+	padding-left:0;
+	margin-top:5%;
+	margin-top:1%;
 }
