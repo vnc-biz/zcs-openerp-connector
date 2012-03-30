@@ -103,12 +103,12 @@ document_setting.prototype._createHTML = function() {
 
 			html[i++]="<td>";
 			//html[i++]="<button onclick=addRecord() >"+zm.getMessage("connector_document_btn_add")+"</button>";	
-			html[i++]="<button onClick='addRecord()' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/add.png' align='absmiddle' style='height:14px;'/><font style='margin-left:4px;'>"+zm.getMessage("connector_document_btn_add")+"</font></button>";	
+			html[i++]="<button onClick='addRecord()' class='alignBtn'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/add.png' align='absmiddle' style='height:14px;'/><font style='margin-left:4px;'>"+zm.getMessage("connector_document_btn_add")+"</font></button>";	
 			html[i++]="</td>";
 
 			html[i++]="<td>";
 			//html[i++]="<button onclick=deleteRecord()>"+zm.getMessage("connector_document_btn_delete")+"</button>";
-			html[i++]="<button onClick='deleteRecord()' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/delete.gif' align='absmiddle' style='height:14px;'/><font style='margin-left:4px;'>"+zm.getMessage("connector_document_btn_delete")+"</font></button>";
+			html[i++]="<button onClick='deleteRecord()' class='alignBtn'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/delete.gif' align='absmiddle' style='height:14px;'/><font style='margin-left:4px;'>"+zm.getMessage("connector_document_btn_delete")+"</font></button>";
 		
 			html[i++]="</td>";			
 						

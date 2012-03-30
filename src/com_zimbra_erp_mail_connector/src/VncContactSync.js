@@ -10,7 +10,7 @@ VncContactSync = contactSync_HandlerObject;
 
 VncContactSync.prototype.init = function() {
 };
-VncContactSync.prototype.LIMIT = 100;
+VncContactSync.prototype.LIMIT = 500;
 VncContactSync.prototype.requestCount = 0;
 
 /**
