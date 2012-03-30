@@ -2,7 +2,6 @@ var zmlt;
 var addressBook;
 var addressBookPath;
 contactsync=function(zimlet,addBook,addBookPath) {
-
 	this.zimlet=zimlet;
 	zmlt=this.zimlet;
 	addressBook=addBook;
@@ -27,8 +26,10 @@ contactsync=function(zimlet,addBook,addBookPath) {
 		z_portNumber=appCtxt.get(ZmSetting.HTTPS_PORT);
                 	
 	}
-	var rest="heee";
-	//var rest=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(AjxStringUtil.urlComponentDecode(addressBook)).getRestUrl();
+	
+	addressBook=AjxStringUtil.urlComponentDecode(addressBook);
+	var rest=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(addressBook).getRestUrl();
+	//var rest=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(addressBook).getRestUrl();
 
 	if(dbname=="" || password=="" || urladdress=="" || port=="" ){
                 var a =  appCtxt.getMsgDialog();
@@ -64,6 +65,7 @@ _createDialogView =
 _rpcCallback1 =
 function(response) {
         this.pbDialog.popdown();
+	
         if(response.text=="success"){
 			
                 var a =  appCtxt.getMsgDialog();
@@ -81,47 +83,5 @@ function(response) {
                 a.popup();
         }
 }
-
-/*checkContacts = function(offset, contactList,addressBook) {
-    // create the json object for the search request
-        contactBook=addressBook
-        //contactBook=AjxStringUtil.urlComponentDecode(addressBook);
-    var jsonObj = {SearchRequest:{_jsns:"urn:zimbraMail"}};
-
-    var request = jsonObj.SearchRequest;
-
-    request.sortBy = ZmSearch.NAME_ASC;
-    ZmTimezone.set(request, AjxTimezone.DEFAULT);
-    request.locale = { _content: AjxEnv.DEFAULT_LOCALE };
-    request.offset = 0;
-    request.types = ZmSearch.TYPE[ZmItem.CONTACT];
-    //request.query = this.getContactFolders();
-        //request.query = 'in:'+contactBook;
-        request.query = "in:\""+contactBook+"\"";
-    request.offset = offset || 0;
-    request.limit = this.LIMIT;
-
-    contactList = contactList || [];
-    var searchParams = {
-            jsonObj:jsonObj,
-            asyncMode:true,
-            callback:new AjxCallback(this, this.checkContactResponse, [contactList]),
-    };
-    appCtxt.getAppController().sendRequest(searchParams);
-};
-
-checkContactResponse=function(contactList, result){
-	var response = result.getResponse().SearchResponse;
-        var responseContactList = response[ZmList.NODE[ZmItem.CONTACT]];
-	var addPath=zmlt.getUserProperty("addBookPath");
-	if (responseContactList) {
-		var vncObj = new VncContactSync();
-		var abcObj = vncObj.getContacts(0,[],addressBookPath);
-	}else{
-		return;
-
-	}
-	
-}*/
 
 

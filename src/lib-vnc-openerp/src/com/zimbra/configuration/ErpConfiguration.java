@@ -25,7 +25,8 @@ import java.text.SimpleDateFormat;
 import java.net.URLEncoder;
 import java.io.*;
 import java.lang.Exception;
-
+import java.net.URI;
+import java.net.URLEncoder;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.MultipartPostMethod;
 
@@ -654,6 +655,19 @@ public class ErpConfiguration
 		System.out.println("This is zimbra port and openerp id---->>>>>"+z_portNumber);
 		Integer zimbraPort=Integer.parseInt(z_portNumber);
 		Object contactlist;
+		String tmpDir = System.getProperty("java.io.tmpdir");
+		String osName= System.getProperty("os.name");
+		if(osName.indexOf("W")>-1)
+		{
+			System.out.println("Damn its windows 7 "+tmpDir);
+			tmpDir+="\\myData.csv";
+
+		}
+		else
+		{
+			tmpDir+="/myData.csv";
+		}
+		System.out.println("THis is file path for CSV-->>"+tmpDir);
 		List<Integer> intList;
 		try
 		{
@@ -716,7 +730,8 @@ public class ErpConfiguration
 			int len2=nameList.size();/*This is number of fields*/
 			String name,email;
 			XmlRpcArray arr=contactList.getArray("datas");
-			CsvWriter csvFile=new CsvWriter("/tmp/myData.csv",',',Charset.forName("UTF-8"));
+
+			CsvWriter csvFile=new CsvWriter(tmpDir,',',Charset.forName("UTF-8"));
 			csvFile.setForceQualifier(true);
 			for(int t=1; t<heading.size(); t++)
 			{
@@ -761,16 +776,21 @@ public class ErpConfiguration
 			Runtime r=Runtime.getRuntime();
 			String[] z_Protocol=zimbraProtocol.split(":");
 			System.out.println("Thi is protocol--->>>"+z_Protocol);
-			//URI uri = new URI("http",null,"jignesh.com",80,"/booksearch/first book.pdf/","fmt=csv&auth=qp",null);
-
-			URI uri = new URI(z_Protocol[0],null,domainName,zimbraPort,"/home/"+acc_name+"/"+addressBook,"fmt=csv&auth=qp&zauthtoken="+auth_token,null);
+			String tempurl=urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token;
+			//tempurl = URLEncoder.encode(tempurl, "UTF-8");
+			tempurl=tempurl.replaceAll(" ","%20");
+			System.out.println("This is the temprory string url--->>"+tempurl);
+			URI uri = new URI(tempurl);
+			System.out.println("URI : " + uri.toURL());
+			System.out.println("toAscii : " + uri.toASCIIString());
+			uri = new URI(uri.toASCIIString());
 			URL url = uri.toURL();
 			System.out.println("This is url=====>>>>>>"+url);
 
 			try
 			{
 
-				//Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+url);
+				//Process p=r.exec("curl -k -m 10000 --upload-file "+tmpDir+url);
 				// p.waitFor();
 				//System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 
@@ -779,7 +799,7 @@ public class ErpConfiguration
 				client.setConnectionTimeout(10000);
 
 				// Send any XML file as the body of the POST request
-				File f1 = new File("/tmp/myData.csv");
+				File f1 = new File(tmpDir);
 
 				System.out.println("File1 Length = " + f1.length());
 

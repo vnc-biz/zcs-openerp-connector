@@ -346,13 +346,7 @@ function checkConnection(){
 
 
 			
-			zm.setUserProperty("urladdress",url);
-			zm.setUserProperty("getdatabase",database);
-			zm.setUserProperty("port",port);
-			zm.setUserProperty("username",username);
-			zm.setUserProperty("userpassword",z_password);
 			zm.setUserProperty("openerp_id",response.text);
-			zm.setUserProperty("proto",proto);
 			zm.saveUserProperties();
 			var openerp_id=zm.getUserProperty("openerp_id");
 		 var jspurl1="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+database.trim()+"&password="+z_password+"&obj_name=zimbra.partner&urladdress="+(proto+url.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id.trim();
@@ -364,6 +358,16 @@ function checkConnection(){
                          a.popup();
                         return;
                }
+
+		
+			
+			zm.setUserProperty("urladdress",url);
+			zm.setUserProperty("getdatabase",database);
+			zm.setUserProperty("port",port);
+			zm.setUserProperty("username",username);
+			zm.setUserProperty("userpassword",z_password);
+			zm.setUserProperty("proto",proto);
+			zm.saveUserProperties();
 
 			var a =  appCtxt.getMsgDialog();
                 	a.setMessage(zm.getMessage("connector_configuration_lbl_conection_saved"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));

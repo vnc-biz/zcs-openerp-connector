@@ -252,7 +252,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = f
 };
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleChooseFolder = function(organizer) {
-		
 	var addBook=organizer.getName();
 	addBook = addBook.replace(/&nbsp;/gi,' ');
 	var addBookPath=organizer.getPath();

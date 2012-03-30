@@ -5,6 +5,8 @@
 <%@ page import="com.zimbra.cs.account.soap.SoapProvisioning" %>
 <%@ page import="com.zimbra.cs.account.soap.SoapProvisioning.Options" %>
 <%@ page import="java.net.*" %>
+<%@page pageEncoding="UTF-8"%>
+
 <%
 response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
 response.setHeader("Pragma","no-cache"); //HTTP 1.0
@@ -42,6 +44,9 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
 	    	String z_portNumber=request.getParameter("z_portNumber");	
 	    	String domainName=request.getParameter("domainName");
 	     	Cookie cookies [] = request.getCookies();
+		restURL = new String(restURL.getBytes(request.getCharacterEncoding() != null?request.getCharacterEncoding():"UTF-8"),"UTF-8");
+			
+		System.out.println("This is rest--->from JSP>> "+restURL);
             	String auth_token=new String();
                         if (cookies != null)
                         {
@@ -59,6 +64,7 @@ response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
             	out.print(configuration.getContacts(dbname,password,urladdress,port,auth_token,restURL,openerp_id,acc_name,zimbraProtocol,z_portNumber,addressBook,domainName));
 
             } catch (Exception e) {
+		System.out.println("Exception---"+e);
                 out.println(e.getMessage());
 		e.printStackTrace();
             }
