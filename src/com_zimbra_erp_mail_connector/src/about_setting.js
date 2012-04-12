@@ -1,32 +1,20 @@
+/* This file contains about information */
 about_setting.prototype = new DwtTabViewPage;
 about_setting.prototype.constructor = about_setting;
-
-
 var zm;
 
 function about_setting(parent, zimlet){
-
 	DwtTabViewPage.call(this,parent);
-	 this.zimlet = zimlet;
-        zm=this.zimlet;
-	 this._createHTML();
-	//this.setScrollStyle(Dwt.SCROLL);
-
-	
+	this.zimlet = zimlet;
+	zm=this.zimlet;
+	this._createHTML();
 }
 
-
-
-
 about_setting.prototype._createHTML = function() {
-        var i = 0;
-
-        var html = new Array();
-
-        html[i++]="<table align='center' class='about_logo'>";
-
+	var i = 0;
+	var html = new Array();
+	html[i++]="<table align='center' class='about_logo'>";
 	html[i++]="<tr>";
-	//html[i++]="<td><font face='Times New Roman' size='6px'>Developed By</font></td>";
 	html[i++]="</tr>";
 	html[i++]="<tr>";
 	html[i++]="<td>";

@@ -228,6 +228,7 @@ select
 	padding-left:0;
 	margin-left:72%;
 	margin-left:35%;
+	-webkit-margin-left:60%;
 }
 
 .config_btnIE
@@ -257,4 +258,15 @@ select
 	padding-left:0;
 	margin-top:5%;
 	margin-top:1%;
+}
+
+.showpass
+{
+	padding-left:100px;
+}
+
+.showpassLabel
+{
+	float:left;
+	padding-top:4px;
 }

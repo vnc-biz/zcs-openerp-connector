@@ -5,6 +5,8 @@ com_zimbra_erp_mail_connector_HandlerObject.getInstance = function () {
 
 
 var mail_from=[];
+var receiver = "";
+var msgFlag=0;
 com_zimbra_erp_mail_connector_HandlerObject.prototype= new ZmZimletBase;
 
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID="Contact Sync.";
@@ -105,9 +107,9 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 		// create params obj with button details
                 var buttonArgs = {
                         text :cal_sync_btn,
-                        tooltip : "Reload all remote calendars",
+                        tooltip : "Synchronize Calendar",
                         index : buttonIndex, // position of the button
-                        image : "refresh" // icoN
+                        image : "refresh" // icon
                 };
 
                 // toolbar.createOp api creates the button with some id and params
@@ -149,12 +151,12 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = function(controller) {
 	var calendars = appCtxt.getFolderTree().getByType(ZmOrganizer.CALENDAR);
-	for(var i in calendars){
-		if(calendars[i].url != undefined){
-			calendars[i].sync();
-		}
-	}
-		
+    for(var i in calendars){
+        if(calendars[i].url != undefined){
+            calendars[i].sync();
+        }
+    }	
+
 };
 
 
@@ -165,33 +167,40 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handle_push_and_save = fu
 	currController.sendMsg("","",respCallback);
 
 }
-
+var msg = "";
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleResponsefromsend = function(result) {
 	var resp=result.getResponse();
         var ac = window.parentAppCtxt || window.appCtxt;
 	var msgid=resp.m[0].id;
         var list = ac.getApp(ZmApp.MAIL).getMailListController().getList();
-	var msg = new ZmMailMsg(resp.m[0].id, list, true); // do not cache this temp msg
+		msg = new ZmMailMsg(resp.m[0].id, list, true); // do not cache this temp msg
     	msg._loadFromDom(resp.m[0]);
     	msg._loaded = true; // bug fix #8868 - force load for rfc822 msgs since they may not return any content
     	msg.readReceiptRequested = false; // bug #36247 - never allow read receipt for rfc/822 message
     	msg._part = resp.m[0].part;
 	var from=new AjxEmailAddress(appCtxt.getUsername(),AjxEmailAddress.FROM);
-	mail_from=[];
-	mail_from.push(appCtxt.getUsername());	
-        this.doDrop(msg);
-
-		
-
+	var msgLoadCallback = new AjxCallback(this, this._msgLoaded,[result]);
+	msg.load({forceLoad:true,callback:msgLoadCallback});
 
 }
 
-
+com_zimbra_erp_mail_connector_HandlerObject.prototype._msgLoaded = function(result){
+	var res=result.getResponse();
+		mail_from=[];
+	var rec=msg.getAddress(ZmMailMsg.HDR_TO);
+		if(rec.toString().indexOf("<") > -1){
+			rec=rec.toString().split("<")[1];
+			rec=rec.toString().split(">")[0];
+		}
+	mail_from.push(rec);
+	msgFlag=1;
+    this.doDrop(msg);
+	
+}
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleSOAPErrorResponseXML = function(result) {
 		
 	if (result.isException()) {
-        // do something with exception
         var exception = result.getException();
 	return;
     }
@@ -252,6 +261,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = f
 };
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleChooseFolder = function(organizer) {
+		
 	var addBook=organizer.getName();
 	addBook = addBook.replace(/&nbsp;/gi,' ');
 	var addBookPath=organizer.getPath();
@@ -298,18 +308,38 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.addMenuButton = function(c
         }
 };
 
-
+var mailtopush="";
 com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = function(controller) {
-
+		//var sel = controller._listView[controller._currentView].getSelection();
         var con=appCtxt.getCurrentController();
-        var msg=con.getMsg();
-        if(msg != null){
-                this.doDrop(msg);
+		mailtopush = controller.getCurrentView().getDnDSelection();
+		mailtopush = (mailtopush instanceof Array) ? mailtopush : [mailtopush];
+		var eml;
+		for ( var i = 0; i < mailtopush.length; i++) {
+		
+			if (mailtopush[i].type === ZmId.ITEM_CONV) {
+        		var arry = mailtopush[i].participants.getArray();
+        		if(arry.length >0) {
+            				eml = arry[arry.length - 1].address;
+        		}
+    		} else if (mailtopush[i].type === ZmId.ITEM_MSG) {
+			
+        	var obj = mailtopush[i].getAddress(AjxEmailAddress.FROM);
+        	if(obj)
+            	eml = obj.address;
+    		}
+		}
+	
+		mail_from=[];
+		mail_from.push(eml);
+		
+        //var msg=con.getMsg();
+       	if(mailtopush != null){
+                this.doDrop(mailtopush[0]);
         }
 
-
-
 }; 
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 
 	docList=this.getUserProperty("doc_list");
@@ -515,7 +545,9 @@ try{
                 return;
        
 	 }	
-	
+
+
+	//port = Number(location.port);
 	proto=location.protocol;
 	if(proto == "http:"){
 		port=appCtxt.get(ZmSetting.HTTP_PORT);
@@ -523,10 +555,25 @@ try{
 	}else if(proto == "https:"){	
 		port=appCtxt.get(ZmSetting.HTTPS_PORT);
 	}
-	//port = Number(location.port);
+
+        baseURL =
+        [       location.protocol,
+                '//',
+                location.hostname,
+                (
+                 (port && ((proto == ZmSetting.PROTO_HTTP && port != ZmSetting.HTTP_DEFAULT_PORT)
+                || (proto == ZmSetting.PROTO_HTTPS && port != ZmSetting.HTTPS_DEFAULT_PORT)))?
+                        ":"+port:''),
+                "/service/home/~/"
+        ].join("");
+	
+        download_link=baseURL;
+		
 	if(droppedItem instanceof Array) {
 		
 		for(var i =0; i < droppedItem.length; i++) {
+			
+		
 		
 			var obj = droppedItem[i].srcObj ?  droppedItem[i].srcObj :  droppedItem[i];
 			if(obj.type == "CONV" ) {
@@ -557,7 +604,6 @@ try{
                         var aptId=obj.id;
 			if(aptId<0){
 				aptId=g_aptId;
-				 DBG.println(AjxDebug.DBG3, "Hello----->>>this is globel Id==="+aptId);
 				
 			}
                         var download_link=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(obj.getFolder().getName()).getRestUrl();
@@ -569,35 +615,14 @@ try{
 
  
 	}
-		
-	if(droppedItem[0] != undefined){	
-		if(droppedItem[0].srcObj.id.indexOf(':') > 0){
-			port = Number(location.port);
-		}
-        }else{
-		if(droppedItem.srcObj.id.indexOf(':') > 0){
-			port = Number(location.port);
-		}
-	}
-        baseURL =
-        [       location.protocol,
-                '//',
-                location.hostname,
-                (
-                 (port && ((proto == ZmSetting.PROTO_HTTP && port != ZmSetting.HTTP_DEFAULT_PORT)
-                || (proto == ZmSetting.PROTO_HTTPS && port != ZmSetting.HTTPS_DEFAULT_PORT)))?
-                        ":"+port:''),
-                "/service/home/~/"
-        ].join("");
 	
-        download_link=baseURL;
+
 
 
 }catch(e){
-		var a =  appCtxt.getMsgDialog();
-                a.setMessage(zm.getMessage("exception"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+				var a =  appCtxt.getMsgDialog();
+                a.setMessage(this.getMessage("mail_push_exception"),DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
                 a.popup();
-                return
 	}
 
 if(obj.type != "APPT") {
@@ -636,36 +661,43 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=
 function(convSrcObj) {
 	
    try{	
-
 	msgids.push(convSrcObj.msgIds);
+	
 	msgtype.push(convSrcObj.type);
 	ids=convSrcObj.msgIds;
+	
+	mail_cc= [];
+	mail_bcc=[];
 	mail_sender=[];
+	mail_replyto = [];
+	//mail_from = [];
 	mail_to = [];
+	mail_attachment = [];
+	attachment_binary=[];
 
 	mail_subject=convSrcObj.getFirstHotMsg().subject;
 
-	 sentdate= new Date(convSrcObj.getFirstHotMsg().sentDate);
-
-
-	mail_sentdate=(sentdate.getMonth()+1)+"/"+sentdate.getDate()+"/"+(sentdate.getYear()+1900)+" "+sentdate.getHours()+":"+sentdate.getMinutes()+":"+sentdate.getSeconds();
 	 
 	/* Get hhhh the CC , FROM, TO, BCC, SENDER ,REPLY_TO from Email */
-
-	participants = convSrcObj.getFirstHotMsg().participants.getArray(); 
-
+	if(convSrcObj.getFirstHotMsg().participants != null){
+		participants = convSrcObj.getFirstHotMsg().participants.getArray(); 
+	}
 	for(var i =0; i < participants.length; i++) {
 			
 		     if(participants[i].type == AjxEmailAddress.FROM) {
+			 	if(msgFlag == "0"){
 			      	mail_from = [];
-				mail_from.push(participants[i].address);
+					mail_from.push(participants[i].address);
+				}else{
+					msgFlag=0;
+				}
 
 			}
 
 	}	
 	
 
-	/*port = Number(location.port);
+	port = Number(location.port);
 	baseURL = 
 	[	location.protocol,
 		'//',
@@ -677,14 +709,12 @@ function(convSrcObj) {
 		"/service/home/~/"
 	].join("");
 	
-	download_link=baseURL;*/
+	download_link=baseURL;
 	  
     }catch(e){
-		
-		var a =  appCtxt.getMsgDialog();
-                a.setMessage(zm.getMessage("exception"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-                a.popup();
-                return
+				var a =  appCtxt.getMsgDialog();
+               	a.setMessage(this.getMessage("mail_push_exception"),DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
+                a.popup();	
 	}
 	 
 
@@ -696,15 +726,19 @@ function(convSrcObj) {
 
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=function(convSrcObj) {
-	
-		msgids.push(convSrcObj.id);
-		msgtype.push(convSrcObj.type);
-		ids=convSrcObj.id;
-		mail_subject=convSrcObj.subject;
-		//mail_contant=convSrcObj.getBodyContent();
+
+	msgids.push(convSrcObj.id);
+	msgtype.push(convSrcObj.type);
+
+	ids=convSrcObj.id;
+       
+	 mail_subject=convSrcObj.subject;
+	// mail_contant=convSrcObj.getBodyContent();
 	
 	mail_cc = [];
 	mail_bcc = [];
+	mail_sender = [];
+	//mail_from = [];
 	mail_to = [];
 	mail_replyto = [];
 	mail_attachment = [];
@@ -714,18 +748,35 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 
 	mail_sentdate=(sentdate.getMonth()+1)+"/"+sentdate.getDate()+"/"+(sentdate.getYear()+1900)+" "+sentdate.getHours()+":"+sentdate.getMinutes()+":"+sentdate.getSeconds();
 
+
+
+	 
+
+
+          //var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Getemailrecord.jsp?msgid="+ids;	
+	  //var jspurl="Getemailrecord.jsp?msgid="+ids;	
+	
+
+		
+	   
+
+
 	/*  Get the CC , FROM, TO, BCC, SENDER ,REPLY_TO from Email */
-
-	var participants = convSrcObj.participants.getArray(); 
-
+	if(convSrcObj.participants != null){
+		var participants = convSrcObj.participants.getArray(); 
+	}
 	for(var i =0; i < participants.length; i++) {
 
 		     /*if(participants[i].type == AjxEmailAddress.CC) {
 			      mail_cc.push(participants[i].address);
 		     }*/
 		     if(participants[i].type == AjxEmailAddress.FROM) {
-			      	mail_from = [];
-				mail_from.push(participants[i].address);
+					if(msgFlag == "0"){
+                    	mail_from = [];
+                    	mail_from.push(participants[i].address);
+                	}else{
+                    	msgFlag=0;
+                	}
 		     }
 		     /*if(participants[i].type == AjxEmailAddress.BCC) {
 			      mail_bcc.push(participants[i].address);
@@ -745,7 +796,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 
 
 	
-	/*port = Number(location.port);
+	port = Number(location.port);
 	baseURL = 
 	[	location.protocol,
 		'//',
@@ -758,7 +809,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 	].join("");
 	
          
-download_link=baseURL;*/
+download_link=baseURL;
 	// var jspurl = this.getResource("Getemailrecord.jsp?msgid="+ids+"&sessionid="+ZmCsfeCommand.getSessionId()+"&urldownload="+baseURL);
 
 	
@@ -768,19 +819,4 @@ download_link=baseURL;*/
 
 		
 };
-
-/**  Create Json for Emails..  **/
-
-
-
-/*function mailRecordJson(mail_subject,mail_contant,mail_sentdate,mail_cc,mail_from,mail_bcc,mail_sender,mail_to,mail_replyto,mail_attachment,attachment_binary,ids){
-
-	var jsonstr='{"Delivered_To":"'+mail_to+'","CC": "'+mail_cc+'","References":"'+mail_bcc+'","From":"'+mail_from+'","In_Reply_To":"'+mail_sender+'", "Subject":"'+mail_subject+'","body":"'+mail_contant+'","attachments":"'+mail_attachment+'","Content_Transfer_Encoding":"'+attachment_binary+'","Date":"'+mail_sentdate+'","Reply_To":"'+mail_replyto+'","message_id":"'+ids+'"}';
-	
-	arrayJSON.push(jsonstr);
-}*/
-
-
-
-
 

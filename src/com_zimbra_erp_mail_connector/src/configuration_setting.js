@@ -120,11 +120,12 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="<td>";
 		html[i++]="<input type='password' id='userpassword' class='textWidth'/>"
 		html[i++]="</td>";
-		html[i++]="</tr>";
-
+		html[i++]="<td class='showpass'>";
+		html[i++]="<div><div style='float:left'><input type='checkbox' id='passchk' onclick='showpass()'/></div><div class='showpassLabel'>"+this.zimlet.getMessage("show_password")+"</div></div>";
+		html[i++]="</td></tr></table>";
 		html[i++]="<table><tr><td>";
 		if(navigator.userAgent.indexOf('Chrome')>-1){
-			html[i++]="<button onClick='checkConnection()' id='connect' style='margin-left:230px'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
+			html[i++]="<button onClick='checkConnection()' id='connect' style='margin-left:210px'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
 		}else{
 			html[i++]="<button onClick='checkConnection()' id='connect' class='config_btn1'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
 		
@@ -134,7 +135,14 @@ configuration_setting.prototype._createHTML = function() {
 
 };
 
+function showpass(){
+	if(document.getElementById("passchk").checked){
+		document.getElementById("userpassword").type='text'	;
+	}else{
+		document.getElementById("userpassword").type='password';
+	}
 
+}
 /*Gives the Database List*/
 
 function getDatabase(){

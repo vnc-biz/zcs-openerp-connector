@@ -187,89 +187,6 @@ public class ErpConfiguration
 
 	}
 
-
-	public String addDocumentRecord(String title,String docname)
-	{
-
-		int exec=0;
-		try
-		{
-			docname=docname.toLowerCase();
-			Class.forName("com.mysql.jdbc.Driver");
-			con =DriverManager.getConnection("jdbc:mysql://localhost:7306/zimbra","zimbra",MYSQL_PASSWORD);
-			stmt = con.createStatement();
-			Statement stmtread;
-
-			String sqlread="select * from tbl_document_setting where docname='" + docname +"'";
-			stmtread=con.createStatement();
-			ResultSet rs=stmtread.executeQuery(sqlread);
-			if(rs.next())
-			{
-
-				return "duplicate";
-
-			}
-
-
-			String sql = "insert into tbl_document_setting(title,docname) values(?,?)";
-
-			prest = con.prepareStatement(sql);
-			prest.setString(1,title);
-			prest.setString(2,docname);
-			exec=prest.executeUpdate();
-
-
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return "false";
-		}
-		if(exec<=0)
-		{
-			return "false";
-		}
-		else
-		{
-			return "true";
-		}
-
-
-	}
-
-	public String deleteDocumentRecord(String record_id)
-	{
-
-		int exec=0;
-		try
-		{
-			Class.forName("com.mysql.jdbc.Driver");
-			con =DriverManager.getConnection("jdbc:mysql://localhost:7306/zimbra","zimbra",MYSQL_PASSWORD);
-			stmt = con.createStatement();
-
-			String sql = "delete from tbl_document_setting where id in ("+record_id+")";
-			exec=stmt.executeUpdate(sql);
-
-
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
-
-		if(exec<=0)
-		{
-			return "false";
-		}
-		else
-		{
-			return "true";
-		}
-
-
-	}
-
-
 	public String getRecord(String obj_name)
 	{
 		String temp=null;
@@ -652,14 +569,14 @@ public class ErpConfiguration
 
 		Gson gson = new Gson();
 		Integer op_id=Integer.parseInt(openerp_id);
-		System.out.println("This is zimbra port and openerp id---->>>>>"+z_portNumber);
+		System.out.println("This is zimbra port and ---->>>>>"+z_portNumber);
 		Integer zimbraPort=Integer.parseInt(z_portNumber);
 		Object contactlist;
 		String tmpDir = System.getProperty("java.io.tmpdir");
 		String osName= System.getProperty("os.name");
 		if(osName.indexOf("W")>-1)
 		{
-			System.out.println("Damn its windows 7 "+tmpDir);
+			System.out.println("Damn its windows 7 "+"/tmp/myData.csv");
 			tmpDir+="\\myData.csv";
 
 		}
@@ -667,7 +584,7 @@ public class ErpConfiguration
 		{
 			tmpDir+="/myData.csv";
 		}
-		System.out.println("THis is file path for CSV-->>"+tmpDir);
+		System.out.println("THis is file path for CSV-->>"+"/tmp/myData.csv");
 		List<Integer> intList;
 		try
 		{
@@ -731,7 +648,7 @@ public class ErpConfiguration
 			String name,email;
 			XmlRpcArray arr=contactList.getArray("datas");
 
-			CsvWriter csvFile=new CsvWriter(tmpDir,',',Charset.forName("UTF-8"));
+			CsvWriter csvFile=new CsvWriter("/tmp/myData.csv",',',Charset.forName("UTF-8"));
 			csvFile.setForceQualifier(true);
 			for(int t=1; t<heading.size(); t++)
 			{
@@ -797,16 +714,11 @@ public class ErpConfiguration
 				HttpClient client = new HttpClient();
 				MultipartPostMethod mPost = new MultipartPostMethod(url.toString());
 				client.setConnectionTimeout(10000);
-
 				// Send any XML file as the body of the POST request
-				File f1 = new File(tmpDir);
-
+				File f1 = new File("/tmp/myData.csv");
 				System.out.println("File1 Length = " + f1.length());
-
 				mPost.addParameter(f1.getName(), f1);
-
 				int statusCode1 = client.executeMethod(mPost);
-
 				System.out.println("statusLine>>>" + mPost.getStatusLine());
 				mPost.releaseConnection();
 				return "success";

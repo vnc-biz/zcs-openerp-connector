@@ -313,19 +313,9 @@ function getDocumentRecord(){
 	
 		/*response will have documents list*/	
                 	if (response.success == true) {
-
 			
 				if(response.text.trim().length>2 && response.text.trim()!="Exception"){
-				
 				var docrecord=JSON.parse(response.text.trim());
-			
-				/*var jspurl2="/service/zimlet/com_zimbra_erp_mail_connector/GetDocumentRecord.jsp?obj_name="+tot_obj[j];
-
-                                var response2 = AjxRpc.invoke(null,jspurl2, null, null, true);
-				var firstparse =JSON.parse(response2.text.trim());
-				
-				var records2=firstparse.records;*/
-
 				var title;
 				dd_list=zmlt.getUserProperty("doc_list");
 				dd_json=JSON.parse(dd_list);
@@ -504,10 +494,6 @@ function pushEmail(push_random){
 							if(!tagObj)
 						    		return;
 							var tagId = tagObj.id;
-							if(tagId.indexOf(':') > 0){
-								tagId = tagId.split(':')[1];
-							}
-
 							var soapCmd = "MsgActionRequest";
 					
 					
