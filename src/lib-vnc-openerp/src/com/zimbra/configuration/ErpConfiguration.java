@@ -117,6 +117,8 @@ public class ErpConfiguration
 			Gson gson = new Gson();
 			Vector child=new Vector();
 			Vector parent=new Vector();
+			Vector domainChild=new Vector();
+			Vector domainParent=new Vector();
 			Integer op_id=Integer.parseInt(openerp_id);
 			boolean valid;
 			valid=validate(emailsearch);
@@ -143,7 +145,7 @@ public class ErpConfiguration
 						System.out.println("Inside res.partner or res.partner.address-------------->>>>>>>>>>>>>>>>>");
 						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 						child.add("email");
-						child.add("=");
+						child.add("ilike");
 						child.add(emailsearch);
 						parent.add(child);
 						Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",parent} );
@@ -173,9 +175,15 @@ public class ErpConfiguration
 				}
 				else
 				{
+					System.out.println("Inside Invalid address but search for domain-------------->>>>>>>>>>>>>>>>>");
 					XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch,new Vector()} );
-					if (token.toString().length()!=2)
+					domainChild.add("email");
+					domainChild.add("ilike");
+					domainChild.add(emailsearch);
+					domainParent.add(domainChild);
+					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",domainParent} );
+					System.out.println("Call success------------------->>>>>>>>>"+token.toString());
+					if(token.toString().length()!=2)
 					{
 						return gson.toJson(token);
 					}
@@ -183,6 +191,14 @@ public class ErpConfiguration
 					{
 						return "bl";
 					}
+
+					/*XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
+					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch,new Vector()} );
+					if (token.toString().length()!=2) {
+						return gson.toJson(token);
+					} else {
+						return "bl";
+					}*/
 				}
 			}
 		}
