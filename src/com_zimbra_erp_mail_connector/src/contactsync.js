@@ -22,36 +22,24 @@ contactsync=function(zimlet,addBook,addBookPath) {
 	if(zimbraProtocol== "http:"){
 		z_portNumber=appCtxt.get(ZmSetting.HTTP_PORT);
 	}else if(zimbraProtocol == "https:"){
-
 		z_portNumber=appCtxt.get(ZmSetting.HTTPS_PORT);
-                	
 	}
-	
 	addressBook=AjxStringUtil.urlComponentDecode(addressBook);
 	var rest=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(addressBook).getRestUrl();
-	//var rest=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByName(addressBook).getRestUrl();
-
 	if(dbname=="" || password=="" || urladdress=="" || port=="" ){
-                var a =  appCtxt.getMsgDialog();
-                a.setMessage(zmlt.getMessage("no_database_configured"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
-                a.popup();
-
-                return;
-        }	
-
-
-	 var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&acc_name="+acc_name+"&openerp_id="+openerp_id+"&addressBook="+addressBookPath+"&rest="+rest+"&zimbraProtocol="+zimbraProtocol+"&z_portNumber="+z_portNumber+"&domainName="+domainName;
-
-		var callback = new AjxCallback(this,_rpcCallback1)
-	        AjxRpc.invoke(null,jspurl, null,callback, true);
+		var a =  appCtxt.getMsgDialog();
+			a.setMessage(zmlt.getMessage("no_database_configured"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
+			a.popup();
+			return;
+	}	
+	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Contactsync.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&acc_name="+acc_name+"&openerp_id="+openerp_id+"&addressBook="+addressBookPath+"&rest="+rest+"&zimbraProtocol="+zimbraProtocol+"&z_portNumber="+z_portNumber+"&domainName="+domainName;
+	var callback = new AjxCallback(this,_rpcCallback1)
+		AjxRpc.invoke(null,jspurl, null,callback, true);
 		this.pView = new DwtComposite(zmlt.getShell());
-        	this.pView.setSize("50", "50");
-        	this.pView.getHtmlElement().innerHTML = _createDialogView();
-
-        	this.pbDialog = new ZmDialog({view:this.pView, parent:zmlt.getShell(),standardButtons:[DwtDialog.NO_BUTTONS]});
-        	this.pbDialog.popup(); //show the dialog
-		
-	
+		this.pView.setSize("50", "50");
+		this.pView.getHtmlElement().innerHTML = _createDialogView();
+		this.pbDialog = new ZmDialog({view:this.pView, parent:zmlt.getShell(),standardButtons:[DwtDialog.NO_BUTTONS]});
+		this.pbDialog.popup(); //show the dialog
 }
 
 _createDialogView =
@@ -64,24 +52,19 @@ _createDialogView =
 
 _rpcCallback1 =
 function(response) {
-        this.pbDialog.popdown();
-	
-        if(response.text=="success"){
-			
-                var a =  appCtxt.getMsgDialog();
-                a.setMessage(zmlt.getMessage("contact_sync_success"),DwtMessageDialog.INFO_STYLE,zmlt.getMessage("msg"));
-                a.popup();
+	this.pbDialog.popdown();
+	if(response.text=="success"){
+		var a =  appCtxt.getMsgDialog();
+			a.setMessage(zmlt.getMessage("contact_sync_success"),DwtMessageDialog.INFO_STYLE,zmlt.getMessage("msg"));
+			a.popup();
 		var vnc = new VncContactSync();
 		addressBookPath=AjxStringUtil.urlComponentDecode(addressBookPath);
 		addressBookPath=AjxStringUtil.htmlDecode(addressBookPath,true)
 		var abc = vnc.getContacts(0,[],addressBookPath);
-        }
-        else{
-
-                var a =  appCtxt.getMsgDialog();
-                a.setMessage(zmlt.getMessage("chk_connection"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
-                a.popup();
-        }
+	}
+	else{
+		var a =  appCtxt.getMsgDialog();
+			a.setMessage(zmlt.getMessage("chk_connection"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
+			a.popup();
+	}
 }
-
-
