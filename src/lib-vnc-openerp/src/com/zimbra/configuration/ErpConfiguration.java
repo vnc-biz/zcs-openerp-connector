@@ -126,7 +126,7 @@ public class ErpConfiguration
 			{
 				System.out.println("getDocumentlist->This is openerp_id--------->>>>>>"+openerp_id);
 				XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-				Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()} );
+				Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",""} );
 				if (token.toString().length()!=2)
 				{
 					return gson.toJson(token);
@@ -138,11 +138,11 @@ public class ErpConfiguration
 			}
 			else
 			{
-				if (valid==true)
+				if (obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead"))
 				{
-					if (obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead"))
+					if (valid == true)
 					{
-						System.out.println("Inside res.partner or res.partner.address-------------->>>>>>>>>>>>>>>>>");
+						System.out.println("Inside valid domain or Email and one of three objects-------------->>>>>>>>>>>>>>>>>");
 						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 						child.add("email");
 						child.add("ilike");
@@ -161,28 +161,47 @@ public class ErpConfiguration
 					}
 					else
 					{
-						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-						Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch,new Vector()} );
-						if(token.toString().length()!=2)
+						if(emailsearch.indexOf("@")== 0 && emailsearch.indexOf(".")>0)
 						{
-							return gson.toJson(token);
+							System.out.println("It's a domain name------>>>>>>>>>><><><><><><><><><");
+							XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
+							domainChild.add("email");
+							domainChild.add("ilike");
+							domainChild.add(emailsearch);
+							domainParent.add(domainChild);
+							Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",domainParent} );
+							System.out.println("Call success------------------->>>>>>>>>"+token.toString());
+							if(token.toString().length()!=2)
+							{
+								return gson.toJson(token);
+							}
+							else
+							{
+								return "bl";
+							}
 						}
 						else
 						{
-							return "bl";
+							XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
+							Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch} );
+							if(token.toString().length()!=2)
+							{
+								return gson.toJson(token);
+							}
+							else
+							{
+								return "bl";
+							}
+
 						}
+
 					}
 				}
 				else
 				{
-					System.out.println("Inside Invalid address but search for domain-------------->>>>>>>>>>>>>>>>>");
+
 					XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-					domainChild.add("email");
-					domainChild.add("ilike");
-					domainChild.add(emailsearch);
-					domainParent.add(domainChild);
-					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",domainParent} );
-					System.out.println("Call success------------------->>>>>>>>>"+token.toString());
+					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch} );
 					if(token.toString().length()!=2)
 					{
 						return gson.toJson(token);
@@ -191,14 +210,6 @@ public class ErpConfiguration
 					{
 						return "bl";
 					}
-
-					/*XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch,new Vector()} );
-					if (token.toString().length()!=2) {
-						return gson.toJson(token);
-					} else {
-						return "bl";
-					}*/
 				}
 			}
 		}
