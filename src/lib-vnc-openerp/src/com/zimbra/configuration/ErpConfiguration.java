@@ -448,22 +448,23 @@ public class ErpConfiguration
 			Runtime r=Runtime.getRuntime();
 			String[] z_Protocol=zimbraProtocol.split(":");
 			System.out.println("Thi is protocol--->>>"+z_Protocol);
+			URI uri = new URI(z_Protocol[0],null,domainName,zimbraPort,"/home/"+acc_name+"/"+addressBook,"fmt=csv&auth=qp&zauthtoken="+auth_token,null);
 			String tempurl=urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token;
-			//tempurl = URLEncoder.encode(tempurl, "UTF-8");
+			tempurl = URLEncoder.encode(tempurl, "UTF-8");
 			tempurl=tempurl.replaceAll(" ","%20");
-			System.out.println("This is the temprory string url--->>"+tempurl);
-			URI uri = new URI(tempurl);
-			System.out.println("URI : " + uri.toURL());
-			System.out.println("toAscii : " + uri.toASCIIString());
-			uri = new URI(uri.toASCIIString());
+			//System.out.println("This is the temprory string url--->>"+tempurl);
+			//URI uri = new URI(tempurl);
+			//System.out.println("URI : " + uri.toURL());
+			//System.out.println("toAscii : " + uri.toASCIIString());
+			//uri = new URI(uri.toASCIIString());
 			URL url = uri.toURL();
 			System.out.println("This is url=====>>>>>>"+url);
 			try
 			{
-				//Process p=r.exec("curl -k -m 10000 --upload-file "+tmpDir+url);
-				// p.waitFor();
-				//System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
-				HttpClient client = new HttpClient();
+				Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+url);
+				p.waitFor();
+				System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
+				/*HttpClient client = new HttpClient();
 				MultipartPostMethod mPost = new MultipartPostMethod(url.toString());
 				client.setConnectionTimeout(10000);
 				// Send any XML file as the body of the POST request
@@ -472,7 +473,7 @@ public class ErpConfiguration
 				mPost.addParameter(f1.getName(), f1);
 				int statusCode1 = client.executeMethod(mPost);
 				System.out.println("statusLine>>>" + mPost.getStatusLine());
-				mPost.releaseConnection();
+				mPost.releaseConnection();*/
 				return "success";
 			}
 			catch(IllegalThreadStateException ex)
