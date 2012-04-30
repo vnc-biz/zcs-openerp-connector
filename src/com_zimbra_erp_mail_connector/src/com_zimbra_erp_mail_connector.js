@@ -435,8 +435,10 @@ function(droppedItem) {
 		} else {
 			var obj = droppedItem.srcObj ? droppedItem.srcObj : droppedItem;
 			if (obj.type == "CONV"){
+				//alert("This is conversation");
 				this._getMessageFromConv(obj);	
 			} else if(obj.type == "MSG") {
+				//alert("This is simple message");
 				this._getMessageFromMsg(obj);
 			}else if(obj.type == "APPT") {
 			}
@@ -466,7 +468,8 @@ function(droppedItem) {
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=function(convSrcObj) {
    try{	
-		msgids.push(convSrcObj.msgIds);
+		msgids.push(convSrcObj.msgIds[0]);
+		//alert("This is conversation "+convSrcObj.msgIds);
 		msgtype.push(convSrcObj.type);
 		ids=convSrcObj.msgIds;
 		mail_subject=convSrcObj.getFirstHotMsg().subject;
