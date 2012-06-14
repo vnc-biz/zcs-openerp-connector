@@ -1,0 +1,5 @@
+*.deb
+/image
+/src/lib-vnc-openerp/classes/
+/src/lib-vnc-openerp/zcs-lib-vnc-openerp.jar
+/zimlets.list

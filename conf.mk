@@ -1,0 +1,10 @@
+VERSION=1.0.0
+PACKAGE=zcs-openerp-connector
+MAINTAINER=Enrico Weigelt <enrico.weigelt@vnc.biz>
+SECTION=base
+ARCHITECTURE=All
+PRIORITY=optional
+DEPENDS=zcs-lib-json-simple,zcs-lib-javacsv,zcs-lib-gson,zcs-lib-json-rpc,zcs-lib-redstone-xmlrpc
+DESCRIPTION=OpenERP integration
+REDMINE_UPLOAD_PROJECT=int-oerp-zim
+REDMINE_UPLOAD_URL=https://redmine.vnc.biz/redmine/
