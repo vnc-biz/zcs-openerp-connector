@@ -1,10 +1,9 @@
-<%@ page import="java.util.*,com.zimbra.configuration.*" %>
+<%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
+<%@ page import="com.zimbra.configuration.ErpConfiguration" %>
 <%
-	response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-	response.setHeader("Pragma","no-cache"); //HTTP 1.0
-	response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
-%>
-<%
+
+JSPUtil.nocache(response);
+
 	try {
 		String dbname=request.getParameter("dbname");
 		String password=request.getParameter("password");

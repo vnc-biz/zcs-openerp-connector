@@ -1,18 +1,12 @@
-<%@ page import="java.util.*,com.zimbra.configuration.*" %>
-<%@ page import="com.zimbra.cs.account.soap.*" %>
-<%@ page import="com.zimbra.cs.account.*" %>
-<%@ page import="com.zimbra.cs.zclient.*" %>
+<%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
+<%@ page import="com.zimbra.configuration.ErpConfiguration" %>
 <%@ page import="com.zimbra.cs.account.soap.SoapProvisioning" %>
 <%@ page import="com.zimbra.cs.account.soap.SoapProvisioning.Options" %>
-<%@ page import="java.net.*" %>
 <%@page pageEncoding="UTF-8"%>
+<%
 
-<%
-response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
-response.setHeader("Pragma","no-cache"); //HTTP 1.0
-response.setDateHeader ("Expires", 0); //prevent caching at the proxy server
-%>
-<%
+JSPUtil.nocache(response);
+
 	try {
 		SoapProvisioning soap=null;
 		Options options=new Options();

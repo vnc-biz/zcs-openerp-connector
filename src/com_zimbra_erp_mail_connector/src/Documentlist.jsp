@@ -1,5 +1,9 @@
-<%@ page import="java.util.*,com.zimbra.configuration.*" %>
+<%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
+<%@ page import="com.zimbra.configuration.ErpConfiguration" %>
 <%
+
+JSPUtil.nocache(response);
+
 	/*All users list from open ERP*/
 	try { 
 		String dbname=request.getParameter("dbname");

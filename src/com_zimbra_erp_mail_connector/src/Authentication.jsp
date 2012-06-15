@@ -1,5 +1,9 @@
-<%@ page import="java.util.*,com.zimbra.configuration.*" %>
+<%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
+<%@ page import="com.zimbra.configuration.ErpConfiguration" %>
 <%
+
+JSPUtil.nocache(response);
+
 		/*I will not Allowed you if you are invalid user*/	
 	try { 
 		String url=request.getParameter("urladdress");
