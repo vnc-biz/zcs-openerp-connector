@@ -1,16 +1,18 @@
 <%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
-<%@ page import="com.zimbra.configuration.ErpConfiguration" %>
+<%@ page import="biz.vnc.zimbra.openerp_zimlet.Connector" %>
 <%
 
 JSPUtil.nocache(response);
 
-		String dbname=request.getParameter("dbname");
-		String password=request.getParameter("password");
-		String urladdress=request.getParameter("urladdress");
-		String port=request.getParameter("port");
-		String obj_name=request.getParameter("obj_name");
-		String openerp_id=request.getParameter("openerp_id");
-		ErpConfiguration configuration=new ErpConfiguration();
-		out.println(configuration.varifyRecord(dbname,password,urladdress,port,obj_name,openerp_id));
+out.println(
+	new Connector().varifyRecord(
+		request.getParameter("dbname"),
+		request.getParameter("password"),
+		request.getParameter("urladdress"),
+		request.getParameter("port"),
+		request.getParameter("obj_name"),
+		request.getParameter("openerp_id")
+	)
+);
 
 %>

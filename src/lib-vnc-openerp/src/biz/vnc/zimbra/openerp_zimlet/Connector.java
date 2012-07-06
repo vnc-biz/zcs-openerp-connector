@@ -1,4 +1,4 @@
-package com.zimbra.configuration;
+package biz.vnc.zimbra.openerp_zimlet;
 
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
@@ -26,7 +26,7 @@ import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcStruct;
 
 
-public class ErpConfiguration
+public class Connector
 {
 	XmlRpcClient server;
 	Connection con;
@@ -364,7 +364,7 @@ public class ErpConfiguration
 			Object objlist = lists.invoke("execute",new Object[] {dbname,op_id,password,"res.partner.address","search",new Vector()});
 			System.out.println("----------------------------------> Id list:"+objlist.toString());
 			Vector nameList = new Vector();
-			InputStream is=getClass().getResourceAsStream("/com/zimbra/configuration/contactFields.properties");
+			InputStream is=getClass().getResourceAsStream("/biz/vnc/zimbra/openerp_zimlet/contactFields.properties");
 			BufferedReader br=new BufferedReader(new InputStreamReader(is));
 			String[] cField;
 			Vector<String> heading = new Vector<String>();

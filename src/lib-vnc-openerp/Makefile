@@ -24,6 +24,5 @@ JAR_FILE_PREPARE_RULE=prepare-jar
 include $(TOPDIR)/zcs-java-lib.mk
 
 prepare-jar:
-	pwd
-	mkdir -p classes/com/zimbra/configuration
-	cp src/com/zimbra/configuration/contactFields.properties classes/com/zimbra/configuration
+	mkdir -p classes/biz/vnc/zimbra/openerp_zimlet
+	cp src/biz/vnc/zimbra/openerp_zimlet/contactFields.properties classes/biz/vnc/zimbra/openerp_zimlet

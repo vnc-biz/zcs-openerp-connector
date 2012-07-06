@@ -1,12 +1,14 @@
 <%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
-<%@ page import="com.zimbra.configuration.ErpConfiguration" %>
+<%@ page import="biz.vnc.zimbra.openerp_zimlet.Connector" %>
 <%
 
 JSPUtil.nocache(response);
 
-		String url=request.getParameter("urladdress");
-		String port=request.getParameter("port");
-		ErpConfiguration configuration=new ErpConfiguration();
-		out.println(configuration.getDatabase(url,port));
+out.println(
+	new Connector().getDatabase(
+		request.getParameter("urladdress"),
+		request.getParameter("port")
+	)
+);
 
 %>

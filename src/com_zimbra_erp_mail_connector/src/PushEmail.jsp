@@ -1,19 +1,22 @@
 <%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
-<%@ page import="com.zimbra.configuration.ErpConfiguration" %>
+<%@ page import="biz.vnc.zimbra.openerp_zimlet.Connector" %>
 <%
 
 JSPUtil.nocache(response);
 
-		String dbname=request.getParameter("dbname");
-		String password=request.getParameter("password");
-		String urladdress=request.getParameter("urladdress");
-		String port=request.getParameter("port");
-		String msg_id=request.getParameter("msgid");
-		String downloadlink=request.getParameter("downloadlink");
-		String push_id=request.getParameter("push_id");
-		String sessionid=request.getParameter("sessionid");
-		String openerp_id=request.getParameter("openerp_id");	
-		ErpConfiguration configuration=new ErpConfiguration();
-		out.print(configuration.sendMail(dbname,password,urladdress,port,msg_id,downloadlink,push_id,sessionid,JSPUtil.getAuthToken(request),openerp_id));
+out.print(
+	new Connector().sendMail(
+		request.getParameter("dbname"),
+		request.getParameter("password"),
+		request.getParameter("urladdress"),
+		request.getParameter("port"),
+		request.getParameter("msgid"),
+		request.getParameter("downloadlink"),
+		request.getParameter("push_id"),
+		request.getParameter("sessionid"),
+		JSPUtil.getAuthToken(request),
+		request.getParameter("openerp_id")
+	)
+);
 
 %>
