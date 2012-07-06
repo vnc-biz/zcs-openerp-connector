@@ -4,8 +4,6 @@
 
 JSPUtil.nocache(response);
 
-		/*Finally send Email to open ERP*/
-	try { 
 		String dbname=request.getParameter("dbname");
 		String password=request.getParameter("password");
 		String urladdress=request.getParameter("urladdress");
@@ -17,8 +15,5 @@ JSPUtil.nocache(response);
 		String openerp_id=request.getParameter("openerp_id");	
 		ErpConfiguration configuration=new ErpConfiguration();
 		out.print(configuration.sendMail(dbname,password,urladdress,port,msg_id,downloadlink,push_id,sessionid,JSPUtil.getAuthToken(request),openerp_id));
-            		
-	} catch (Exception e) { 
-		e.printStackTrace();
-	} 
+
 %>

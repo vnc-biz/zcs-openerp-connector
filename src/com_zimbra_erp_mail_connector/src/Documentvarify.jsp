@@ -4,7 +4,6 @@
 
 JSPUtil.nocache(response);
 
-	try {
 		String dbname=request.getParameter("dbname");
 		String password=request.getParameter("password");
 		String urladdress=request.getParameter("urladdress");
@@ -13,7 +12,5 @@ JSPUtil.nocache(response);
 		String openerp_id=request.getParameter("openerp_id");
 		ErpConfiguration configuration=new ErpConfiguration();
 		out.println(configuration.checkRecords(dbname,password,urladdress,port,obj_name,openerp_id));
-	} catch (Exception e) {
-		out.println(e.getMessage());
-	}
+
 %>

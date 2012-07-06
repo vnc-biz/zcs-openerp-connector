@@ -1,17 +1,10 @@
 <%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
 <%@ page import="com.zimbra.configuration.ErpConfiguration" %>
-<%@ page import="com.zimbra.cs.account.soap.SoapProvisioning" %>
-<%@ page import="com.zimbra.cs.account.soap.SoapProvisioning.Options" %>
 <%@page pageEncoding="UTF-8"%>
 <%
 
 JSPUtil.nocache(response);
 
-	try {
-		SoapProvisioning soap=null;
-		Options options=new Options();
-		options.setLocalConfigAuth(true);
-		soap = new SoapProvisioning(options);
 		String acc_name=request.getParameter("acc_name");
 		String addressBook=request.getParameter("addressBook");	    	
 		System.out.println("THis is addressbook name from jsp--fdsfdfsfdsf------>>>>"+addressBook);
@@ -30,10 +23,4 @@ JSPUtil.nocache(response);
 		ErpConfiguration configuration=new ErpConfiguration();
 		System.out.println("This is urladdddd------------->>>>"+restURL);
 		out.print(configuration.getContacts(dbname,password,urladdress,port,JSPUtil.getAuthToken(request),restURL,openerp_id,acc_name,zimbraProtocol,z_portNumber,addressBook,domainName));
-
-	} catch (Exception e) {
-		System.out.println("Exception---"+e);
-		out.println(e.getMessage());
-		e.printStackTrace();
-	}
 %>

@@ -1,74 +1,44 @@
 package com.zimbra.configuration;
 
+import com.csvreader.CsvWriter;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import redstone.xmlrpc.*;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import com.csvreader.*;
-import redstone.xmlrpc.XmlRpcClient;
-import java.nio.charset.Charset;
-import java.util.*;
-import java.io.*;
-import java.sql.*;
-import java.lang.reflect.*;
-import com.google.gson.reflect.*;
-import java.math.*;
-import com.google.gson.*;
-import com.google.gson.JsonParser;
-import java.net.URL;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.*;
-import java.text.SimpleDateFormat;
-import java.net.URLEncoder;
-import java.io.*;
-import java.lang.Exception;
-import java.net.URI;
-import java.net.URLEncoder;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.MultipartPostMethod;
+import java.util.Vector;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
+import redstone.xmlrpc.XmlRpcArray;
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcStruct;
 
 
 public class ErpConfiguration
 {
-
 	XmlRpcClient server;
 	Connection con;
 	Statement stmt;
 	PreparedStatement prest;
 	JSONObject jsonobj,mainobj,jsonstr;
 	ArrayList<Object> list;
-	private static String MYSQL_PASSWORD = null;
 	Object idList=null;
 	private Pattern pattern;
 	private Matcher matcher;
 	private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	//private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	//private static final String EMAIL_PATTERN ="^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Za-z0-9]{2,4}$";
 
-	static
-	{
-		try
-		{
-			String[] params = {"/opt/zimbra/bin/zmlocalconfig","-s","|","/bin/grep","zimbra_mysql_password","|","/usr/bin/cut","-d","\" \" ","-f","3"};
-			String[] cmd = {"/bin/sh","-c","/opt/zimbra/bin/zmlocalconfig -s | /bin/grep zimbra_mysql_password | /usr/bin/cut -d\" \" -f 3"};
-			Runtime r = Runtime.getRuntime();
-			Process p = r.exec(cmd);
-			InputStream stdin = p.getInputStream();
-			InputStreamReader isr = new InputStreamReader(stdin);
-			BufferedReader br = new BufferedReader(isr);
-			MYSQL_PASSWORD = br.readLine();
-			//System.out.println("Mysql password: " + MYSQL_PASSWORD);
-
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 	public String getDatabase(String url,String port)
 	{
 		try
@@ -194,14 +164,11 @@ public class ErpConfiguration
 							{
 								return "bl";
 							}
-
 						}
-
 					}
 				}
 				else
 				{
-
 					XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch} );
 					if(token.toString().length()!=2)
@@ -224,7 +191,6 @@ public class ErpConfiguration
 	}
 
 	/*Gel Email Information from */
-	JsonObject objectss;
 	public String sendMail(String dbname,String password,String urladdress,String port,String msg_id,String downloadlink,String push_id,String sessionid, String authToken,String openerp_id)
 	{
 		System.out.print("send mail called"+"database:"+dbname+"Password:"+password+"URLaddress:"+urladdress+"port:"+port+"msg_id:"+msg_id+"Link:"+downloadlink+"push_ID:"+push_id+"sessionid:"+sessionid+"AuthToken:"+authToken);
@@ -276,7 +242,6 @@ public class ErpConfiguration
 				/*End of row data*/
 
 				/*send the mail to open-erp url*/
-
 				String fixurl="/xmlrpc/object";
 				XmlRpcClient client;
 				client=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
@@ -340,7 +305,6 @@ public class ErpConfiguration
 			child2.add("installed");
 			parent.add(child1);
 			parent.add(child2);
-			//lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()});
 			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,"ir.module.module","search",parent});
 			System.out.println("this is Documentvarify-----response su vat che--->>"+lis.toString()+lis.toString().length());
 		}
@@ -362,7 +326,6 @@ public class ErpConfiguration
 
 	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd,String openerp_id,String acc_name,String zimbraProtocol,String z_portNumber,String addressBook,String domainName)
 	{
-
 		Gson gson = new Gson();
 		Integer op_id=Integer.parseInt(openerp_id);
 		System.out.println("This is zimbra port and ---->>>>>"+z_portNumber);
@@ -391,7 +354,6 @@ public class ErpConfiguration
 			Object objlist = lists.invoke("execute",new Object[] {dbname,op_id,password,"res.partner.address","search",new Vector()});
 			System.out.println("----------------------------------> Id list:"+objlist.toString());
 			Vector nameList = new Vector();
-			//BufferedReader br=new BufferedReader(new FileReader("/com/zimbra/configuration/contactFields.properties"));
 			InputStream is=getClass().getResourceAsStream("/com/zimbra/configuration/contactFields.properties");
 			BufferedReader br=new BufferedReader(new InputStreamReader(is));
 			String[] cField;
@@ -435,23 +397,16 @@ public class ErpConfiguration
 				for(int j=1; j<len2; j++)
 				{
 					name=arr.getArray(i).get(j).toString();
-					//System.out.println("Name----------->>>>>>>>"+name);
 					if(j==1)
 					{
 						if(name.equals("false"))
 						{
-							//name=arr.getArray(i).get(0).toString();
 							flag=1;
-							//System.out.println("----------------- > partner ID:"+name);
-						}
-						else
-						{
-
 						}
 					}
 					if(name.equals("false"))
 						name="";
-					//System.out.println("NNNNNNNNNNNNNNNNNNNNName : " + name);
+
 					csvFile.write(name);
 				}
 				csvFile.endRecord();
@@ -465,11 +420,6 @@ public class ErpConfiguration
 			String tempurl=urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token;
 			tempurl = URLEncoder.encode(tempurl, "UTF-8");
 			tempurl=tempurl.replaceAll(" ","%20");
-			//System.out.println("This is the temprory string url--->>"+tempurl);
-			//URI uri = new URI(tempurl);
-			//System.out.println("URI : " + uri.toURL());
-			//System.out.println("toAscii : " + uri.toASCIIString());
-			//uri = new URI(uri.toASCIIString());
 			URL url = uri.toURL();
 			System.out.println("This is url=====>>>>>>"+url);
 			try
@@ -477,16 +427,6 @@ public class ErpConfiguration
 				Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+url);
 				p.waitFor();
 				System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
-				/*HttpClient client = new HttpClient();
-				MultipartPostMethod mPost = new MultipartPostMethod(url.toString());
-				client.setConnectionTimeout(10000);
-				// Send any XML file as the body of the POST request
-				File f1 = new File("/tmp/myData.csv");
-				System.out.println("File1 Length = " + f1.length());
-				mPost.addParameter(f1.getName(), f1);
-				int statusCode1 = client.executeMethod(mPost);
-				System.out.println("statusLine>>>" + mPost.getStatusLine());
-				mPost.releaseConnection();*/
 				return "success";
 			}
 			catch(IllegalThreadStateException ex)
@@ -505,16 +445,13 @@ public class ErpConfiguration
 
 	public boolean validate(String hex)
 	{
-
 		pattern = Pattern.compile(EMAIL_PATTERN);
 		matcher = pattern.matcher(hex);
 		return matcher.matches();
-
 	}
 
 	public String varifyRecord(String dbname,String password,String urladdress,String port,String obj_name,String openerp_id)
 	{
-
 		Object list=null;
 		Object login=null;
 		Object lis=null;
@@ -529,7 +466,6 @@ public class ErpConfiguration
 			String fixurl="/xmlrpc/object";
 			XmlRpcClient lists;;
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
-			//System.out.println("this is address----------->>>>>"+urladdress+":"+port+fixurl+"End of url<<<<<<<<<<--------");
 			s=new String();
 			dbname=dbname.trim();
 			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()});
@@ -550,5 +486,4 @@ public class ErpConfiguration
 			return "Fail";
 		}
 	}
-
 }
