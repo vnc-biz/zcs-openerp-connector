@@ -87,9 +87,7 @@ public class ErpConfiguration
 		{
 			String fixurl="/xmlrpc/object";
 			Gson gson = new Gson();
-			Vector child=new Vector();
 			Vector parent=new Vector();
-			Vector domainChild=new Vector();
 			Vector domainParent=new Vector();
 			Integer op_id=Integer.parseInt(openerp_id);
 			boolean valid;
@@ -116,10 +114,13 @@ public class ErpConfiguration
 					{
 						System.out.println("Inside valid domain or Email and one of three objects-------------->>>>>>>>>>>>>>>>>");
 						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-						child.add("email");
-						child.add("ilike");
-						child.add(emailsearch);
-						parent.add(child);
+						{
+							Vector<String> child = new Vector<String>();
+							child.add("email");
+							child.add("ilike");
+							child.add(emailsearch);
+							parent.add(child);
+						}
 						Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",parent} );
 						System.out.println("Call success------------------->>>>>>>>>"+token.toString());
 						if(token.toString().length()!=2)
@@ -137,10 +138,13 @@ public class ErpConfiguration
 						{
 							System.out.println("It's a domain name------>>>>>>>>>><><><><><><><><><");
 							XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
-							domainChild.add("email");
-							domainChild.add("ilike");
-							domainChild.add(emailsearch);
-							domainParent.add(domainChild);
+							{
+								Vector<String> domainChild = new Vector<String>();
+								domainChild.add("email");
+								domainChild.add("ilike");
+								domainChild.add(emailsearch);
+								domainParent.add(domainChild);
+							}
 							Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",domainParent} );
 							System.out.println("Call success------------------->>>>>>>>>"+token.toString());
 							if(token.toString().length()!=2)
@@ -230,13 +234,15 @@ public class ErpConfiguration
 				/*End roe data*/
 
 				/*row data Hashtable*/
-				main_vec=new Vector();
 				Vector<String> module_vec=new Vector<String>();
-				Vector mail_vec=new Vector();
 				module_vec.add(new String("ref_ids"));
 				module_vec.add(push_id);
+
+				Vector mail_vec=new Vector();
 				mail_vec.add("message");
 				mail_vec.add(rowdata);
+
+				main_vec=new Vector();
 				main_vec.add(module_vec);
 				main_vec.add(mail_vec);
 				/*End of row data*/
@@ -285,8 +291,6 @@ public class ErpConfiguration
 		String m=new String();
 		Integer op_id=Integer.parseInt(openerp_id);
 		Vector parent=new Vector();
-		Vector child1=new Vector();
-		Vector child2=new Vector();
 		String s=null;
 		int cnt=0;
 		try
@@ -297,14 +301,20 @@ public class ErpConfiguration
 			System.out.println("this is address----------->>>>>"+urladdress+":"+port+fixurl+"End of url<<<<<<<<<<--------");
 			s=new String();
 			dbname=dbname.trim();
-			child1.add("name");
-			child1.add("=");
-			child1.add("vnc_zimbra_connector");
-			child2.add("state");
-			child2.add("=");
-			child2.add("installed");
-			parent.add(child1);
-			parent.add(child2);
+			{
+				Vector<String> child1 = new Vector<String>();
+				child1.add("name");
+				child1.add("=");
+				child1.add("vnc_zimbra_connector");
+				parent.add(child1);
+			}
+			{
+				Vector<String> child2 = new Vector<String>();
+				child2.add("state");
+				child2.add("=");
+				child2.add("installed");
+				parent.add(child2);
+			}
 			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,"ir.module.module","search",parent});
 			System.out.println("this is Documentvarify-----response su vat che--->>"+lis.toString()+lis.toString().length());
 		}
@@ -357,7 +367,7 @@ public class ErpConfiguration
 			InputStream is=getClass().getResourceAsStream("/com/zimbra/configuration/contactFields.properties");
 			BufferedReader br=new BufferedReader(new InputStreamReader(is));
 			String[] cField;
-			Vector heading=new Vector();
+			Vector<String> heading = new Vector<String>();
 			String str;
 			int k=0;
 			while((str=br.readLine())!=null)
