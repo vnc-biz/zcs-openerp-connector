@@ -43,16 +43,9 @@
 		<dragSource type="ZmMailMsg" />
 	</zimletPanelItem>
 	<userProperties>
-		<property type="string" name="urladdress" value=""/>
-		<property type="string" name="port" value=""/>
-		<property type="string" name="getdatabase" value=""/>
-		<property type="string" name="username" value=""/>
-		<property type="string" name="userpassword" value=""/>
 		<property type="string" name="cal_url" value=""/>
-		<property type="string" name="openerp_id" value=""/>
 		<property type="string" name="doc_list" value=""/>
 		<property type="string" name="addBook" value=""/>
 		<property type="string" name="addBookPath" value=""/>
-		<property type="string" name="proto" value="http://"/>
 	</userProperties>
 </zimlet>

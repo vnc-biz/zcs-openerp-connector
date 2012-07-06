@@ -21,19 +21,15 @@
 %>
 <%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
 <%@ page import="biz.vnc.zimbra.openerp_zimlet.Connector" %>
+<%@ page import="biz.vnc.zimbra.openerp_zimlet.JSPFactory" %>
 <%
 
 JSPUtil.nocache(response);
 
 out.print(
-	new Connector().getDocumentlist(
-		request.getParameter("dbname"),
-		request.getParameter("password"),
+	JSPFactory.getConnector(request).getDocumentlist(
 		request.getParameter("emailsearch"),
-		request.getParameter("urladdress"),
-		request.getParameter("port"),
-		request.getParameter("obj_name"),
-		request.getParameter("openerp_id")
+		request.getParameter("obj_name")
 	)
 );
 

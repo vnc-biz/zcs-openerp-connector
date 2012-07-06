@@ -14,6 +14,7 @@ ZCS_LIB_JARS=\
 	servlet-api.jar			\
 	zimbrastore.jar			\
 	zimbracommon.jar		\
+	zimbrasoap.jar			\
 	zcs-lib-redstone-xmlrpc.jar	\
 	zcs-lib-gson.jar		\
 	zcs-lib-json-simple.jar		\

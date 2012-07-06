@@ -27,7 +27,6 @@ document_setting.prototype.constructor = document_setting;
 	var success_delete;
 	var unsuccess_delete;
 	var unsuccess_blank;
-	var proto="http://";	
 
 /*...Constructor....*/
 function document_setting(parent, zimlet,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank){
@@ -35,7 +34,6 @@ function document_setting(parent, zimlet,document_lbl_title,document_lbl_docname
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	zm=this.zimlet;
-	proto=zm.getUserProperty("proto");
 	document_title=document_lbl_title;
 	document_docname=document_lbl_docname;
 	success_insert=document_success_insert;
@@ -129,18 +127,16 @@ function addRecord() {
 		return;
 	}	
 	try {
-		var dbname=zm.getUserProperty("getdatabase");
-		var password=zm.getUserProperty("userpassword");
-		var urladdress=zm.getUserProperty("urladdress");
-		var openerp_id=zm.getUserProperty("openerp_id");
-		var port=zm.getUserProperty("port");
-		if (dbname=="" || password=="" || urladdress=="" || port=="" ) {
+		var dbname = erpConnector.getdatabase;
+		var urladdress = erpConnector.urladdress;
+		var port = erpConnector.port;
+		if (dbname=="" || urladdress=="" || port=="" ) {
 			var a =  appCtxt.getMsgDialog();
 				a.setMessage(zm.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
 				a.popup();
 			return;
 		}		
-		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Recordverify.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&obj_name="+docname+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id;
+		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Recordverify.jsp?obj_name="+docname;
 		var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		if(response.text.trim()=="Fail"){
 			var a =  appCtxt.getMsgDialog();

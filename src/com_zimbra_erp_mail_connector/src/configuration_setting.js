@@ -34,7 +34,6 @@ configuration_setting.prototype.constructor = configuration_setting;
 }
 
 function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password){
-	
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	zm=this.zimlet;
@@ -44,15 +43,14 @@ function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,c
 	config_lbl_username=confi_lbl_username;
 	config_lbl_password=confi_lbl_password;
 	this._createHTML();
-	document.getElementById("urladdress").value=zm.getUserProperty("urladdress");
-	if(zm.getUserProperty("getdatabase")==""){
+	document.getElementById("urladdress").value=erpConnector.urladdress;
+	if(erpConnector.getdatabase=="" || erpConnector.getdatabase ==null || erpConnector.getdatabase == undefined){
 		document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	}else{
-		document.getElementById("getdatabase").innerHTML="<option value="+zm.getUserProperty("getdatabase")+">"+zm.getUserProperty("getdatabase")+"</option>";
+		document.getElementById("getdatabase").innerHTML="<option value="+erpConnector.getdatabase+">"+erpConnector.getdatabase+"</option>";
 	}
-	document.getElementById("port").value=zm.getUserProperty("port");
-	document.getElementById("username").value=zm.getUserProperty("username");
-	document.getElementById("userpassword").value=zm.getUserProperty("userpassword");
+	document.getElementById("port").value = erpConnector.port;
+	document.getElementById("username").value = "";
 	this.setScrollStyle(Dwt.SCROLL);
 }
 
@@ -63,12 +61,17 @@ configuration_setting.prototype.clearConfig = function() {
 	document.getElementById("username").value="";
 	document.getElementById("userpassword").value="";
 	document.getElementById("urladdress").value="";
-	var a =  appCtxt.getMsgDialog();
-        a.setMessage(zm.getMessage("configuration_cleared"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
-        a.popup();
 }
 
 configuration_setting.prototype._createHTML = function() {
+	var get_db = new DwtButton({parent:appCtxt.getShell()});
+	get_db.setText(config_btn_database);
+	get_db.setImage("getDB");
+	get_db.addSelectionListener(new AjxListener(this,getDatabase));
+	var connectBtn = new DwtButton({parent:appCtxt.getShell()});
+	connectBtn.setText(this.zimlet.getMessage("connector_configuration_lbl_connect"));
+	connectBtn.setImage("connect");
+	connectBtn.addSelectionListener(new AjxListener(this,checkConnection));
 	var i = 0;
 	var html = new Array();
 		html[i++]="<fieldset class='fieldHeight'>";
@@ -89,8 +92,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="<td>";
 		html[i++]="<input type='text' id='port'>";
 		html[i++]="</td>";
-		html[i++]="<td>";
-		html[i++]="<button onClick='getDatabase()' style='padding-left:0px;'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/get_database.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+config_btn_database+"</font></button>";
+		html[i++]="<td id='getDatabase'>";
 		html[i++]="</td>";
 		html[i++]="</tr>";
 		html[i++]="<tr>";
@@ -125,13 +127,14 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="</td></tr></table>";
 		html[i++]="<table><tr><td>";
 		if(navigator.userAgent.indexOf('Chrome')>-1){
-			html[i++]="<button onClick='checkConnection()' id='connect' style='margin-left:210px'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
+			html[i++] = "<div id='connect_database' style = 'margin-left:210px;'></div>";
 		}else{
-			html[i++]="<button onClick='checkConnection()' id='connect' class='config_btn1'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/connect.png' align='absmiddle' style='height:16px;'/><font style='margin-left:4px;'>"+this.zimlet.getMessage("connector_configuration_lbl_connect")+"</font></button>";
-		
+			html[i++] = "<div id='connect_database' class = 'config_btn1'></div>";
 		}
 		html[i++]="</td></tr></table></fieldset>";
 		this.getHtmlElement().innerHTML = html.join("");
+		document.getElementById("getDatabase").appendChild(get_db.getHtmlElement());
+		document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
 };
 
 function showpass(){
@@ -191,7 +194,7 @@ function getDatabase(){
 		proto="http://"
 		urladdress=urladdress.substring(7);
 	}	
-	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDatabaseRpc.jsp?urladdress="+(proto+urladdress)+"&port="+port;	
+	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDatabaseRpc.jsp?urladdress="+(proto+urladdress)+"&port="+port;
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	if (response.success == true && response.text.trim()!="fail") {
 		var res=response.text.trim();
@@ -290,40 +293,22 @@ function checkConnection(){
 		proto="http://"
 		url=url.substring(7);
 	}	
-	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+database+"&username="+username+"&userpassword="+z_password+"&temp=tt";	
+	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+database.trim()+"&username="+username.trim()+"&userpassword="+z_password+"&temp=tt";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	if(response.text.trim() == 'false'){
-		zm.setUserProperty("urladdress",null);
-		zm.setUserProperty("getdatabase",null);
-		zm.setUserProperty("port",null);
-		zm.setUserProperty("username",null);
-		zm.setUserProperty("userpassword",null);
-		zm.saveUserProperties();
 		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_userandpassword"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+			a.setMessage(zm.getMessage("connector_configuration_userandpassword"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("error"));
 			a.popup();
 	}else{
-		zm.setUserProperty("openerp_id",response.text);
-		zm.saveUserProperties();
-		var openerp_id=zm.getUserProperty("openerp_id");
-		var jspurl1="/service/zimlet/com_zimbra_erp_mail_connector/Documentverify.jsp?dbname="+database.trim()+"&password="+z_password+"&obj_name=zimbra.partner&urladdress="+(proto+url.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id.trim();
-		var res = AjxRpc.invoke(null,jspurl1, null, null, true);
-		if(res.text.trim()=="Fail"){
-			var a =  appCtxt.getMsgDialog();
-				a.setMessage(zm.getMessage("module_not_installed"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-				a.popup();
-			return;
-		}
-	zm.setUserProperty("urladdress",url);
-	zm.setUserProperty("getdatabase",database);
-	zm.setUserProperty("port",port);
-	zm.setUserProperty("username",username);
-	zm.setUserProperty("userpassword",z_password);
-	zm.setUserProperty("proto",proto);
-	zm.saveUserProperties();
-	var a =  appCtxt.getMsgDialog();
+		var a =  appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_lbl_conection_saved"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
 		a.popup();
+		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/readConfig.jsp";
+		var response = AjxRpc.invoke(null,jspurl, null, null, true);
+		var allConfigurations = JSON.parse(response.text);
+		erpConnector.urladdress = allConfigurations.urladdress;
+		erpConnector.port = allConfigurations.port;
+		erpConnector.getdatabase = allConfigurations.getdatabase;
 		flag=1;
 	}
 }

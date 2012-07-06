@@ -25,7 +25,6 @@ var mail_from=[];
 var receiver = "";
 var msgFlag=0;
 com_zimbra_erp_mail_connector_HandlerObject.prototype= new ZmZimletBase;
-com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID="cal_sync";
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON2_ID="send_and_push";
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON3_ID="push_to_erp";
 
@@ -37,29 +36,7 @@ String.prototype.ltrim=function(){return this.replace(/^\s+/,'');}
 com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = function(app, toolbar, controller,view) {
 	var patt="COMPOSE";
 	// only add this button for the following 3 views
-	if(view == "CLD" || view=="CLWW"){
-		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
-			 return;
-                }		
-		var buttonIndex1 = -1;
-        for ( var i = 0, count = toolbar.opList.length; i < count; i++) {
-       		if (toolbar.opList[i] == ZmOperation.VIEW_MENU) {
-            	buttonIndex1 = i + 1;
-               	break;
-            }
-		}                
-		var cal_sync_btn=this.getMessage("btn_cal_sync");
-		// create params obj with button details
-        var buttonArgs = {
-            text :cal_sync_btn,
-            tooltip : "Synchronize Calendar",
-            index : buttonIndex, // position of the button
-            image : "refresh" // icon
-        };
-		var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID, buttonArgs);
-		button.addSelectionListener(new AjxListener(this,this._handleCalSyncBtnClick, controller));
-	}
-	else if(view.match(patt)=="COMPOSE"){
+	if(view.match(patt)=="COMPOSE"){
 		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON2_ID)) {
 			return;
 		}
@@ -208,7 +185,10 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 	}
 }; 
 
+var erpConnector = "";
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
+	//Read user credentials from database
 	AjxRpc.__RPC_CACHE_MAX = 200;
 	docList=this.getUserProperty("doc_list");
 	if(docList.length<=0){
@@ -216,7 +196,14 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	this.setUserProperty("doc_list",doclist.trim());
 	this.saveUserProperties();	
 	}
-	zmlt=this;	
+	zmlt=this;
+	erpConnector = com_zimbra_erp_mail_connector_HandlerObject;
+	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/readConfig.jsp";
+	var response = AjxRpc.invoke(null,jspurl, null, null, true);
+	var allConfigurations = JSON.parse(response.text);
+	erpConnector.urladdress = allConfigurations.urladdress;
+	erpConnector.port = allConfigurations.port;
+	erpConnector.getdatabase = allConfigurations.getdatabase;
 }
 
 /*   This is the init method     */
@@ -291,17 +278,13 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleResetClick=function
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._yesBtnListener=function(){
-
-	this.setUserProperty("urladdress","");
-	this.setUserProperty("getdatabase","");
-	this.setUserProperty("port","");
-	this.setUserProperty("username","");
-	this.setUserProperty("userpassword","");
-	this.setUserProperty("addBook","");
-	this.setUserProperty("addBookPath","");
-	this.saveUserProperties();
+	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/clearConfig.jsp";
+	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	document.getElementById("urladdress").innerHTML="";	
 	this._dialog.popdown();
+	erpConnector.port = "";
+	erpConnector.urladdress = "";
+	erpConnector.getdatabase = "";
 	this.configuration_setting.clearConfig();
 }
 
@@ -339,11 +322,10 @@ function(droppedItem) {
 	msgids=[];
 	msgtype=[];
 	try{
-		var dbname=this.getUserProperty("getdatabase");
-        var password=this.getUserProperty("userpassword");
-        var urladdress=this.getUserProperty("urladdress");
-        var port=this.getUserProperty("port");
-        if(!(dbname || password || urladdress || port)){
+		var dbname=erpConnector.getdatabase;
+		var urladdress=erpConnector.urladdress;
+		var port=erpConnector.port;
+		if(!(dbname || urladdress || port)){
 			var a =  appCtxt.getMsgDialog();
                 a.setMessage(this.getMessage("no_database_configured"),DwtMessageDialog.WARNING_STYLE,this.getMessage("warning"));
                 a.popup();

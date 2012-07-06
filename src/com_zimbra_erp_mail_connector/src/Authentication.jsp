@@ -21,12 +21,13 @@
 %>
 <%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
 <%@ page import="biz.vnc.zimbra.openerp_zimlet.Connector" %>
+<%@ page import="biz.vnc.zimbra.openerp_zimlet.JSPFactory" %>
 <%
 
 JSPUtil.nocache(response);
 
 out.print(
-	new Connector().validUser(
+	JSPFactory.getConnector(request).validUser(
 		request.getParameter("urladdress"),
 		request.getParameter("port"),
 		request.getParameter("database"),
