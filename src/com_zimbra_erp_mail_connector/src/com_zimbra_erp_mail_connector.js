@@ -261,6 +261,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 }; 
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
+	AjxRpc.__RPC_CACHE_MAX = 200;
 	docList=this.getUserProperty("doc_list");
 	//var json=JSON.parse(docList);
 	if(docList.length<=0){
