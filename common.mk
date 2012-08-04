@@ -46,6 +46,9 @@ ZIMLET_USER_JARDIR=mailboxd/webapps/zimbra/WEB-INF/lib
 ZIMLET_ADMIN_JARDIR=mailboxd/webapps/zimbraAdmin/WEB-INF/lib
 ZIMLET_SERVICE_JARDIR=mailboxd/webapps/service/WEB-INF/lib
 ZIMLET_LIB_JARDIR=lib/jars
+ZIMLET_DOC_DIR=docs/$(PACKAGE)/
 
 ## debian package file name
 DEBIAN_PACKAGE=$(PACKAGE)_$(PACKAGING_VERSION)_$(ARCHITECTURE).deb
+
+ZIMBRA_BUILD_ROOT?=$(HOME)

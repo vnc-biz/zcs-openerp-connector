@@ -1,5 +1,6 @@
 
 TOPDIR=../../
+
 JAR_FILE_NAME=zcs-lib-vnc-openerp.jar
 
 INSTALL_USER=n
@@ -21,7 +22,8 @@ ZCS_LIB_JARS=\
 
 JAR_FILE_PREPARE_RULE=prepare-jar
 
-include $(TOPDIR)/zcs-java-lib.mk
+include $(TOPDIR)/common.mk
+include $(ZIMBRA_BUILD_ROOT)/extensions-extra/zmpkg/mk/zcs-java-lib.mk
 
 prepare-jar:
 	mkdir -p classes/biz/vnc/zimbra/openerp_zimlet
