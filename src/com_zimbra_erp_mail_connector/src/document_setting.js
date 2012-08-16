@@ -87,31 +87,10 @@ function checkAll(){
 document_setting.prototype._createHTML = function() {
 	var i = 0;
 	var html = new Array();
-	//html[i++]="<fieldset>";
-	//html[i++]="<legend>";
-	html[i++]=zm.getMessage("connector_document_fieldset");
-	//html[i++]="<legend>";
 	html[i++]="<table>";	
-	html[i++]="<tr>";
-	html[i++]="<td>";
-	html[i++]=document_title+"<input type='text' id='document_title'>";
-	html[i++]="</td>";
-	html[i++]="<td>";
-	html[i++]=document_docname+"<input type='text' id='document_docname'>";
-	html[i++]="</td>";
-	html[i++]="<td>";
-	//html[i++]="<button onclick=addRecord() >"+zm.getMessage("connector_document_btn_add")+"</button>";	
-	html[i++]="<button onClick='addRecord()' class='alignBtn'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/add.png' align='absmiddle' style='height:14px;'/><font style='margin-left:4px;'>"+zm.getMessage("connector_document_btn_add")+"</font></button>";	
-	html[i++]="</td>";
-	html[i++]="<td>";
-	//html[i++]="<button onclick=deleteRecord()>"+zm.getMessage("connector_document_btn_delete")+"</button>";
-	html[i++]="<button onClick='deleteRecord()' class='alignBtn'><img src='/service/zimlet/com_zimbra_erp_mail_connector/resources/delete.gif' align='absmiddle' style='height:14px;'/><font style='margin-left:4px;'>"+zm.getMessage("connector_document_btn_delete")+"</font></button>";
-	html[i++]="</td>";			
-	html[i++]="</tr>";
 	html[i++]="</table>";
-	html[i++]="<br><br>";
+	html[i++]="<br>";
 	html[i++]="<div id='doc_record'></div>";
-	//html[i++]="</fieldset>";
 	this.getHtmlElement().innerHTML = html.join("");
 };
 /*....Record will be varified with OpenERP and add....*/
