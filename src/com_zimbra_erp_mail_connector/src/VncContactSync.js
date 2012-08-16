@@ -107,7 +107,7 @@ function DuplicateList() {
     this.emailHash = [];
     // hash of the contact ids that contain a reference to the duplicate
     this.contactHash = [];
-    
+
     this.duplicates = [];
     this.duplicateId = 0;
 }
@@ -120,16 +120,16 @@ DuplicateList.CC_fullName = "ccSimpleFullName";
 DuplicateList.prototype.add = function(contact) {
     // use attr if the object was initialized as ZmContact, _attrs otherwise
     var attr = contact.attr || contact._attrs;
-    
+
     // this fixes a problem with some leftover information in group from a previous version
     if (attr[ZmContact.F_type] === "group") {
         // ignore
         return;
     }
-    
+
     // use to make a simple comparison using first and last name
     attr[DuplicateList.CC_fullName] = (attr[ZmContact.F_firstName] || "") + (attr[ZmContact.F_lastName] ? (" " + attr[ZmContact.F_lastName]) : "");
-    
+
     // use to check all the email addresses
     contact.emailList = [];
     for (var name in attr) {
@@ -143,18 +143,18 @@ DuplicateList.prototype.add = function(contact) {
     // add the custom full name to detect full name duplicates
     contact.emailList.push(DuplicateList.CC_fullName);
     var numEmails = contact.emailList.length;
-    
+
     for (var i = 0; i < numEmails; i++) {
         var email = attr[contact.emailList[i]];
         if (email) {
             email = email.toLowerCase();
             if (this.emailHash.hasOwnProperty(email)) {
-    
+
                 // add the contact to the duplicate
                 var duplicate = this.duplicates[this.emailHash[email]];
-                            
+
                 duplicate.addContact(contact);
-                
+
                 var duplicateFromContactHash = this.contactHash[contact.id];
                 // if there is no duplicate associated with this contact, add
                 if (!duplicateFromContactHash) {
@@ -202,7 +202,6 @@ DuplicateList.prototype.cleanNonDuplicates = function() {
             for (var j = 1; j < duplicatesIds.length; j++) {
                 this.duplicates[duplicatesIds[j]] = null;
             }
-            
             // keep only if it has more that one contact
             if (duplicate.size() > 1){
                 duplicatesOnlyArray.push(duplicate);
@@ -270,7 +269,7 @@ DuplicateIterator.prototype.previous = function() {
 };
 
 /**
- * 
+ *
  * @returns {Boolean} true if there is a next element.
  */
 DuplicateIterator.prototype.hasNext = function() {
@@ -308,10 +307,10 @@ function EmailSet() {
 
 VncContactSync.prototype.parseContactList = function (contactList) {
     if (!contactList) return;
-    
+
     var size = contactList.length;
     this.duplicateList = new DuplicateList();
-    
+
     for (var i = 0; i < size; i++) {
         var contact = contactList[i];
         this.duplicateList.add(contact);
@@ -319,9 +318,6 @@ VncContactSync.prototype.parseContactList = function (contactList) {
     this.duplicateList.cleanNonDuplicates();
     if (!this.duplicateList.isEmpty()) {
         this.populateContactRows();
-        //this.contactList = contactList;
-    } else {
-    		//this.showNoContacts();
 	}
 };
 
@@ -336,7 +332,7 @@ VncContactSync.prototype.createRequest = function(params) {
     if (!params) {
         return;
     }
-    
+
     // create SOAP request doc
     var soapDoc = params.soapDoc;
     // move the duplicates to trash
@@ -349,7 +345,7 @@ VncContactSync.prototype.createRequest = function(params) {
         action.setAttribute("id", moveToTrashIds.join(","));
         contactActionReq.appendChild(action);
     }
-    
+
     // modify the contact if it was merged.
     var newAttrs = params.newAttrs;
     if (newAttrs) {
@@ -357,7 +353,7 @@ VncContactSync.prototype.createRequest = function(params) {
         var doc = soapDoc.getDoc();
         var cn = doc.createElement("cn");
         cn.setAttribute("l", this.getOpenERPContactId());
-                        
+
         for (var name in newAttrs) {
             if (name == ZmContact.F_folderId)
                 continue;
@@ -378,7 +374,7 @@ VncContactSync.prototype.compareAttributes = function(referenceAttrs, compareAtt
     var attrId = 100;
     // use this to make the unique email item list and keep order
     var emailset = new EmailSet();
-    
+
     for (var name in compareAttrs) {
         // the folder attribute is ignored as well as the attributes that are in the ignore list
         if (compareAttrs.hasOwnProperty(name) && name !== ZmContact.F_folderId && name !== DuplicateList.CC_fullName && !ZmContact.IS_IGNORE[name]) {
@@ -387,7 +383,6 @@ VncContactSync.prototype.compareAttributes = function(referenceAttrs, compareAtt
             // if there is no attribute in the original
             if (!origAttr && compareAttr) {
                 referenceAttrs[name] = compareAttr;
-            
             } else if (origAttr !== compareAttr) {
                 var namePrefix = name.replace(/\d+$/,"");
                 if (namePrefix === ZmContact.F_email) {
@@ -451,7 +446,7 @@ VncContactSync.prototype.cleanUpDuplicate = function(params) {
         if (merge) {
             mergedAttrs = ZmContact.getNormalizedAttrs(mergedAttrs);
         }
-        
+
         this.createRequest({
             newAttrs : mergedAttrs,
             moveToTrash: contactsToDelete,
@@ -478,7 +473,7 @@ VncContactSync.prototype.cleanUp = function(params) {
     } else {        
         this.cleanUpDuplicate({duplicate: params.duplicate, contactToKeep: params.contactToKeep, merge: params.merge, soapDoc: soapDoc});
     }
-    
+
     // send the batch request to the server
     var respCallback = new AjxCallback(this, this.contactModificationCallbackHandler);
     appCtxt.getAppController().sendRequest({soapDoc:soapDoc, asyncMode:false, callback:respCallback});
@@ -493,7 +488,6 @@ VncContactSync.prototype.cleanUp = function(params) {
 VncContactSync.prototype.contactModificationCallbackHandler = function(args, result) {
     this.requestCount--;
     var rContactList = result.getResponse().BatchResponse.CreateContactResponse;
-    //this.createTaggingRequest(args, rContactList);
 };
 
 /**
@@ -539,9 +533,7 @@ VncContactSync.prototype.getContacts = function(offset, contactList,addressBook)
 	contactBook=addressBook
 	if(contactBook == null){
 		return;
-		//contactBook=zmlt.getUserProperty("addBookPath");
 	}
-	//contactBook=AjxStringUtil.urlComponentDecode(addressBook);
     var jsonObj = {SearchRequest:{_jsns:"urn:zimbraMail"}};
 	
     var request = jsonObj.SearchRequest;
@@ -551,12 +543,10 @@ VncContactSync.prototype.getContacts = function(offset, contactList,addressBook)
     request.locale = { _content: AjxEnv.DEFAULT_LOCALE };
     request.offset = 0;
     request.types = ZmSearch.TYPE[ZmItem.CONTACT];
-    //request.query = this.getContactFolders();
-	//request.query = 'in:'+contactBook;
 	request.query = "in:\""+contactBook+"\"";
     request.offset = offset || 0;
     request.limit = this.LIMIT;
-    
+
     contactList = contactList || [];
     var searchParams = {
             jsonObj:jsonObj,
@@ -585,13 +575,6 @@ VncContactSync.prototype.handleGetContactsResponse = function(contactList, resul
             for (var i = 0; i < numContacts; i++) {
                 contactList.push(responseContactList[i]);
             }
-        }else{
-		
-		/*var a =  appCtxt.getMsgDialog();
-                a.setMessage("Unexpected error has occured",DwtMessageDialog.CRITICAL_STYLE,"Error");
-                a.popup();*/
-		//setTimeout("ff()",500);
-		
 	}
         if (response.more) {
             this.getContacts(response.offset + this.LIMIT, contactList,contactBook);
@@ -601,6 +584,7 @@ VncContactSync.prototype.handleGetContactsResponse = function(contactList, resul
         }		
     }
 };
+
 /**
  * Sets the interface to show each one of the duplicates.
  */

@@ -29,6 +29,7 @@ document_setting.prototype.constructor = document_setting;
 	var unsuccess_delete;
 	var unsuccess_blank;
 	var proto="http://";	
+
 /*...Constructor....*/
 function document_setting(parent, zimlet,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank){
 	
@@ -51,6 +52,7 @@ function document_setting(parent, zimlet,document_lbl_title,document_lbl_docname
 String.prototype.trim = function() {
     return this.replace(/^\s+|\s+$/g,"");
 }
+
 /*...........getRecords from zimbra proeprty...*/
 function getTableRecords(){
 	var data=zm.getUserProperty("doc_list");
@@ -68,6 +70,7 @@ function getTableRecords(){
 	s+="</table>";
 	document.getElementById('doc_record').innerHTML=s;
 }
+
 /*...........Check whether "ALL" chkbox is selected ...*/
 function checkAll(){
 	var record_id=document.getElementsByName("record_id");
@@ -75,12 +78,10 @@ function checkAll(){
 		for(var i=0;i<record_id.length;i++){
 			record_id[i].checked=true;
 		}
-		
 	} else {
 		for (var i=0;i<record_id.length;i++) {
 			record_id[i].checked=false;
 		}
-		
 	}
 }
 
@@ -106,7 +107,6 @@ function addRecord() {
             a.popup();
 		document.getElementById("document_title").focus();
 		return;
-		
 	}
 	if(document.getElementById("document_title").value.match(/^\s*$/)){
 		var a =  appCtxt.getMsgDialog();

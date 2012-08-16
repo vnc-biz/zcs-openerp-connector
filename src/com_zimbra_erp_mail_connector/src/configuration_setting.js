@@ -37,7 +37,6 @@ configuration_setting.prototype.constructor = configuration_setting;
 function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password){
 	
 	DwtTabViewPage.call(this,parent);
-	//this.resetSize("550px", "316px")
 	this.zimlet = zimlet;
 	zm=this.zimlet;
 	config_lbl_url=confi_lbl_url;
@@ -105,7 +104,6 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="</tr>";
 		html[i++]="</table>";
 		html[i++]="</fieldset>";
-/*..........................................................*/			
 		html[i++]="<fieldset class='fieldHeight'>";
 		html[i++]="<table class='marginLogin'>";
 		html[i++]="<tr>";
@@ -143,8 +141,8 @@ function showpass(){
 	}else{
 		document.getElementById("userpassword").type='password';
 	}
-
 }
+
 /*Gives the Database List*/
 function getDatabase(){
 	var urladdress=document.getElementById("urladdress").value;

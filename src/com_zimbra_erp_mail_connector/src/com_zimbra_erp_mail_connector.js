@@ -20,7 +20,6 @@
 
 com_zimbra_erp_mail_connector_HandlerObject.getInstance = function () {
 	return com_zimbra_erp_mail_connector_HandlerObject._instance;
-
 }
 
 var mail_from=[];
@@ -60,7 +59,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 			index : buttonIndex, // position of the button
 			image : "refresh" // icon
 		};
-
 		// toolbar.createOp api creates the button with some id and params
 		// containing button details.
 		var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID, buttonArgs);
@@ -120,7 +118,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = f
             calendars[i].sync();
         }
     }	
-
 };
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handle_push_and_save = function(controller) {
@@ -155,8 +152,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._msgLoaded = function(resu
 		}
 	mail_from.push(rec);
 	msgFlag=1;
-    this.doDrop(msg);
-	
+	this.doDrop(msg);
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleSOAPErrorResponseXML = function(result) {
@@ -255,7 +251,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.addMenuButton = function(c
 
 var mailtopush="";
 com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = function(controller) {
-	//var sel = controller._listView[controller._currentView].getSelection();
 	var con=appCtxt.getCurrentController();
 	mailtopush = controller.getCurrentView().getDnDSelection();
 	mailtopush = (mailtopush instanceof Array) ? mailtopush : [mailtopush];
@@ -274,7 +269,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 	}
 	mail_from=[];
 	mail_from.push(eml);
-	//var msg=con.getMsg();
 	if(mailtopush != null){
 		this.doDrop(mailtopush[0]);
 	}
@@ -283,7 +277,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	AjxRpc.__RPC_CACHE_MAX = 200;
 	docList=this.getUserProperty("doc_list");
-	//var json=JSON.parse(docList);
 	if(docList.length<=0){
 	var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"2\",\"title\":\"Address\",\"docname\":\"res.partner.address\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
 	this.setUserProperty("doc_list",doclist.trim());
@@ -291,6 +284,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	}
 	zmlt=this;	
 }
+
 /*   This is the init method     */
 function com_zimbra_erp_mail_connector_HandlerObject() {
 	com_zimbra_erp_mail_connector_HandlerObject._instance=this;
@@ -346,7 +340,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab3"),this.about_setting));
 	canvas = new TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),view);
 	canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_project_close"));
-	//canvas.getButton(DwtDialog.YES_BUTTON).setVisibility(false) ;
 	canvas.getButton(DwtDialog.OK_BUTTON).setText(this.getMessage("reset_configuration"));
 	canvas.registerCallback(DwtDialog.OK_BUTTON, new AjxCallback(this, this._handleResetClick));
 	canvas.popup();
@@ -422,7 +415,6 @@ function(droppedItem) {
                 a.popup();
 			return;
 		 }	
-		//port = Number(location.port);
 		proto=location.protocol;
 		if(proto == "http:"){
 			port=appCtxt.get(ZmSetting.HTTP_PORT);
@@ -456,16 +448,12 @@ function(droppedItem) {
 		} else {
 			var obj = droppedItem.srcObj ? droppedItem.srcObj : droppedItem;
 			if (obj.type == "CONV"){
-				//alert("This is conversation");
 				this._getMessageFromConv(obj);	
 			} else if(obj.type == "MSG") {
-				//alert("This is simple message");
 				this._getMessageFromMsg(obj);
 			}else if(obj.type == "APPT") {
 			}
- 
 		}
-
 	}catch(e){
 		var a =  appCtxt.getMsgDialog();
 			a.setMessage(this.getMessage("mail_push_exception"),DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
@@ -490,7 +478,6 @@ function(droppedItem) {
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=function(convSrcObj) {
    try{	
 		msgids.push(convSrcObj.msgIds[0]);
-		//alert("This is conversation "+convSrcObj.msgIds);
 		msgtype.push(convSrcObj.type);
 		ids=convSrcObj.msgIds;
 		mail_subject=convSrcObj.getFirstHotMsg().subject;
@@ -506,9 +493,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=functi
 				}else{
 					msgFlag=0;
 				}
-
 			}
-
 		}	
 	port = Number(location.port);
 	baseURL = 
@@ -527,7 +512,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=functi
                	a.setMessage(this.getMessage("mail_push_exception"),DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
                 a.popup();	
 	}
-	
 };
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=function(convSrcObj) {
@@ -547,7 +531,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 				msgFlag=0;
 			}
 		}
-
 	}
 	port = Number(location.port);
 	baseURL = 
@@ -560,7 +543,5 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 			":"+port:''),
 		"/service/home/~/"
 	].join("");
-         
 	download_link=baseURL;
-		
 };
