@@ -26,8 +26,7 @@ import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcStruct;
 
 
-public class Connector
-{
+public class Connector {
 	XmlRpcClient server;
 	Connection con;
 	Statement stmt;
@@ -39,52 +38,39 @@ public class Connector
 	private Matcher matcher;
 	private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-	public String getDatabase(String url,String port)
-	{
-		try
-		{
+	public String getDatabase(String url,String port) {
+		try {
 			String fixurl="/xmlrpc/db";
 			System.out.println("getDataBase---->>>"+url+":"+port+fixurl);
 			XmlRpcClient client = new XmlRpcClient(new URL(url+":"+port+fixurl),true);
 			Object token = (Object)client.invoke( "list", new Object[] {} );
 			return token.toString();
-		}
-		catch(Exception ex)
-		{
+		} catch(Exception ex) {
 			System.out.print(ex.toString()+"Exception in  getDatabase-------->>>>>");
 			ex.printStackTrace();
 			return "fail";
 		}
 	}
 
-	public String validUser(String url,String port,String database,String username,String password)
-	{
-		try
-		{
+	public String validUser(String url,String port,String database,String username,String password) {
+		try {
 			String fixurl="/xmlrpc/common";
 			XmlRpcClient client = new XmlRpcClient(new URL(url+":"+port+fixurl),true);
 			database=database.trim();
 			Object token = (Object)client.invoke( "login", new Object[] {database,username,password} );
-			if(token instanceof java.lang.Integer)
-			{
+			if(token instanceof java.lang.Integer) {
 				return token.toString();
-			}
-			else
-			{
+			} else {
 				return "false";
 			}
-		}
-		catch(Exception ex)
-		{
+		} catch(Exception ex) {
 			System.out.print(ex+"Exception in  valid user");
 			return "false";
 		}
 	}
 
-	public String getDocumentlist(String dbname,String password,String emailsearch,String urladdress,String port,String obj_name,String openerp_id)
-	{
-		try
-		{
+	public String getDocumentlist(String dbname,String password,String emailsearch,String urladdress,String port,String obj_name,String openerp_id) {
+		try {
 			String fixurl="/xmlrpc/object";
 			Gson gson = new Gson();
 			Vector parent=new Vector();
@@ -92,26 +78,18 @@ public class Connector
 			Integer op_id=Integer.parseInt(openerp_id);
 			boolean valid;
 			valid=validate(emailsearch);
-			if (emailsearch.equals(""))
-			{
+			if (emailsearch.equals("")) {
 				System.out.println("getDocumentlist->This is openerp_id--------->>>>>>"+openerp_id);
 				XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 				Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",""} );
-				if (token.toString().length()!=2)
-				{
+				if (token.toString().length()!=2) {
 					return gson.toJson(token);
-				}
-				else
-				{
+				} else {
 					return "bl";
 				}
-			}
-			else
-			{
-				if (obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead"))
-				{
-					if (valid == true)
-					{
+			} else {
+				if (obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead")) {
+					if (valid == true) {
 						System.out.println("Inside valid domain or Email and one of three objects-------------->>>>>>>>>>>>>>>>>");
 						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 						{
@@ -123,19 +101,13 @@ public class Connector
 						}
 						Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",parent} );
 						System.out.println("Call success------------------->>>>>>>>>"+token.toString());
-						if(token.toString().length()!=2)
-						{
+						if(token.toString().length()!=2) {
 							return gson.toJson(token);
-						}
-						else
-						{
+						} else {
 							return "bl";
 						}
-					}
-					else
-					{
-						if(emailsearch.indexOf("@")== 0 && emailsearch.indexOf(".")>0)
-						{
+					} else {
+						if(emailsearch.indexOf("@")== 0 && emailsearch.indexOf(".")>0) {
 							System.out.println("It's a domain name------>>>>>>>>>><><><><><><><><><");
 							XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 							{
@@ -147,47 +119,32 @@ public class Connector
 							}
 							Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",domainParent} );
 							System.out.println("Call success------------------->>>>>>>>>"+token.toString());
-							if(token.toString().length()!=2)
-							{
+							if(token.toString().length()!=2) {
 								return gson.toJson(token);
-							}
-							else
-							{
+							} else {
 								return "bl";
 							}
-						}
-						else
-						{
+						} else {
 							XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 							Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch} );
-							if(token.toString().length()!=2)
-							{
+							if(token.toString().length()!=2) {
 								return gson.toJson(token);
-							}
-							else
-							{
+							} else {
 								return "bl";
 							}
 						}
 					}
-				}
-				else
-				{
+				} else {
 					XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 					Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",emailsearch} );
-					if(token.toString().length()!=2)
-					{
+					if(token.toString().length()!=2) {
 						return gson.toJson(token);
-					}
-					else
-					{
+					} else {
 						return "bl";
 					}
 				}
 			}
-		}
-		catch(Exception ex)
-		{
+		} catch(Exception ex) {
 			System.out.print(ex+"Exception in  getdocumenlist");
 			ex.printStackTrace();
 			return "Exception";
@@ -195,8 +152,7 @@ public class Connector
 	}
 
 	/*Gel Email Information from */
-	public String sendMail(String dbname,String password,String urladdress,String port,String msg_id,String downloadlink,String push_id,String sessionid, String authToken,String openerp_id)
-	{
+	public String sendMail(String dbname,String password,String urladdress,String port,String msg_id,String downloadlink,String push_id,String sessionid, String authToken,String openerp_id) {
 		System.out.print("send mail called"+"database:"+dbname+"Password:"+password+"URLaddress:"+urladdress+"port:"+port+"msg_id:"+msg_id+"Link:"+downloadlink+"push_ID:"+push_id+"sessionid:"+sessionid+"AuthToken:"+authToken);
 		String rowdata=null;
 		String rowdata_path=null;
@@ -206,11 +162,9 @@ public class Connector
 		HttpURLConnection row_connection=null;
 		Vector main_vec=null;
 		Integer op_id=Integer.parseInt(openerp_id);
-		try
-		{
+		try {
 			String msgID = msg_id;
-			if(msgID != null)
-			{
+			if(msgID != null) {
 				/*Row data*/
 				System.out.print("Inside msg is not null");
 				rowdata_path=downloadlink+"?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8");
@@ -223,8 +177,7 @@ public class Connector
 				StringBuffer rowstrbuffer=new StringBuffer();
 				byte[] rowbuf = new byte[rowlineLength/4*3];
 				int rowlen = 0;
-				while((rowlen = rowis.read(rowbuf)) != -1)
-				{
+				while((rowlen = rowis.read(rowbuf)) != -1) {
 					rowstrbuffer.append(new String(rowbuf));
 					rowbuf = null;
 					rowbuf = new byte[rowlineLength/4*3];
@@ -257,24 +210,17 @@ public class Connector
 				row_connection.disconnect();
 				rowstrbuffer.delete(0,rowstrbuffer.length());
 				rowis.close();
-				try
-				{
+				try {
 					main_vec.clear();
 					mail_vec.clear();
 					module_vec.clear();
-				}
-				catch(Exception ex)
-				{
+				} catch(Exception ex) {
 					System.out.print(ex+"Exception in clear vector");
 				}
-			}
-			else
-			{
+			} else {
 				System.out.print("Else part of msg");
 			}
-		}
-		catch(Exception e)
-		{
+		} catch(Exception e) {
 			System.out.print("inside Exceptionfsbv"+e);
 			e.printStackTrace();
 		}
@@ -282,8 +228,7 @@ public class Connector
 		return list.toString();
 	}
 
-	public String checkRecords(String dbname,String password,String urladdress,String port,String obj_name,String openerp_id)
-	{
+	public String checkRecords(String dbname,String password,String urladdress,String port,String obj_name,String openerp_id) {
 		Object list=null;
 		Object login=null;
 		Object lis=null;
@@ -293,8 +238,7 @@ public class Connector
 		Vector parent=new Vector();
 		String s=null;
 		int cnt=0;
-		try
-		{
+		try {
 			String fixurl="/xmlrpc/object";
 			XmlRpcClient lists;;
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
@@ -317,25 +261,19 @@ public class Connector
 			}
 			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,"ir.module.module","search",parent});
 			System.out.println("this is Documentvarify-----response su vat che--->>"+lis.toString()+lis.toString().length());
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println("fail");
 			e.printStackTrace();
 			return("Fail");
 		}
-		if ((lis.toString()!="") && (lis.toString().length()>2))
-		{
+		if ((lis.toString()!="") && (lis.toString().length()>2)) {
 			return gson.toJson(lis);
-		}
-		else
-		{
+		} else {
 			return "Fail";
 		}
 	}
 
-	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd,String openerp_id,String acc_name,String zimbraProtocol,String z_portNumber,String addressBook,String domainName)
-	{
+	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd,String openerp_id,String acc_name,String zimbraProtocol,String z_portNumber,String addressBook,String domainName) {
 		Gson gson = new Gson();
 		Integer op_id=Integer.parseInt(openerp_id);
 		System.out.println("This is zimbra port and ---->>>>>"+z_portNumber);
@@ -343,19 +281,15 @@ public class Connector
 		Object contactlist;
 		String tmpDir = System.getProperty("java.io.tmpdir");
 		String osName= System.getProperty("os.name");
-		if (osName.indexOf("W")>-1)
-		{
+		if (osName.indexOf("W")>-1) {
 			System.out.println("Damn its windows 7 "+"/tmp/myData.csv");
 			tmpDir+="\\myData.csv";
-		}
-		else
-		{
+		} else {
 			tmpDir+="/myData.csv";
 		}
 		System.out.println("THis is file path for CSV-->>"+"/tmp/myData.csv");
 		List<Integer> intList;
-		try
-		{
+		try {
 			String fixurl="/xmlrpc/object";
 			XmlRpcClient lists,contact;
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
@@ -370,17 +304,13 @@ public class Connector
 			Vector<String> heading = new Vector<String>();
 			String str;
 			int k=0;
-			while((str=br.readLine())!=null)
-			{
-				try
-				{
+			while((str=br.readLine())!=null) {
+				try {
 					cField=str.split("=");
 					nameList.add(cField[0].trim());
 					System.out.println("length of cField:"+cField.length+"   --------------- >key:"+cField[0].trim()+" value:"+cField[1].trim());
 					heading.add(cField[1].trim());
-				}
-				catch(Exception r)
-				{
+				} catch(Exception r) {
 					System.out.print("--------------------------->>>>>Exception");
 					r.printStackTrace();
 				}
@@ -396,21 +326,16 @@ public class Connector
 			XmlRpcArray arr=contactList.getArray("datas");
 			CsvWriter csvFile=new CsvWriter("/tmp/myData.csv",',',Charset.forName("UTF-8"));
 			csvFile.setForceQualifier(true);
-			for (int t=1; t<heading.size(); t++)
-			{
+			for (int t=1; t<heading.size(); t++) {
 				csvFile.write(heading.get(t).toString());
 			}
 			csvFile.endRecord();
-			for (int i=0; i<len1; i++)
-			{
+			for (int i=0; i<len1; i++) {
 				int flag=0;
-				for(int j=1; j<len2; j++)
-				{
+				for(int j=1; j<len2; j++) {
 					name=arr.getArray(i).get(j).toString();
-					if(j==1)
-					{
-						if(name.equals("false"))
-						{
+					if(j==1) {
+						if(name.equals("false")) {
 							flag=1;
 						}
 					}
@@ -432,36 +357,29 @@ public class Connector
 			tempurl=tempurl.replaceAll(" ","%20");
 			URL url = uri.toURL();
 			System.out.println("This is url=====>>>>>>"+url);
-			try
-			{
+			try {
 				Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+url);
 				p.waitFor();
 				System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
 				return "success";
-			}
-			catch(IllegalThreadStateException ex)
-			{
+			} catch(IllegalThreadStateException ex) {
 				ex.printStackTrace();
 				return "fail";
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println("Exception in xmlrpc contact " + e);
 			e.printStackTrace();
 			return "fail";
 		}
 	}
 
-	public boolean validate(String hex)
-	{
+	public boolean validate(String hex) {
 		pattern = Pattern.compile(EMAIL_PATTERN);
 		matcher = pattern.matcher(hex);
 		return matcher.matches();
 	}
 
-	public String varifyRecord(String dbname,String password,String urladdress,String port,String obj_name,String openerp_id)
-	{
+	public String varifyRecord(String dbname,String password,String urladdress,String port,String obj_name,String openerp_id) {
 		Object list=null;
 		Object login=null;
 		Object lis=null;
@@ -471,8 +389,7 @@ public class Connector
 		Vector params=null;
 		String s=null;
 		int cnt=0;
-		try
-		{
+		try {
 			String fixurl="/xmlrpc/object";
 			XmlRpcClient lists;;
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
@@ -480,19 +397,14 @@ public class Connector
 			dbname=dbname.trim();
 			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()});
 			System.out.println("this is Documentvarify-----response--->>"+lis.toString());
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println("fail");
 			e.printStackTrace();
 			return("Fail");
 		}
-		if (lis.toString()!="")
-		{
+		if (lis.toString()!="") {
 			return gson.toJson(lis);
-		}
-		else
-		{
+		} else {
 			return "Fail";
 		}
 	}
