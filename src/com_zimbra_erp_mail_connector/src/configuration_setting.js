@@ -92,7 +92,7 @@ configuration_setting.prototype._createHTML = function() {
 		html[i++]="<td>";
 		html[i++]=config_lbl_username;
 		html[i++]="</td>";
-		html[i++]="<td>";
+		html[i++]="<td class='voz_text_width'>";
 		html[i++]="<input type='text' id='username' class='textWidth'/>"
 		html[i++]="</td>";
 		html[i++]="</tr>";

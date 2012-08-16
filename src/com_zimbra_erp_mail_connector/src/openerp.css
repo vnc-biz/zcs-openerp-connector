@@ -40,12 +40,12 @@ table.gridtable tr.d1 td
 .textbox1
 {
 	width:250%;
-	width:96%;
+	width:96%\9;		/* IE8/IE9 hack */
 }
 
 .fieldsetsize
 {
-	width:100%;
+	width:100%\9;		/* IE8/IE9 hack */
 }
 
 #urladdress
@@ -164,7 +164,7 @@ select
 .marginIE
 {
 	padding-left:12%;
-	margin-left:8%;
+	margin-left:8%\9;	/* IE8/IE9 hack */
 	margin-top:3%;
 }
 
@@ -172,44 +172,39 @@ select
 {
 	margin-left:12%;
 	margin-top:3%;
-	margin-left:8%;
-}
-
-#temp
-{
-	background:red;
+	margin-left:8%\9	/* IE8/IE9 hack */
 }
 
 .btn_search
 {
 	padding-left:3px;
 	margin-left:56px;
-	margin-left:0;
-	padding-left:0;
+	margin-left:0px\9;	/* IE8/IE9 hack */
+	padding-left:0px\9;	/* IE8/IE9 hack */
 }
 
 .txt_from
 {
 	width:135%;
-	width:200px;
+	width:200px\9;		/* IE8/IE9 hack */
 }
 
 .document_div
 {
 	height:5%;
-	padding-bottom:5px;
+	padding-bottom:5px\9;	/* IE8/IE9 hack */
 }
 
 .doc_setng_chkbx
 {
 	width:10%;
-	width:50px;
+	width:50px\9;		/* IE8/IE9 hack */
 }
 
 .doc_setng_chkbx2
 {
 	margin-left:31%;
-	margin-left:20%;
+	margin-left:20%\9;	/* IE8/IE9 hack */
 }
 
 .Imgopen_erp
@@ -226,26 +221,25 @@ select
 .config_btn1
 {
 	padding-left:0;
-	margin-left:72%;
-	margin-left:35%;
+	margin-left:76%;
+	margin-left:35%\9;	/* IE8/IE9 hack */
 	-webkit-margin-left:60%;
 }
 
 .config_btnIE
 {
-	padding-left:45%;
+	padding-left:45%\9;	/* IE8/IE9 hack */
 }
 
 .textWidth
 {
-	width:180%;
-	width:225px;
+	width:100%;
 }
 
 .fieldHeight
 {
 	height:47%;
-	height:45%;
+	height:45%\9;		/* IE8/IE9 hack */
 }
 
 .urlWidth
@@ -257,16 +251,96 @@ select
 {
 	padding-left:0;
 	margin-top:5%;
-	margin-top:1%;
+	margin-top:1%\9;	/* IE8/IE9 hack */
 }
 
 .showpass
 {
-	padding-left:100px;
 }
 
 .showpassLabel
 {
 	float:left;
 	padding-top:4px;
+}
+
+.m_save
+{
+	width:100%;
+}
+
+.m_save_button
+{
+	margin-left:0;
+	width:27%;
+	border:1px solid #738998;
+	border-radius:10px 10px 10px 10px;
+	display:inline-block;
+	font-weight:bolder;
+	text-align:center;
+	text-transform:capitalize!important;
+	color:#4C4C4C;
+	padding:2px;
+	background:none repeat scroll 0 0 #C3CCD3;
+}
+
+.call_action
+{
+	width:88%;
+}
+
+#emailReminder_datefield
+{
+	height:24px;
+}
+
+.ImggetDB
+{
+	background:url(resources/get_database.png) no-repeat scroll 0 0;
+	height:16px!important;
+	overflow:hidden;
+	width:16px!important;
+}
+
+.ImgConnectDB
+{
+	background:url(resources/connect.png) no-repeat scroll 0 0;
+	height:16px!important;
+	overflow:hidden;
+	width:16px!important;
+}
+
+.Imgschedulecall
+{
+	background:url(resources/call.png) no-repeat scroll 0 0;
+	height:16px!important;
+	overflow:hidden;
+	width:16px!important;
+}
+
+.scheduleCallBtn
+{
+	width:100%;
+	cursor:pointer;
+}
+
+.Imgschedulemeeting
+{
+	background:url(resources/meeting.png) no-repeat scroll 0 0;
+	height:16px!important;
+	overflow:hidden;
+	width:16px!important;
+}
+
+.ImgPushMail
+{
+	background:url(resources/push.png) no-repeat scroll 0 0;
+	height:16px!important;
+	overflow:hidden;
+	width:16px!important;
+}
+
+.voz_text_width
+{
+	width:62%;
 }
