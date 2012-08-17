@@ -26,8 +26,6 @@
 	<include>document_setting.js</include>
 	<include>push_to_openERP.js</include>
 	<include>about_setting.js</include>
-	<include>VncContactSync.js</include>
-	<include>contactsync.js</include>
 	<includeCSS>openerp.css</includeCSS>
 	<resource>resources/submit_please_wait.gif</resource>
 	<resource>resources/about.png</resource>

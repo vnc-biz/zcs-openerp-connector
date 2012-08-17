@@ -26,7 +26,6 @@ var mail_from=[];
 var receiver = "";
 var msgFlag=0;
 com_zimbra_erp_mail_connector_HandlerObject.prototype= new ZmZimletBase;
-com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID="Contact Sync.";
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID="cal_sync";
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON2_ID="send_and_push";
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON3_ID="push_to_erp";
@@ -39,32 +38,7 @@ String.prototype.ltrim=function(){return this.replace(/^\s+/,'');}
 com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = function(app, toolbar, controller,view) {
 	var patt="COMPOSE";
 	// only add this button for the following 3 views
-	if (view == "CNS") {
-		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID)) {
-			return;
-		}
-		// get the index of View menu so we can display it after that.
-		var buttonIndex = -1;
-		for ( var i = 0, count = toolbar.opList.length; i < count; i++) {
-			if (toolbar.opList[i] == ZmOperation.TAG_MENU) {
-				buttonIndex = i + 2;
-				break;
-			}
-		}
-		// create params obj with button details
-		var contact_sync_btn=this.getMessage("contact_sync_btn");
-		var buttonArgs = {
-			text :contact_sync_btn,
-			tooltip : "Synchronize contacts",
-			index : buttonIndex, // position of the button
-			image : "refresh" // icon
-		};
-		// toolbar.createOp api creates the button with some id and params
-		// containing button details.
-		var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON_ID, buttonArgs);
-		button.addSelectionListener(new AjxListener(this,this._handleToolbarBtnClick, controller));
-	}
-	else if(view == "CLD" || view=="CLWW"){
+	if(view == "CLD" || view=="CLWW"){
 		if (toolbar.getOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON1_ID)) {
 			 return;
                 }		
@@ -183,45 +157,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.getFolderDialog=function()
 	params.omit[addBook_ContactId]=true;
 	params.omit[addBook_EcontactId]=true;
 	dialog.popup(params);
-}
-
-com_zimbra_erp_mail_connector_HandlerObject.prototype._handleToolbarBtnClick = function(controller) {
-	addBook=this.getUserProperty("addBook");
-	addBookPath=this.getUserProperty("addBookPath");
-	var addBook_Contact = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getById(ZmFolder.ID_CONTACTS);
-	addBook_ContactId=addBook_Contact.id;
-	var addBook_Econtact=appCtxt.getFolderTree(appCtxt.getActiveAccount()).getById(ZmFolder.ID_AUTO_ADDED);
-	addBook_EcontactId=addBook_Econtact.id;
-	if(addBookPath.trim()==""){
-			this.getFolderDialog()
-	}else{
-		var ftree = appCtxt.getFolderTree(appCtxt.getActiveAccount()).getByPath(addBookPath);
-		if(ftree != null){
-			var trashCheck=ftree.isInTrash();	
-		}else{
-			this.getFolderDialog()	
-		}
-		if(trashCheck==false){
-		new contactsync(this,addBook,addBookPath); 
-		}else{			
-			this.getFolderDialog()
-		}
-	}
-};
-
-com_zimbra_erp_mail_connector_HandlerObject.prototype._handleChooseFolder = function(organizer) {
-	var addBook=organizer.getName();
-	addBook = addBook.replace(/&nbsp;/gi,' ');
-	var addBookPath=organizer.getPath();
-	addBookPath=addBookPath.replace(/&nbsp;/gi,' ');
-	this.setUserProperty("addBook",addBook);
-	this.setUserProperty("addBookPath",addBookPath);
-	this.saveUserProperties();
-	if(addBook !="" || addBook !="Folders"){
-		var dialog = appCtxt.getChooseFolderDialog();
-    		dialog.popdown();	
-		new contactsync(this,addBook,addBookPath);
-	}
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.onParticipantActionMenuInitialized = function(controller, menu) {
