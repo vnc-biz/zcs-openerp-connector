@@ -25,7 +25,7 @@
 
 JSPUtil.nocache(response);
 
-out.println(
+out.print(
 	new Connector().getDatabase(
 		request.getParameter("urladdress"),
 		request.getParameter("port")
