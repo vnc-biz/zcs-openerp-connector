@@ -1,5 +1,6 @@
 *.deb
 /image
+/src/com_zimbra_erp_mail_connector/com_zimbra_erp_mail_connector.pot
 /src/lib-vnc-openerp/classes/
 /src/lib-vnc-openerp/zcs-lib-vnc-openerp.jar
 /zimlets.list
