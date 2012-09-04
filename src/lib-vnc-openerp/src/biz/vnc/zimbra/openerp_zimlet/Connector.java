@@ -1,5 +1,6 @@
 package biz.vnc.zimbra.openerp_zimlet;
 
+import biz.vnc.zimbra.util.ZLog;
 import com.csvreader.CsvWriter;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -25,7 +26,6 @@ import redstone.xmlrpc.XmlRpcArray;
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcStruct;
 
-
 public class Connector {
 	XmlRpcClient server;
 	Connection con;
@@ -38,16 +38,27 @@ public class Connector {
 	private Matcher matcher;
 	private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+	public static void _err(String s, Exception e) {
+		ZLog.err("OpenERPConnector", s, e);
+	}
+
+	public static void _err(String s) {
+		ZLog.err("OpenERPConnector", s);
+	}
+
+	public static void _info(String s) {
+		ZLog.info("OpenERPConnector", s);
+	}
+
 	public String getDatabase(String url,String port) {
 		try {
 			String fixurl="/xmlrpc/db";
-			System.out.println("getDataBase---->>>"+url+":"+port+fixurl);
+			_info("getDataBase URL="+url+":"+port+fixurl);
 			XmlRpcClient client = new XmlRpcClient(new URL(url+":"+port+fixurl),true);
 			Object token = (Object)client.invoke( "list", new Object[] {} );
 			return token.toString();
 		} catch(Exception ex) {
-			System.out.print(ex.toString()+"Exception in  getDatabase-------->>>>>");
-			ex.printStackTrace();
+			_err("getDatabase call failed", ex);
 			return "fail";
 		}
 	}
@@ -64,7 +75,7 @@ public class Connector {
 				return "false";
 			}
 		} catch(Exception ex) {
-			System.out.print(ex+"Exception in  valid user");
+			_err("validUser() failed", ex);
 			return "false";
 		}
 	}
@@ -79,7 +90,7 @@ public class Connector {
 			boolean valid;
 			valid=validate(emailsearch);
 			if (emailsearch.equals("")) {
-				System.out.println("getDocumentlist->This is openerp_id--------->>>>>>"+openerp_id);
+				_info("getDocumentlist(): openerp_id="+openerp_id);
 				XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 				Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search",""} );
 				if (token.toString().length()!=2) {
@@ -90,7 +101,6 @@ public class Connector {
 			} else {
 				if (obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead")) {
 					if (valid == true) {
-						System.out.println("Inside valid domain or Email and one of three objects-------------->>>>>>>>>>>>>>>>>");
 						XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 						{
 							Vector<String> child = new Vector<String>();
@@ -100,7 +110,6 @@ public class Connector {
 							parent.add(child);
 						}
 						Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",parent} );
-						System.out.println("Call success------------------->>>>>>>>>"+token.toString());
 						if(token.toString().length()!=2) {
 							return gson.toJson(token);
 						} else {
@@ -108,7 +117,7 @@ public class Connector {
 						}
 					} else {
 						if(emailsearch.indexOf("@")== 0 && emailsearch.indexOf(".")>0) {
-							System.out.println("It's a domain name------>>>>>>>>>><><><><><><><><><");
+							_info("getDocumentList() got a domainname");
 							XmlRpcClient client = new XmlRpcClient(new URL(urladdress+":"+port+fixurl),false);
 							{
 								Vector<String> domainChild = new Vector<String>();
@@ -118,7 +127,7 @@ public class Connector {
 								domainParent.add(domainChild);
 							}
 							Object token = (Object)client.invoke( "execute", new Object[] {dbname,op_id,password,obj_name,"name_search","",domainParent} );
-							System.out.println("Call success------------------->>>>>>>>>"+token.toString());
+							_info("getDocumentList() call succeed: "+token.toString());
 							if(token.toString().length()!=2) {
 								return gson.toJson(token);
 							} else {
@@ -145,15 +154,13 @@ public class Connector {
 				}
 			}
 		} catch(Exception ex) {
-			System.out.print(ex+"Exception in  getdocumenlist");
-			ex.printStackTrace();
+			_err("getDocumentList() failed", ex);
 			return "Exception";
 		}
 	}
 
 	/*Gel Email Information from */
 	public String sendMail(String dbname,String password,String urladdress,String port,String msg_id,String downloadlink,String push_id,String sessionid, String authToken,String openerp_id) {
-		System.out.print("send mail called"+"database:"+dbname+"Password:"+password+"URLaddress:"+urladdress+"port:"+port+"msg_id:"+msg_id+"Link:"+downloadlink+"push_ID:"+push_id+"sessionid:"+sessionid+"AuthToken:"+authToken);
 		String rowdata=null;
 		String rowdata_path=null;
 		JSONObject jso=null;
@@ -166,10 +173,10 @@ public class Connector {
 			String msgID = msg_id;
 			if(msgID != null) {
 				/*Row data*/
-				System.out.print("Inside msg is not null");
+				_info("sendMail(): Inside msg is not null");
 				rowdata_path=downloadlink+"?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8");
 				URL urlrow=new URL(rowdata_path);
-				System.out.println("This is url row-------------->>>>>>>>>>>>>>>>>>>"+urlrow.toString());
+				_info("sendMail(): url: "+urlrow.toString());
 				row_connection = (HttpURLConnection)urlrow.openConnection();
 				row_connection.connect();
 				InputStream rowis =row_connection.getInputStream();
@@ -183,7 +190,7 @@ public class Connector {
 					rowbuf = new byte[rowlineLength/4*3];
 				}
 				rowdata=new String(rowstrbuffer);
-				System.out.println("This is rawdata======================="+rowdata);
+				_info("sendMail(): raw data: "+rowdata);
 				/*End roe data*/
 
 				/*row data Hashtable*/
@@ -205,7 +212,7 @@ public class Connector {
 				XmlRpcClient client;
 				client=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 				dbname=dbname.trim();
-				System.out.println("Going to call histary_message from sendMail");
+				_info("Going to call histary_message from sendMail");
 				list=(Object)client.invoke("execute",new Object[] {dbname,op_id,password,"zimbra.partner","history_message",main_vec});
 				row_connection.disconnect();
 				rowstrbuffer.delete(0,rowstrbuffer.length());
@@ -215,16 +222,14 @@ public class Connector {
 					mail_vec.clear();
 					module_vec.clear();
 				} catch(Exception ex) {
-					System.out.print(ex+"Exception in clear vector");
+					_err("Send mail failed ", ex);
 				}
 			} else {
-				System.out.print("Else part of msg");
 			}
 		} catch(Exception e) {
-			System.out.print("inside Exceptionfsbv"+e);
-			e.printStackTrace();
+			_err("Archive email failed", e);
 		}
-		System.out.print("This is list"+list.toString()+"End of list");
+		_info("sendMail(): list: "+list.toString());
 		return list.toString();
 	}
 
@@ -242,7 +247,6 @@ public class Connector {
 			String fixurl="/xmlrpc/object";
 			XmlRpcClient lists;;
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
-			System.out.println("this is address----------->>>>>"+urladdress+":"+port+fixurl+"End of url<<<<<<<<<<--------");
 			s=new String();
 			dbname=dbname.trim();
 			{
@@ -260,10 +264,9 @@ public class Connector {
 				parent.add(child2);
 			}
 			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,"ir.module.module","search",parent});
-			System.out.println("this is Documentvarify-----response su vat che--->>"+lis.toString()+lis.toString().length());
+			_info("checkRecords(): this is Documentvarify-----response su vat che--->>"+lis.toString()+lis.toString().length());
 		} catch (Exception e) {
-			System.out.println("fail");
-			e.printStackTrace();
+			_err("checkRecords() failed", e);
 			return("Fail");
 		}
 		if ((lis.toString()!="") && (lis.toString().length()>2)) {
@@ -276,27 +279,25 @@ public class Connector {
 	public String getContacts(String dbname,String password,String urladdress,String port,String auth_token,String urladd,String openerp_id,String acc_name,String zimbraProtocol,String z_portNumber,String addressBook,String domainName) {
 		Gson gson = new Gson();
 		Integer op_id=Integer.parseInt(openerp_id);
-		System.out.println("This is zimbra port and ---->>>>>"+z_portNumber);
 		Integer zimbraPort=Integer.parseInt(z_portNumber);
 		Object contactlist;
 		String tmpDir = System.getProperty("java.io.tmpdir");
 		String osName= System.getProperty("os.name");
 		if (osName.indexOf("W")>-1) {
-			System.out.println("Damn its windows 7 "+"/tmp/myData.csv");
 			tmpDir+="\\myData.csv";
 		} else {
 			tmpDir+="/myData.csv";
 		}
-		System.out.println("THis is file path for CSV-->>"+"/tmp/myData.csv");
+		_info("CSV path: "+tmpDir);
 		List<Integer> intList;
 		try {
 			String fixurl="/xmlrpc/object";
 			XmlRpcClient lists,contact;
 			lists=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 			dbname=dbname.trim();
-			System.out.println("Before xmlrpc call------------->>>>>>>>>>>>>>>>>>>>"+dbname+password);
+			_info("getContacts(): before xmlrpc call: "+dbname+password);
 			Object objlist = lists.invoke("execute",new Object[] {dbname,op_id,password,"res.partner.address","search",new Vector()});
-			System.out.println("----------------------------------> Id list:"+objlist.toString());
+			_info("getContacts(): Id list:"+objlist.toString());
 			Vector nameList = new Vector();
 			InputStream is=getClass().getResourceAsStream("/biz/vnc/zimbra/openerp_zimlet/contactFields.properties");
 			BufferedReader br=new BufferedReader(new InputStreamReader(is));
@@ -308,18 +309,15 @@ public class Connector {
 				try {
 					cField=str.split("=");
 					nameList.add(cField[0].trim());
-					System.out.println("length of cField:"+cField.length+"   --------------- >key:"+cField[0].trim()+" value:"+cField[1].trim());
+					_info("getContacts(): length of cField--- >key:"+cField[0].trim()+" value:"+cField[1].trim());
 					heading.add(cField[1].trim());
 				} catch(Exception r) {
-					System.out.print("--------------------------->>>>>Exception");
-					r.printStackTrace();
+					_err("getContacts", r);
 				}
 			}
-			System.out.println("------------------------------------>  End of file... Contacts heading read successfully from file...");
+			_info("getContacts(): Contacts heading read successfully from file...");
 			contact=new XmlRpcClient(new URL(urladdress+":"+port+fixurl),true);
 			XmlRpcStruct contactList=(XmlRpcStruct)lists.invoke("execute",new Object[] {dbname,op_id,password,"res.partner.address","export_data",objlist,nameList});
-			System.out.print("----> excuting  hi this is contact list============"+contactList.getArray("datas") +" ----> end new.");
-
 			int len1=contactList.getArray("datas").size();/*This is number of Contacts*/
 			int len2=nameList.size();/*This is number of fields*/
 			String name,email;
@@ -350,25 +348,23 @@ public class Connector {
 			csvFile.close();
 			Runtime r=Runtime.getRuntime();
 			String[] z_Protocol=zimbraProtocol.split(":");
-			System.out.println("Thi is protocol--->>>"+z_Protocol);
 			URI uri = new URI(z_Protocol[0],null,domainName,zimbraPort,"/home/"+acc_name+"/"+addressBook,"fmt=csv&auth=qp&zauthtoken="+auth_token,null);
 			String tempurl=urladd+"?fmt=csv&auth=qp&zauthtoken="+auth_token;
 			tempurl = URLEncoder.encode(tempurl, "UTF-8");
 			tempurl=tempurl.replaceAll(" ","%20");
 			URL url = uri.toURL();
-			System.out.println("This is url=====>>>>>>"+url);
+			_info("getContacts() upload URL: "+url);
 			try {
 				Process p=r.exec("curl -k -m 10000 --upload-file /tmp/myData.csv "+url);
 				p.waitFor();
-				System.out.println("Exit status for export ICS to OpenERP is------------>>>>>>>>>>>>>>>> : " + p.exitValue());
+				_info("Exit status for export ICS to OpenERP is: " + p.exitValue());
 				return "success";
 			} catch(IllegalThreadStateException ex) {
-				ex.printStackTrace();
+				_err("getContacts", ex);
 				return "fail";
 			}
 		} catch (Exception e) {
-			System.out.println("Exception in xmlrpc contact " + e);
-			e.printStackTrace();
+			_err("getContacts", e);
 			return "fail";
 		}
 	}
@@ -396,10 +392,8 @@ public class Connector {
 			s=new String();
 			dbname=dbname.trim();
 			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,obj_name,"name_search",new Vector()});
-			System.out.println("this is Documentvarify-----response--->>"+lis.toString());
 		} catch (Exception e) {
-			System.out.println("fail");
-			e.printStackTrace();
+			_err("verifyRecord failed", e);
 			return("Fail");
 		}
 		if (lis.toString()!="") {
