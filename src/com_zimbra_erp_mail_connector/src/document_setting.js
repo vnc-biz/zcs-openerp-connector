@@ -93,7 +93,7 @@ document_setting.prototype._createHTML = function() {
 	html[i++]="<div id='doc_record'></div>";
 	this.getHtmlElement().innerHTML = html.join("");
 };
-/*....Record will be varified with OpenERP and add....*/
+/*....Record will be verified with OpenERP and add....*/
 
 function addRecord() {
 	var title=document.getElementById("document_title").value;
@@ -140,7 +140,7 @@ function addRecord() {
 				a.popup();
 			return;
 		}		
-		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Recordvarify.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&obj_name="+docname+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id;
+		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Recordverify.jsp?dbname="+dbname.trim()+"&password="+password.trim()+"&obj_name="+docname+"&urladdress="+(proto+urladdress.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id;
 		var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		if(response.text.trim()=="Fail"){
 			var a =  appCtxt.getMsgDialog();

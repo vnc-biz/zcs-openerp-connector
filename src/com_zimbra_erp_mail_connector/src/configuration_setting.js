@@ -306,7 +306,7 @@ function checkConnection(){
 		zm.setUserProperty("openerp_id",response.text);
 		zm.saveUserProperties();
 		var openerp_id=zm.getUserProperty("openerp_id");
-		var jspurl1="/service/zimlet/com_zimbra_erp_mail_connector/Documentvarify.jsp?dbname="+database.trim()+"&password="+z_password+"&obj_name=zimbra.partner&urladdress="+(proto+url.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id.trim();
+		var jspurl1="/service/zimlet/com_zimbra_erp_mail_connector/Documentverify.jsp?dbname="+database.trim()+"&password="+z_password+"&obj_name=zimbra.partner&urladdress="+(proto+url.trim())+"&port="+port.trim()+"&openerp_id="+openerp_id.trim();
 		var res = AjxRpc.invoke(null,jspurl1, null, null, true);
 		if(res.text.trim()=="Fail"){
 			var a =  appCtxt.getMsgDialog();

@@ -264,7 +264,7 @@ public class Connector {
 				parent.add(child2);
 			}
 			lis=(Object)lists.invoke("execute",new Object[] {dbname,op_id,password,"ir.module.module","search",parent});
-			_info("checkRecords(): this is Documentvarify-----response su vat che--->>"+lis.toString()+lis.toString().length());
+			_info("checkRecords(): this is Documentverify-----response su vat che--->>"+lis.toString()+lis.toString().length());
 		} catch (Exception e) {
 			_err("checkRecords() failed", e);
 			return("Fail");
@@ -375,7 +375,7 @@ public class Connector {
 		return matcher.matches();
 	}
 
-	public String varifyRecord(String dbname,String password,String urladdress,String port,String obj_name,String openerp_id) {
+	public String verifyRecord(String dbname,String password,String urladdress,String port,String obj_name,String openerp_id) {
 		Object list=null;
 		Object login=null;
 		Object lis=null;

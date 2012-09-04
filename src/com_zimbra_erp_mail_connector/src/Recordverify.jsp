@@ -26,7 +26,7 @@
 JSPUtil.nocache(response);
 
 out.print(
-	new Connector().varifyRecord(
+	new Connector().verifyRecord(
 		request.getParameter("dbname"),
 		request.getParameter("password"),
 		request.getParameter("urladdress"),
