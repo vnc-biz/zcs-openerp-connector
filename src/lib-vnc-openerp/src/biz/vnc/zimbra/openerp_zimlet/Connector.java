@@ -304,13 +304,18 @@ public class Connector {
 					return "Fail";
 				}
 			} else {
+				return "Fail";
 			}
 		} catch(Exception e) {
 			_err("Archive email failed", e);
 			return "Fail";
 		}
 		_info("sendMail(): list: "+list.toString());
-		return list.toString();
+		if(list.toString() != null) {
+			return list.toString();
+		} else {
+			return "Fail";
+		}
 	}
 
 	public boolean checkRecords() {
