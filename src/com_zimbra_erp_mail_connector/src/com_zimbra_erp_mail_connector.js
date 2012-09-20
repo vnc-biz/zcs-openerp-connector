@@ -311,7 +311,6 @@ TabDialog.prototype = new ZmDialog;
 TabDialog.prototype.constructor = TabDialog;
 var arrayJSON; //create JSON Array...
 var msgids;
-var download_link;
 var msgtype;
 var dialog=null;
 
@@ -331,24 +330,6 @@ function(droppedItem) {
                 a.popup();
 			return;
 		 }	
-		proto=location.protocol;
-		if(proto == "http:"){
-			port=appCtxt.get(ZmSetting.HTTP_PORT);
-		
-		}else if(proto == "https:"){	
-			port=appCtxt.get(ZmSetting.HTTPS_PORT);
-		}
-        baseURL =
-        [       location.protocol,
-                '//',
-                location.hostname,
-                (
-                 (port && ((proto == ZmSetting.PROTO_HTTP && port != ZmSetting.HTTP_DEFAULT_PORT)
-                || (proto == ZmSetting.PROTO_HTTPS && port != ZmSetting.HTTPS_DEFAULT_PORT)))?
-                        ":"+port:''),
-                "/service/home/~/"
-        ].join("");
-        download_link=baseURL;
 
 		if(droppedItem instanceof Array) {
 			for(var i =0; i < droppedItem.length; i++) {
@@ -377,7 +358,7 @@ function(droppedItem) {
 	}
 
 	if(obj.type != "APPT") {
-		new push_to_openERP(this,msgids,download_link,mail_from[0],msgtype);
+		new push_to_openERP(this,msgids,mail_from[0],msgtype);
 	}
 	return;
 };
@@ -411,18 +392,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=functi
 				}
 			}
 		}	
-	port = Number(location.port);
-	baseURL = 
-	[	location.protocol,
-		'//',
-		location.hostname,
-		(
-		 (port && ((proto == ZmSetting.PROTO_HTTP && port != ZmSetting.HTTP_DEFAULT_PORT) 
-		|| (proto == ZmSetting.PROTO_HTTPS && port != ZmSetting.HTTPS_DEFAULT_PORT)))?
-			":"+port:''),
-		"/service/home/~/"
-	].join("");
-	download_link=baseURL;
     }catch(e){
 			var a =  appCtxt.getMsgDialog();
                	a.setMessage(this.getMessage("mail_push_exception"),DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
@@ -448,16 +417,4 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 			}
 		}
 	}
-	port = Number(location.port);
-	baseURL = 
-	[	location.protocol,
-		'//',
-		location.hostname,
-		(
-		 (port && ((proto == ZmSetting.PROTO_HTTP && port != ZmSetting.HTTP_DEFAULT_PORT) 
-		|| (proto == ZmSetting.PROTO_HTTPS && port != ZmSetting.HTTPS_DEFAULT_PORT)))?
-			":"+port:''),
-		"/service/home/~/"
-	].join("");
-	download_link=baseURL;
 };

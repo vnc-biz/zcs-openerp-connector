@@ -240,14 +240,14 @@ public class Connector {
 	}
 
 	/*Gel Email Information from */
-	public String sendMail(String msg_id,String downloadlink,String push_id,String authToken) {
+	public String sendMail(String msg_id,String urlprefix,String push_id,String authToken) {
 		Object list = null;
 		try {
 			String msgID = msg_id;
 			if(msgID != null) {
 				/*Row data*/
 				_info("sendMail(): Inside msg is not null");
-				URL urlrow = new URL(downloadlink+"?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8"));
+				URL urlrow = new URL(urlprefix+"/service/home/~/?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8"));
 				_info("sendMail(): url: "+urlrow.toString());
 				HttpURLConnection row_connection = (HttpURLConnection)urlrow.openConnection();
 				row_connection.connect();

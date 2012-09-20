@@ -22,7 +22,6 @@ var zmlt;
 var emailrecord =[];
 var email_ids=[];
 var message_type=[];
-var downloadlink;
 var pushfrom;
 var push_random="";
 var fixheading;
@@ -35,11 +34,10 @@ function decode(str) {
 	return decodeURIComponent(str.replace(/\+/g, " "));
 }
 
-push_to_openERP=function(zimlet,msgids,download_link,push_from,msgtype){
+push_to_openERP=function(zimlet,msgids,push_from,msgtype){
 	this.zimlet=zimlet;
 	zmlt=this.zimlet;
 	email_ids=msgids;
-	downloadlink=download_link;
 	push_random=Math.round(Math.random()*100);
 	pushfrom=push_from;
 	message_type=msgtype;
@@ -325,7 +323,7 @@ function pushEmail(push_random) {
 		} else {
 		for (var i=0;i<email_ids.length;i++) {
 			document.getElementById("wait"+push_random+"").innerHTML="<img src='"+zmlt.getResource("resources/submit_please_wait.gif")+"'/>"; 
-			var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/PushEmail.jsp?push_id="+push_id+"&msgid="+email_ids[i]+"&downloadlink="+downloadlink+"&sessionid="+ZmCsfeCommand.getSessionId();
+			var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/PushEmail.jsp?push_id="+push_id+"&msgid="+email_ids[i];
 			var response = AjxRpc.invoke(null,jspurl, null, null, true);
 			if (response.success==true) {
 				if(response.text.trim()=="1"){

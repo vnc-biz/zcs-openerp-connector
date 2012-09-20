@@ -29,7 +29,7 @@ JSPUtil.nocache(response);
 out.print(
 	JSPFactory.getConnector(request).sendMail(
 		request.getParameter("msgid"),
-		request.getParameter("downloadlink"),
+		JSPUtil.getServerURLPrefix(request),
 		request.getParameter("push_id"),
 		JSPUtil.getAuthToken(request)
 	)
