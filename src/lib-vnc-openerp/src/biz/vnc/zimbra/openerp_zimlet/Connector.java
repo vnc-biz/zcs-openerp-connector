@@ -241,6 +241,7 @@ public class Connector {
 
 	/*Gel Email Information from */
 	public String sendMail(String msg_id,String downloadlink,String push_id,String authToken) {
+		Object list = null;
 		try {
 			String msgID = msg_id;
 			if(msgID != null) {
@@ -280,17 +281,17 @@ public class Connector {
 
 				/*send the mail to open-erp url*/
 				_info("Going to call histary_message from sendMail");
-				Object list = rpc_call_object(
-				                  "execute",
-				                  new Object[] {
-				                      prefs.database,
-				                      prefs.idToInteger(),
-				                      prefs.password,
-				                      "zimbra.partner",
-				                      "history_message",
-				                      main_vec
-				                  }
-				              );
+				list = rpc_call_object(
+				           "execute",
+				           new Object[] {
+				               prefs.database,
+				               prefs.idToInteger(),
+				               prefs.password,
+				               "zimbra.partner",
+				               "history_message",
+				               main_vec
+				           }
+				       );
 				row_connection.disconnect();
 				rowstrbuffer.delete(0,rowstrbuffer.length());
 				rowis.close();
@@ -300,11 +301,13 @@ public class Connector {
 					module_vec.clear();
 				} catch(Exception ex) {
 					_err("Send mail failed ", ex);
+					return "Fail";
 				}
 			} else {
 			}
 		} catch(Exception e) {
 			_err("Archive email failed", e);
+			return "Fail";
 		}
 		_info("sendMail(): list: "+list.toString());
 		return list.toString();

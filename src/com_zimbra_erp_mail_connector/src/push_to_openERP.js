@@ -349,12 +349,19 @@ function pushEmail(push_random) {
 							var a =  appCtxt.getMsgDialog();
 								a.setMessage(zmlt.getMessage("reconnect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
 								a.popup();
-							} else {
-								var a =  appCtxt.getMsgDialog();
-									a.setMessage(zmlt.getMessage("duplicate_mail_not_allowed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
-									a.popup();
-								flag=1;
-							}
+						} else if(response.text.trim() == "Fail"){
+							var a =  appCtxt.getMsgDialog();
+								a.setMessage(zmlt.getMessage("email_archive_failed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
+								a.popup();
+							flag=1;
+						}else{
+							var a =  appCtxt.getMsgDialog();
+                                                                a.setMessage(zmlt.getMessage("duplicate_mail_not_allowed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
+                                                                a.popup();
+                                                        flag=1;	
+						}
+
+						
 					}
 				}
 		}
