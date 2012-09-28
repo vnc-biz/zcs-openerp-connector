@@ -247,7 +247,7 @@ public class Connector {
 			if(msgID != null) {
 				/*Row data*/
 				_info("sendMail(): Inside msg is not null");
-				URL urlrow = new URL(urlprefix+"/service/home/~/?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8"));
+				URL urlrow = new URL(urlprefix+"service/home/~/?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8"));
 				_info("sendMail(): url: "+urlrow.toString());
 				HttpURLConnection row_connection = (HttpURLConnection)urlrow.openConnection();
 				row_connection.connect();
