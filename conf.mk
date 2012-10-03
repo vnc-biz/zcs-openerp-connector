@@ -1,4 +1,4 @@
-VERSION=1.1.1
+VERSION=1.1.1.1
 PACKAGE=zcs-openerp-connector
 MAINTAINER=Enrico Weigelt <enrico.weigelt@vnc.biz>
 SECTION=base
