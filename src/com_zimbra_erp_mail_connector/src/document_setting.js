@@ -19,18 +19,17 @@
 ##############################################################################*/
 document_setting.prototype = new DwtTabViewPage;
 document_setting.prototype.constructor = document_setting;
-	var document_title;
-	var document_docname;
-	var zm;
-	var success_insert;
-	var unsuccess_insert;
-	var success_delete;
-	var unsuccess_delete;
-	var unsuccess_blank;
+var document_title;
+var document_docname;
+var zm;
+var success_insert;
+var unsuccess_insert;
+var success_delete;
+var unsuccess_delete;
+var unsuccess_blank;
 
 /*...Constructor....*/
 function document_setting(parent, zimlet,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank){
-	
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	zm=this.zimlet;
@@ -47,7 +46,7 @@ function document_setting(parent, zimlet,document_lbl_title,document_lbl_docname
 }
 
 String.prototype.trim = function() {
-    return this.replace(/^\s+|\s+$/g,"");
+	return this.replace(/^\s+|\s+$/g,"");
 }
 
 /*...........getRecords from zimbra proeprty...*/
@@ -62,7 +61,6 @@ function getTableRecords(){
 		}else{
 			s+="<tr class='d1'><td class='doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
 		}
-					
 	}
 	s+="</table>";
 	document.getElementById('doc_record').innerHTML=s;
@@ -85,7 +83,7 @@ function checkAll(){
 document_setting.prototype._createHTML = function() {
 	var i = 0;
 	var html = new Array();
-	html[i++]="<table>";	
+	html[i++]="<table>";
 	html[i++]="</table>";
 	html[i++]="<br>";
 	html[i++]="<div id='doc_record'></div>";
@@ -99,55 +97,55 @@ function addRecord() {
 	title=title.trim();
 	docname=docname.trim();
 	if(title==""){
-	  	var a =  appCtxt.getMsgDialog();
-            a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-            a.popup();
+		var a =  appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("document_title").focus();
 		return;
 	}
 	if(document.getElementById("document_title").value.match(/^\s*$/)){
 		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("document_title").focus();
 		return;
 	}
 	if(docname=="" ){
 		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("document_docname").focus();
 		return;
 	}
 	if(document.getElementById("document_docname").value.match(/^\s*$/)){
 		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("document_docname").focus();
 		return;
-	}	
+	}
 	try {
 		var dbname = erpConnector.getdatabase;
 		var urladdress = erpConnector.urladdress;
 		var port = erpConnector.port;
 		if (dbname=="" || urladdress=="" || port=="" ) {
 			var a =  appCtxt.getMsgDialog();
-				a.setMessage(zm.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
-				a.popup();
+			a.setMessage(zm.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
+			a.popup();
 			return;
-		}		
+		}
 		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Recordverify.jsp?obj_name="+docname;
 		var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		if(response.text.trim()=="Fail"){
 			var a =  appCtxt.getMsgDialog();
-				a.setMessage(zm.getMessage("invalid_record_name"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-				a.popup();
+			a.setMessage(zm.getMessage("invalid_record_name"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+			a.popup();
 			return;
 		}
 	} catch(e) {
 		var a = appCtxt.getMsgDialog();
-                a.setMessage(zm.getMessage("invalid_doc_or_connection"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-                a.popup();
+		a.setMessage(zm.getMessage("invalid_doc_or_connection"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		return;
 	}
 	var oldList=zm.getUserProperty("doc_list");
@@ -157,13 +155,13 @@ function addRecord() {
 	var duplicateFlag=0;
 	for(i=0;i<oldListLength;i++){
 		if(docname==elJson.records[i].docname){
-					var a =  appCtxt.getMsgDialog();
-						a.setMessage(zm.getMessage("duplicate_error"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-						a.popup();
-					duplicateFlag=1;
-					document.getElementById("document_title").value="";
-					document.getElementById("document_docname").value="";
-					return;	
+			var a =  appCtxt.getMsgDialog();
+			a.setMessage(zm.getMessage("duplicate_error"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+			a.popup();
+			duplicateFlag=1;
+			document.getElementById("document_title").value="";
+			document.getElementById("document_docname").value="";
+			return;
 		}
 	}
 	if(duplicateFlag==0){
@@ -172,8 +170,8 @@ function addRecord() {
 		zm.setUserProperty("doc_list",newRecordString);
 		zm.saveUserProperties();
 		var a =  appCtxt.getMsgDialog();
-			a.setMessage(success_insert,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
-			a.popup();
+		a.setMessage(success_insert,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+		a.popup();
 		getTableRecords();
 	}
 	document.getElementById("document_title").value="";
@@ -195,9 +193,9 @@ function deleteRecord(){
 		}
 	}
 	if(flg==0){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_document_select_record"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_document_select_record"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
+		a.popup();
 		return;
 	}
 	var dl_String=zm.getUserProperty("doc_list");
@@ -209,14 +207,14 @@ function deleteRecord(){
 		if (record_id[i].checked) {
 		}else{
 			new_Json.records[count]=dl_Json.records[i];
-			count=count+1;	
+			count=count+1;
 		}
 	}
 	var new_dl_String=JSON.stringify(new_Json);
 	zm.setUserProperty("doc_list",new_dl_String);
 	zm.saveUserProperties();
-	var a =  appCtxt.getMsgDialog();
-        a.setMessage(success_delete,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
-        a.popup();
+	var a = appCtxt.getMsgDialog();
+	a.setMessage(success_delete,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
+	a.popup();
 	getTableRecords();//Fill records after update.
 }
