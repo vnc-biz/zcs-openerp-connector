@@ -22,12 +22,13 @@
 {
     "name" : "Zimbra Interface",
     "version" : "1.0",
-    "author" : "OpenERP SA & Axelor",
-    "website" : "http://www.openerp.com/",
-    "depends" : ["base","mail_gateway","crm_caldav"],
+    "author" : "VNC",
+    "website" : "http://www.vnc.biz/",
+#    "depends" : ["base","mail_gateway","crm_caldav"],
+    "depends" : ["base","crm_caldav"],
     "category" : "Generic Modules/Zimbra interface",
     "description": """
-      This module is required for the thuderbird plug-in to work
+      This module is required for the zimbra openerp plug-in to work
       properly.
       The Plugin allows you archive email and its attachments to the selected 
       OpenERP objects. You can select a partner, a task, a project, an analytical
@@ -42,6 +43,8 @@
                     'security/ir.model.access.csv'
                     ],
     "active": False,
+    'application': True,
+    'sequence':3,
     "installable": True,
 #    "certificate" : "00899858104035139949",
 }

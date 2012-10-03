@@ -20,7 +20,8 @@ ZCS_LIB_JARS=\
 	zcs-lib-json-simple.jar		\
 	zcs-lib-javacsv.jar		\
 	commons-httpclient-3.1.jar	\
-	zcs-lib-vnc-common.jar
+	zcs-lib-vnc-common.jar		\
+	commons-codec-1.4.jar
 
 JAR_FILE_PREPARE_RULE=prepare-jar
 

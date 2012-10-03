@@ -31,10 +31,59 @@ from caldav import calendar
 from datetime import datetime
 import re
 import pooler
-
+from email.header import decode_header
 
 class email_server_tools(osv.osv_memory):
-    _inherit = "email.server.tools"
+    _name = "email.server.tools"
+    
+    
+    def _decode_header(self, text):
+        """Returns unicode() string conversion of the the given encoded smtp header"""
+        if text:
+            text = decode_header(text.replace('\r', ''))
+            return ''.join([tools.ustr(x[0], x[1]) for x in text])
+
+    def to_email(self,text):
+        return re.findall(r'([^ ,<@]+@[^> ,]+)',text)
+    
+    def history(self, cr, uid, model, res_ids, msg, attach, context=None):
+        """This function creates history for mails fetched
+        @param self: The object pointer
+        @param cr: the current row, from the database cursor,
+        @param uid: the current user’s ID for security checks,
+        @param model: OpenObject Model
+        @param res_ids: Ids of the record of OpenObject model created
+        @param msg: Email details
+        @param attach: Email attachments
+        """
+        if isinstance(res_ids, (int, long)):
+            res_ids = [res_ids]
+
+        msg_pool = self.pool.get('mail.message')
+        for res_id in res_ids:
+            case = self.pool.get(model).browse(cr, uid, res_id, context=context)
+            partner_id = hasattr(case, 'partner_id') and (case.partner_id and case.partner_id.id or False) or False
+            if not partner_id and model == 'res.partner':
+                partner_id = res_id
+            msg_data = {
+                'name': msg.get('subject', 'No subject'),
+                'subject': msg.get('subject', 'No subject'),
+                'date': msg.get('date'),
+                'body_text': msg.get('body', msg.get('from')),
+                'history': True,
+                'partner_id': partner_id,
+                'model': model,
+                'email_cc': msg.get('cc'),
+                'email_from': msg.get('from'),
+                'email_to': msg.get('to'),
+                'message_id': msg.get('message-id'),
+                'references': msg.get('references') or msg.get('in-reply-to'),
+                'res_id': res_id,
+                'user_id': uid,
+                'attachment_ids': [(6, 0, attach)]
+            }
+            msg_pool.create(cr, uid, msg_data, context=context)
+        return True
     
     def history_message(self, cr, uid, model, res_id, message, context=None):
         #@param message: string of mail which is read from EML File
@@ -78,8 +127,8 @@ class email_server_tools(osv.osv_memory):
         else:
             msg['to'] = self._decode_header(msg_txt.get('Delivered-To'))
 
-        if 'CC' in fields:
-            msg['cc'] = self._decode_header(msg_txt.get('CC'))
+        if 'Cc' in fields:
+            msg['cc'] = self._decode_header(msg_txt.get('Cc'))
 
         if 'Reply-to' in fields:
             msg['reply'] = self._decode_header(msg_txt.get('Reply-To'))
@@ -158,15 +207,19 @@ class zimbra_partner(osv.osv_memory):
         return create_id
 
     def history_message(self, cr, uid, vals):
+        for val in vals:
+            if not isinstance(val, (list,tuple)):
+                continue
+            if val[0] == 'message':
+                val[1] = base64.decodestring(val[1])
         dictcreate = dict(vals)
         ref_ids = str(dictcreate.get('ref_ids')).split(';')
         msg = dictcreate.get('message')
         mail = msg
         msg = self.pool.get('email.server.tools').parse_message(msg)
-        print "<SSSSSS__________",msg
         server_tools_pool = self.pool.get('email.server.tools')
         message_id = msg.get('message-id', False)
-        msg_pool = self.pool.get('mailgate.message')
+        msg_pool = self.pool.get('mail.message')
         msg_ids = []
         res = {}
         res_ids = []
@@ -227,7 +280,7 @@ class zimbra_partner(osv.osv_memory):
         references = False
         if refs:
             references = refs.split()
-        msg_pool = self.pool.get('mailgate.message')
+        msg_pool = self.pool.get('mail.message')
         model = ''
         res_id = 0
         if message_id:
@@ -390,21 +443,30 @@ class zimbra_partner(osv.osv_memory):
         print "VA_LS __________-",vals_dict
         cal_pool = self.pool.get('crm.meeting')
         obj_name = vals_dict['ref_ids'].split(',')[0]
-        obj_id = vals_dict['ref_ids'].split(',')[1]
-        obj_dict = {'crm.lead':'default_opportunity_id','res.partner':'default_partner_id'}
-        context[obj_dict[obj_name]]=int(obj_id)
-        if obj_name == 'crm.lead':
-            partner_id = self.pool.get('crm.lead').browse(cr,uid,int(obj_id)).partner_id.id or False
-            context.update({'default_partner_id':partner_id})
-        meeting_ids=cal_pool.import_cal(cr,uid,vals_dict['message'],context=context)
+        if vals_dict['ref_ids'].split(',') and len(vals_dict['ref_ids'].split(',')) > 1:
+            obj_id = vals_dict['ref_ids'].split(',')[1]
+        else:
+             obj_id = False
+        if not obj_name and not obj_id:
+            meeting_ids=cal_pool.import_cal(cr,uid,vals_dict['message'],context=context)
+        else:
+            obj_dict = {'crm.lead':'default_opportunity_id','res.partner':'default_partner_id'}
+            context[obj_dict[obj_name]]=int(obj_id)
+            if obj_name == 'crm.lead':
+                partner_id = self.pool.get('crm.lead').browse(cr,uid,int(obj_id)).partner_id.id or False
+                context.update({'default_partner_id':partner_id})
+            meeting_ids=cal_pool.import_cal(cr,uid,vals_dict['message'],context=context)
         return True
     
     def check_calendar_existance(self,cr,uid,vals):
+        print "VALST_T_T_T_T_T_T_T_T_T_T_",vals
         if not vals:
             return False
+        else:
+            pass
         self_ids = self.pool.get('crm.meeting').search(cr,uid,[('ext_meeting_id','=',vals)])
         if self_ids:
-            return self_ids
+            self.meeting_push(cr, uid, vals)
         else:
             return False
         

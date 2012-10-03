@@ -20,6 +20,7 @@ import redstone.xmlrpc.XmlRpcArray;
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcStruct;
+import org.apache.commons.codec.binary.Base64;
 
 public class Connector {
 	ArrayList<Object> list;
@@ -263,6 +264,10 @@ public class Connector {
 				}
 				String rowdata=new String(rowstrbuffer);
 				_info("sendMail(): raw data: "+rowdata);
+                                byte[] temp = Base64.encodeBase64(rowdata.getBytes());
+                                rowdata = new String(temp);
+				_info("sendMail(): raw data ------------>>encoded: "+rowdata);
+				
 				/*End roe data*/
 
 				/*row data Hashtable*/
