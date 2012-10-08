@@ -99,7 +99,7 @@ function getRecords() {
 			s+="</td>"
 		} else {
 			if (j%3==0) {
-				s+="</tr><tr>"	
+				s+="</tr><tr>"
 			}
 			s+="<td style='width:32%;'>"
 			s+="<input type='checkbox' id='records"+push_random+"' name='records"+push_random+"' value='"+records[i].docname+"' onclick='AllCheckbox()'/>"+records[i].title;
@@ -189,13 +189,13 @@ function getDocumentRecord() {
 		}
 	}
 	if (record_check.length==0) {
-		var ab =  appCtxt.getMsgDialog();
+		var ab = appCtxt.getMsgDialog();
 		ab.setMessage(zmlt.getMessage("no_document_added"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
 		ab.popup();
 		return;
 	}
 	if (flg==0) {
-		var a =  appCtxt.getMsgDialog();
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(zmlt.getMessage("connector_pushopenerp_moduleselect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
 		a.popup();
 		return;
@@ -218,7 +218,7 @@ function getDocumentRecord() {
 	var port = erpConnector.port;
 	var emailsearch=document.getElementById("mailsearch"+push_random+"").value;
 	if(dbname=="" || urladdress=="" || port=="" ){
-		var a =  appCtxt.getMsgDialog();
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(zmlt.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
 		a.popup();
 		document.getElementById("document_name"+push_random+"").innerHTML=""+fixheading;
@@ -255,13 +255,13 @@ function getDocumentRecord() {
 				}
 			} else {
 				if (response.text.trim()=="Exception") {
-					var a =  appCtxt.getMsgDialog();
+					var a = appCtxt.getMsgDialog();
 					a.setMessage(zmlt.getMessage("error_in_gettingrecords")+tot_obj[j],DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
 					a.popup();
 				}
 			}
 		} else {
-			var a =  appCtxt.getMsgDialog();
+			var a = appCtxt.getMsgDialog();
 			a.setMessage(zmlt.getMessage("connector_pushopenerp_responseproblem"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
 			a.popup();
 			document.getElementById("document_name"+push_random+"").innerHTML=""+fixheading;
@@ -292,7 +292,7 @@ function pushEmail(push_random) {
 	var port =erpConnector.port;
 
 	if (dbname=="" || urladdress=="" || port=="" ) {
-		var a =  appCtxt.getMsgDialog();
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(zmlt.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
 		a.popup();
 		document.getElementById("document_name"+push_random+"").innerHTML=""+fixheading;
@@ -342,16 +342,16 @@ function pushEmail(push_random) {
 					appCtxt.getAppController().sendRequest(params);
 				} else {
 					if (response.text.trim()=="2") {
-						var a =  appCtxt.getMsgDialog();
+						var a = appCtxt.getMsgDialog();
 						a.setMessage(zmlt.getMessage("reconnect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
 						a.popup();
 					} else if(response.text.trim() == "Fail"){
-						var a =  appCtxt.getMsgDialog();
+						var a = appCtxt.getMsgDialog();
 						a.setMessage(zmlt.getMessage("email_archive_failed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
 						a.popup();
 						flag=1;
 					}else{
-						var a =  appCtxt.getMsgDialog();
+						var a = appCtxt.getMsgDialog();
 						a.setMessage(zmlt.getMessage("duplicate_mail_not_allowed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
 						a.popup();
 						flag=1;

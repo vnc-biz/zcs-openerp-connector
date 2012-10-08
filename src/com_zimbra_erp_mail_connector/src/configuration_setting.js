@@ -17,7 +17,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################*/
+
 configuration_setting.prototype = new DwtTabViewPage;
+
 configuration_setting.prototype.constructor = configuration_setting;
 	var config_lbl_url;
 	var config_btn_database;
@@ -30,7 +32,7 @@ configuration_setting.prototype.constructor = configuration_setting;
 	var pat_https="^https";
 	var pat_http="^http";
 	String.prototype.trim = function() {
-    return this.replace(/^\s+|\s+$/g,"");
+	return this.replace(/^\s+|\s+$/g,"");
 }
 
 function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password){
@@ -55,7 +57,6 @@ function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,c
 }
 
 configuration_setting.prototype.clearConfig = function() {
-
 	document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	document.getElementById("port").value="";
 	document.getElementById("username").value="";
@@ -74,72 +75,72 @@ configuration_setting.prototype._createHTML = function() {
 	connectBtn.addSelectionListener(new AjxListener(this,checkConnection));
 	var i = 0;
 	var html = new Array();
-		html[i++]="<fieldset class='fieldHeight'>";
-		html[i++]="<legend>";
-		html[i++]=this.zimlet.getMessage("connector_configuration_fieldset");
-		html[i++]="</legend>";
-		html[i++]="<table class='marginIE'>";
-		html[i++]="<tr>";
-		html[i++]="<td>";
-		html[i++]=config_lbl_url;
-		html[i++]="</td>";		
-		html[i++]="<td>";
-		html[i++]="<input type='text' id='urladdress' value='' class='urlWidth'/>";
-		html[i++]="</td>";
-		html[i++]="<td>";
-		html[i++]=this.zimlet.getMessage("connector_configuration_lbl_port");
-		html[i++]="</td>";
-		html[i++]="<td>";
-		html[i++]="<input type='text' id='port'>";
-		html[i++]="</td>";
-		html[i++]="<td id='getDatabase'>";
-		html[i++]="</td>";
-		html[i++]="</tr>";
-		html[i++]="<tr>";
-		html[i++]="<td>";
-		html[i++]=config_lbl_database;
-		html[i++]="</td>";
-		html[i++]="<td>";
-		html[i++]="<select id='getdatabase' style='width:145px;'></select>";
-		html[i++]="</td>";
-		html[i++]="</tr>";
-		html[i++]="</table>";
-		html[i++]="</fieldset>";
-		html[i++]="<fieldset class='fieldHeight'>";
-		html[i++]="<table class='marginLogin'>";
-		html[i++]="<tr>";
-		html[i++]="<td>";
-		html[i++]=config_lbl_username;
-		html[i++]="</td>";
-		html[i++]="<td class='voz_text_width'>";
-		html[i++]="<input type='text' id='username' class='textWidth'/>"
-		html[i++]="</td>";
-		html[i++]="</tr>";
-		html[i++]="<tr>";
-		html[i++]="<td>";
-		html[i++]=config_lbl_password;
-		html[i++]="</td>";
-		html[i++]="<td>";
-		html[i++]="<input type='password' id='userpassword' class='textWidth'/>"
-		html[i++]="</td>";
-		html[i++]="<td class='showpass'>";
-		html[i++]="<div><div style='float:left'><input type='checkbox' id='passchk' onclick='showpass()'/></div><div class='showpassLabel'>"+this.zimlet.getMessage("show_password")+"</div></div>";
-		html[i++]="</td></tr></table>";
-		html[i++]="<table><tr><td>";
-		if(navigator.userAgent.indexOf('Chrome')>-1){
-			html[i++] = "<div id='connect_database' style = 'margin-left:210px;'></div>";
-		}else{
-			html[i++] = "<div id='connect_database' class = 'config_btn1'></div>";
-		}
-		html[i++]="</td></tr></table></fieldset>";
-		this.getHtmlElement().innerHTML = html.join("");
-		document.getElementById("getDatabase").appendChild(get_db.getHtmlElement());
-		document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
+	html[i++]="<fieldset class='fieldHeight'>";
+	html[i++]="<legend>";
+	html[i++]=this.zimlet.getMessage("connector_configuration_fieldset");
+	html[i++]="</legend>";
+	html[i++]="<table class='marginIE'>";
+	html[i++]="<tr>";
+	html[i++]="<td>";
+	html[i++]=config_lbl_url;
+	html[i++]="</td>";
+	html[i++]="<td>";
+	html[i++]="<input type='text' id='urladdress' value='' class='urlWidth'/>";
+	html[i++]="</td>";
+	html[i++]="<td>";
+	html[i++]=this.zimlet.getMessage("connector_configuration_lbl_port");
+	html[i++]="</td>";
+	html[i++]="<td>";
+	html[i++]="<input type='text' id='port'>";
+	html[i++]="</td>";
+	html[i++]="<td id='getDatabase'>";
+	html[i++]="</td>";
+	html[i++]="</tr>";
+	html[i++]="<tr>";
+	html[i++]="<td>";
+	html[i++]=config_lbl_database;
+	html[i++]="</td>";
+	html[i++]="<td>";
+	html[i++]="<select id='getdatabase' style='width:145px;'></select>";
+	html[i++]="</td>";
+	html[i++]="</tr>";
+	html[i++]="</table>";
+	html[i++]="</fieldset>";
+	html[i++]="<fieldset class='fieldHeight'>";
+	html[i++]="<table class='marginLogin'>";
+	html[i++]="<tr>";
+	html[i++]="<td>";
+	html[i++]=config_lbl_username;
+	html[i++]="</td>";
+	html[i++]="<td class='voz_text_width'>";
+	html[i++]="<input type='text' id='username' class='textWidth'/>"
+	html[i++]="</td>";
+	html[i++]="</tr>";
+	html[i++]="<tr>";
+	html[i++]="<td>";
+	html[i++]=config_lbl_password;
+	html[i++]="</td>";
+	html[i++]="<td>";
+	html[i++]="<input type='password' id='userpassword' class='textWidth'/>"
+	html[i++]="</td>";
+	html[i++]="<td class='showpass'>";
+	html[i++]="<div><div style='float:left'><input type='checkbox' id='passchk' onclick='showpass()'/></div><div class='showpassLabel'>"+this.zimlet.getMessage("show_password")+"</div></div>";
+	html[i++]="</td></tr></table>";
+	html[i++]="<table><tr><td>";
+	if(navigator.userAgent.indexOf('Chrome')>-1){
+		html[i++] = "<div id='connect_database' style = 'margin-left:210px;'></div>";
+	}else{
+		html[i++] = "<div id='connect_database' class = 'config_btn1'></div>";
+	}
+	html[i++]="</td></tr></table></fieldset>";
+	this.getHtmlElement().innerHTML = html.join("");
+	document.getElementById("getDatabase").appendChild(get_db.getHtmlElement());
+	document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
 };
 
 function showpass(){
 	if(document.getElementById("passchk").checked){
-		document.getElementById("userpassword").type='text'	;
+		document.getElementById("userpassword").type='text';
 	}else{
 		document.getElementById("userpassword").type='password';
 	}
@@ -152,40 +153,40 @@ function getDatabase(){
 	port=port.trim();
 	urladdress=urladdress.trim();
 	if(urladdress==""){
-		var a =  appCtxt.getMsgDialog();
- 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
- 		a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("urladdress").focus();
 		return;
-	  }
+	}
 	if(urladdress==""){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("urladdress").focus();
 		return;
 	}
 	if(document.getElementById("urladdress").value.match(/^\s*$/)){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("urladdress").focus();
-		return;		
-	  }
+		return;
+	}
 	if(port==""){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("port").focus();
 		return;
-	}	  
+	}
 	if(document.getElementById("port").value.match(/^\s*$/)){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("port").focus();
 		return;
-	}	  
+	}
 	var pro=urladdress.match(pat_https);
 	if(pro != null && pro == "https"){
 		proto="https://"
@@ -200,24 +201,24 @@ function getDatabase(){
 		var res=response.text.trim();
 		var select= document.getElementById('getdatabase');
 		if(res.length<=0){
-			var a =  appCtxt.getMsgDialog();
-				a.setMessage(zm.getMessage("connector_configuration_lbl_database_notfound"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-				a.popup();
+			var a = appCtxt.getMsgDialog();
+			a.setMessage(zm.getMessage("connector_configuration_lbl_database_notfound"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+			a.popup();
 			document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 		}else{
 			document.getElementById("getdatabase").innerHTML="";
-			var dbname=res.substr(1,res.length-2).split(",");				
+			var dbname=res.substr(1,res.length-2).split(",");
 			for(i=0;i<dbname.length;i++){
 				select.options[select.options.length]= new Option(dbname[i], dbname[i]);
 			}
 		}
 	}
 	else{
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("time_out"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
-            a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("time_out"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
+		a.popup();
 		document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
-	}	
+	}
 }
 
 function checkConnection(){
@@ -229,59 +230,59 @@ function checkConnection(){
 	var z_password=document.getElementById("userpassword").value;
 	port=port.trim();
 	username=username.trim();
-	url=url.trim();	
+	url=url.trim();
 	if(url==""){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("urladdress").focus();
 		return;
 	}
 	if(document.getElementById("urladdress").value.match(/^\s*$/)){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("urladdress").focus();
 		return;
 	}
 	if(port==""){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("port").focus();
 		return;
-	}	  
+	}
 	if(document.getElementById("port").value.match(/^\s*$/)){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("port").focus();
-		return;		
+		return;
 	}
 	if(database=="select any database"){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_selectdatabase"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("warning"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_selectdatabase"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("warning"));
+		a.popup();
 		return;
 	}
 	if(username==""){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("username").focus();
 		return;
 	}
 	if(document.getElementById("username").value.match(/^\s*$/)){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("username").focus();
 		return;
 	}
 	if(z_password==""){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_password"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_password"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
+		a.popup();
 		document.getElementById("userpassword").focus();
 		return;
 	}
@@ -292,15 +293,15 @@ function checkConnection(){
 	}else if(url.match(pat_http) == "http"){
 		proto="http://"
 		url=url.substring(7);
-	}	
+	}
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+database.trim()+"&username="+username.trim()+"&userpassword="+z_password+"&temp=tt";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	if(response.text.trim() == 'false'){
-		var a =  appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_userandpassword"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("error"));
-			a.popup();
+		var a = appCtxt.getMsgDialog();
+		a.setMessage(zm.getMessage("connector_configuration_userandpassword"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("error"));
+		a.popup();
 	}else{
-		var a =  appCtxt.getMsgDialog();
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_lbl_conection_saved"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
 		a.popup();
 		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/readConfig.jsp";

@@ -100,11 +100,11 @@ public class Connector {
 
 			Object token = rpc_call_common(
 			                   "login",
-			                   new Object[] {
-			                       prefs.database,
-			                       prefs.username,
-			                       prefs.password
-			                   }
+			new Object[] {
+				prefs.database,
+				prefs.username,
+				prefs.password
+			}
 			               );
 
 			if(token instanceof java.lang.Integer) {
@@ -125,14 +125,14 @@ public class Connector {
 			if (emailsearch.equals("")) {
 				Object token = rpc_call_object(
 				                   "execute",
-				                   new Object[] {
-				                       prefs.database,
-				                       prefs.idToInteger(),
-				                       prefs.password,
-				                       obj_name,
-				                       "name_search",
-				                       ""
-				                   }
+				new Object[] {
+					prefs.database,
+					prefs.idToInteger(),
+					prefs.password,
+					obj_name,
+					"name_search",
+					""
+				}
 				               );
 				if (token.toString().length()!=2) {
 					return objToJSON(token);
@@ -152,15 +152,15 @@ public class Connector {
 						}
 						Object token = rpc_call_object(
 						                   "execute",
-						                   new Object[] {
-						                       prefs.database,
-						                       prefs.idToInteger(),
-						                       prefs.password,
-						                       obj_name,
-						                       "name_search",
-						                       "",
-						                       parent
-						                   }
+						new Object[] {
+							prefs.database,
+							prefs.idToInteger(),
+							prefs.password,
+							obj_name,
+							"name_search",
+							"",
+							parent
+						}
 						               );
 						if(token.toString().length()!=2) {
 							return objToJSON(token);
@@ -180,15 +180,15 @@ public class Connector {
 							}
 							Object token = rpc_call_object(
 							                   "execute",
-							                   new Object[] {
-							                       prefs.database,
-							                       prefs.idToInteger(),
-							                       prefs.password,
-							                       obj_name,
-							                       "name_search",
-							                       "",
-							                       domainParent
-							                   }
+							new Object[] {
+								prefs.database,
+								prefs.idToInteger(),
+								prefs.password,
+								obj_name,
+								"name_search",
+								"",
+								domainParent
+							}
 							               );
 							_info("getDocumentList() call succeed: "+token.toString());
 							if(token.toString().length()!=2) {
@@ -199,14 +199,14 @@ public class Connector {
 						} else {
 							Object token = rpc_call_object(
 							                   "execute",
-							                   new Object[] {
-							                       prefs.database,
-							                       prefs.idToInteger(),
-							                       prefs.password,
-							                       obj_name,
-							                       "name_search",
-							                       emailsearch
-							                   }
+							new Object[] {
+								prefs.database,
+								prefs.idToInteger(),
+								prefs.password,
+								obj_name,
+								"name_search",
+								emailsearch
+							}
 							               );
 							if(token.toString().length()!=2) {
 								return objToJSON(token);
@@ -218,14 +218,14 @@ public class Connector {
 				} else {
 					Object token = rpc_call_object(
 					                   "execute",
-					                   new Object[] {
-					                       prefs.database,
-					                       prefs.idToInteger(),
-					                       prefs.password,
-					                       obj_name,
-					                       "name_search",
-					                       emailsearch
-					                   }
+					new Object[] {
+						prefs.database,
+						prefs.idToInteger(),
+						prefs.password,
+						obj_name,
+						"name_search",
+						emailsearch
+					}
 					               );
 					if(token.toString().length()!=2) {
 						return objToJSON(token);
@@ -264,10 +264,10 @@ public class Connector {
 				}
 				String rowdata=new String(rowstrbuffer);
 				_info("sendMail(): raw data: "+rowdata);
-                                byte[] temp = Base64.encodeBase64(rowdata.getBytes());
-                                rowdata = new String(temp);
+				byte[] temp = Base64.encodeBase64(rowdata.getBytes());
+				rowdata = new String(temp);
 				_info("sendMail(): raw data ------------>>encoded: "+rowdata);
-				
+
 				/*End roe data*/
 
 				/*row data Hashtable*/
@@ -288,14 +288,14 @@ public class Connector {
 				_info("Going to call histary_message from sendMail");
 				list = rpc_call_object(
 				           "execute",
-				           new Object[] {
-				               prefs.database,
-				               prefs.idToInteger(),
-				               prefs.password,
-				               "zimbra.partner",
-				               "history_message",
-				               main_vec
-				           }
+				new Object[] {
+					prefs.database,
+					prefs.idToInteger(),
+					prefs.password,
+					"zimbra.partner",
+					"history_message",
+					main_vec
+				}
 				       );
 				row_connection.disconnect();
 				rowstrbuffer.delete(0,rowstrbuffer.length());
@@ -342,14 +342,14 @@ public class Connector {
 			}
 			Object reply = rpc_call_object(
 			                   "execute",
-			                   new Object[] {
-			                       prefs.database,
-			                       prefs.idToInteger(),
-			                       prefs.password,
-			                       "ir.module.module",
-			                       "search",
-			                       parent
-			                   }
+			new Object[] {
+				prefs.database,
+				prefs.idToInteger(),
+				prefs.password,
+				"ir.module.module",
+				"search",
+				parent
+			}
 			               );
 			return ((reply.toString()!="") && (reply.toString().length()>2));
 		} catch (Exception e) {

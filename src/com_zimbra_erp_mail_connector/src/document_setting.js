@@ -97,28 +97,28 @@ function addRecord() {
 	title=title.trim();
 	docname=docname.trim();
 	if(title==""){
-		var a =  appCtxt.getMsgDialog();
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
 		document.getElementById("document_title").focus();
 		return;
 	}
 	if(document.getElementById("document_title").value.match(/^\s*$/)){
-		var a =  appCtxt.getMsgDialog();
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
 		document.getElementById("document_title").focus();
 		return;
 	}
-	if(docname=="" ){
-		var a =  appCtxt.getMsgDialog();
+	if(docname==""){
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
 		document.getElementById("document_docname").focus();
 		return;
 	}
 	if(document.getElementById("document_docname").value.match(/^\s*$/)){
-		var a =  appCtxt.getMsgDialog();
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
 		document.getElementById("document_docname").focus();
@@ -129,7 +129,7 @@ function addRecord() {
 		var urladdress = erpConnector.urladdress;
 		var port = erpConnector.port;
 		if (dbname=="" || urladdress=="" || port=="" ) {
-			var a =  appCtxt.getMsgDialog();
+			var a = appCtxt.getMsgDialog();
 			a.setMessage(zm.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
 			a.popup();
 			return;
@@ -137,7 +137,7 @@ function addRecord() {
 		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Recordverify.jsp?obj_name="+docname;
 		var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		if(response.text.trim()=="Fail"){
-			var a =  appCtxt.getMsgDialog();
+			var a = appCtxt.getMsgDialog();
 			a.setMessage(zm.getMessage("invalid_record_name"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 			a.popup();
 			return;
@@ -155,7 +155,7 @@ function addRecord() {
 	var duplicateFlag=0;
 	for(i=0;i<oldListLength;i++){
 		if(docname==elJson.records[i].docname){
-			var a =  appCtxt.getMsgDialog();
+			var a = appCtxt.getMsgDialog();
 			a.setMessage(zm.getMessage("duplicate_error"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 			a.popup();
 			duplicateFlag=1;
@@ -169,7 +169,7 @@ function addRecord() {
 		var newRecordString=JSON.stringify(elJson);
 		zm.setUserProperty("doc_list",newRecordString);
 		zm.saveUserProperties();
-		var a =  appCtxt.getMsgDialog();
+		var a = appCtxt.getMsgDialog();
 		a.setMessage(success_insert,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
 		a.popup();
 		getTableRecords();
