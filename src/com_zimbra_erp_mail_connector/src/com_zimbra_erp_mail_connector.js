@@ -240,11 +240,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 		canvas.popup();
 		return;
 	}
-	var confi_lbl_url=this.getMessage("connector_configuration_lbl_urladdress");
 	var confi_btn_database=this.getMessage("connector_configuration_btn_database");
-	var confi_lbl_database=this.getMessage("connector_configuration_lbl_database");
-	var confi_lbl_username=this.getMessage("connector_configuration_lbl_username");
-	var confi_lbl_password=this.getMessage("connector_configuration_lbl_password");
 	var document_lbl_title=this.getMessage("connector_document_lbl_title");
 	var document_lbl_docname=this.getMessage("connector_document_lbl_docname");
 	var document_success_insert=this.getMessage("connector_document_success_insert");
@@ -255,7 +251,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	var view = new DwtComposite(appCtxt.getShell());
 	this.tabView = new DwtTabView(view,"SideStepTabView");
 	this.about_setting= new about_setting(this.tabView,this);
-	this.configuration_setting = new configuration_setting(this.tabView,this,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password);
+	this.configuration_setting = new configuration_setting(this.tabView,this,confi_btn_database);
 	this.document_setting= new document_setting(this.tabView,this,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank);
 	view.setSize("550px", "335px");
 	this.tabView.setSize("550px", "345px");

@@ -21,11 +21,6 @@
 configuration_setting.prototype = new DwtTabViewPage;
 
 configuration_setting.prototype.constructor = configuration_setting;
-	var config_lbl_url;
-	var config_btn_database;
-	var config_lbl_database;
-	var config_lbl_username;
-	var config_lbl_password;
 	var zm;
 	var proto="http://";
 	var flag=0;
@@ -35,15 +30,11 @@ configuration_setting.prototype.constructor = configuration_setting;
 	return this.replace(/^\s+|\s+$/g,"");
 }
 
-function configuration_setting(parent, zimlet,confi_lbl_url,confi_btn_database,confi_lbl_database,confi_lbl_username,confi_lbl_password){
+function configuration_setting(parent, zimlet,confi_btn_database){
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	zm=this.zimlet;
-	config_lbl_url=confi_lbl_url;
 	config_btn_database=confi_btn_database;
-	config_lbl_database=confi_lbl_database;
-	config_lbl_username=confi_lbl_username;
-	config_lbl_password=confi_lbl_password;
 	this._createHTML();
 	document.getElementById("urladdress").value=erpConnector.urladdress;
 	if(erpConnector.getdatabase=="" || erpConnector.getdatabase ==null || erpConnector.getdatabase == undefined){
@@ -75,65 +66,8 @@ configuration_setting.prototype._createHTML = function() {
 	connectBtn.addSelectionListener(new AjxListener(this,checkConnection));
 	var i = 0;
 	var html = new Array();
-	html[i++]="<fieldset class='fieldHeight'>";
-	html[i++]="<legend>";
-	html[i++]=this.zimlet.getMessage("connector_configuration_fieldset");
-	html[i++]="</legend>";
-	html[i++]="<table class='marginIE'>";
-	html[i++]="<tr>";
-	html[i++]="<td>";
-	html[i++]=config_lbl_url;
-	html[i++]="</td>";
-	html[i++]="<td>";
-	html[i++]="<input type='text' id='urladdress' value='' class='urlWidth'/>";
-	html[i++]="</td>";
-	html[i++]="<td>";
-	html[i++]=this.zimlet.getMessage("connector_configuration_lbl_port");
-	html[i++]="</td>";
-	html[i++]="<td>";
-	html[i++]="<input type='text' id='port'>";
-	html[i++]="</td>";
-	html[i++]="<td id='getDatabase'>";
-	html[i++]="</td>";
-	html[i++]="</tr>";
-	html[i++]="<tr>";
-	html[i++]="<td>";
-	html[i++]=config_lbl_database;
-	html[i++]="</td>";
-	html[i++]="<td>";
-	html[i++]="<select id='getdatabase' style='width:145px;'></select>";
-	html[i++]="</td>";
-	html[i++]="</tr>";
-	html[i++]="</table>";
-	html[i++]="</fieldset>";
-	html[i++]="<fieldset class='fieldHeight'>";
-	html[i++]="<table class='marginLogin'>";
-	html[i++]="<tr>";
-	html[i++]="<td>";
-	html[i++]=config_lbl_username;
-	html[i++]="</td>";
-	html[i++]="<td class='voz_text_width'>";
-	html[i++]="<input type='text' id='username' class='textWidth'/>"
-	html[i++]="</td>";
-	html[i++]="</tr>";
-	html[i++]="<tr>";
-	html[i++]="<td>";
-	html[i++]=config_lbl_password;
-	html[i++]="</td>";
-	html[i++]="<td>";
-	html[i++]="<input type='password' id='userpassword' class='textWidth'/>"
-	html[i++]="</td>";
-	html[i++]="<td class='showpass'>";
-	html[i++]="<div><div style='float:left'><input type='checkbox' id='passchk' onclick='showpass()'/></div><div class='showpassLabel'>"+this.zimlet.getMessage("show_password")+"</div></div>";
-	html[i++]="</td></tr></table>";
-	html[i++]="<table><tr><td>";
-	if(navigator.userAgent.indexOf('Chrome')>-1){
-		html[i++] = "<div id='connect_database' style = 'margin-left:210px;'></div>";
-	}else{
-		html[i++] = "<div id='connect_database' class = 'config_btn1'></div>";
-	}
-	html[i++]="</td></tr></table></fieldset>";
-	this.getHtmlElement().innerHTML = html.join("");
+	var data={"zimlet":this.zimlet,random:Dwt.getNextId()};
+	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.config#config_Settings",data); 
 	document.getElementById("getDatabase").appendChild(get_db.getHtmlElement());
 	document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
 };

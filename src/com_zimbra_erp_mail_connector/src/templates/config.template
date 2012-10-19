@@ -1,0 +1,46 @@
+<template id="config_Settings">
+	<$
+		var zmlt=data.zimlet;
+		var random=data.random;
+		var btn = "";
+		if (navigator.userAgent.indexOf('Chrome')>-1) {
+			btn = "<div id='connect_database' style = 'margin-left:210px;'></div>";
+		} else {
+			btn = "<div id='connect_database' class = 'config_btn1'></div>";
+		}
+	$>
+	<fieldset class='fieldHeight'>
+	<legend><$=zmlt.getMessage("action")$></legend>
+	<table class='marginIE'>
+		<tr>
+			<td><$=zmlt.getMessage("connector_configuration_lbl_urladdress")$></td>
+			<td><input type='text' id='urladdress' value='' class='urlWidth'/></td>
+			<td><$=zmlt.getMessage("connector_configuration_lbl_port")$></td>
+			<td><input type='text' id='port'></td>
+			<td id='getDatabase'></td>
+		</tr>
+		<tr>
+			<td><$=zmlt.getMessage("connector_configuration_lbl_database")$></td>
+			<td><select id='getdatabase' style='width:145px;'></select></td>
+		</tr>
+	</table>
+	</fieldset>
+	<fieldset class='fieldHeight'>
+		<table class='marginLogin'>
+			<tr>
+				<td><$=zmlt.getMessage("connector_configuration_lbl_username")$></td>
+				<td class='voz_text_width'><input type='text' id='username' class='textWidth'/></td>
+			</tr>
+			<tr>
+				<td><$=zmlt.getMessage("connector_configuration_lbl_password")$></td>
+				<td><input type='password' id='userpassword' class='textWidth'/></td>
+				<td class='showpass'><div><div style='float:left'><input type='checkbox' id='passchk' onclick='showpass()'/></div><div class='showpassLabel'><$=zmlt.getMessage("show_password")$></div></div></td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td><$=btn$></td>
+			</tr>
+		</table>
+	</fieldset>
+</template>
