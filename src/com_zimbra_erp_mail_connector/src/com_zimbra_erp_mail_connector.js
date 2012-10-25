@@ -239,7 +239,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	this.tabView = new DwtTabView(view,"SideStepTabView");
 	this.about_setting= new erpConnector_AboutPage(this.tabView,this);
 	this.configuration_setting = new erpConnectorSettings(this.tabView,this,confi_btn_database);
-	this.document_setting= new document_setting(this.tabView,this,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank);
+	this.document_setting= new erpConnector_DocSettings(this.tabView,this);
 	view.setSize("550px", "335px");
 	this.tabView.setSize("550px", "345px");
 	this.tabkeys = [];

@@ -17,31 +17,17 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################*/
-document_setting.prototype = new DwtTabViewPage;
-document_setting.prototype.constructor = document_setting;
-var document_title;
-var document_docname;
+erpConnector_DocSettings.prototype = new DwtTabViewPage;
+erpConnector_DocSettings.prototype.constructor = erpConnector_DocSettings;
 var zm;
-var success_insert;
-var unsuccess_insert;
-var success_delete;
-var unsuccess_delete;
-var unsuccess_blank;
 
 /*...Constructor....*/
-function document_setting(parent, zimlet,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank){
+function erpConnector_DocSettings(parent, zimlet){
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	zm=this.zimlet;
-	document_title=document_lbl_title;
-	document_docname=document_lbl_docname;
-	success_insert=document_success_insert;
-	unsuccess_insert=document_unsuccess_insert;
-	success_delete=document_success_delete;
-	unsuccess_delete=document_unsuccess_delete;
-	unsuccess_blank=document_unsuccess_blank;
 	this._createHTML();
-	getTableRecords();
+	this.getTableRecords();
 	this.setScrollStyle(Dwt.SCROLL);
 }
 
@@ -50,11 +36,11 @@ String.prototype.trim = function() {
 }
 
 /*...........getRecords from zimbra proeprty...*/
-function getTableRecords(){
+erpConnector_DocSettings.prototype.getTableRecords = function(){
 	var data=zm.getUserProperty("doc_list");
 	var elJson =JSON.parse(data);
 	var records=elJson.records;
-	var s="<table class='gridtable' align='right'><tr><td class='doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='checkAll()' class='doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
+	var s="<table class='gridtable' align='right'><tr><td class='doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='erpConnector_DocSettings.checkAll()' class='doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
 	for(var i=0;i<records.length;i++){
 		if(i%2==0){
 			s+="<tr class='d0'><td class='doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
@@ -67,7 +53,7 @@ function getTableRecords(){
 }
 
 /*...........Check whether "ALL" chkbox is selected ...*/
-function checkAll(){
+erpConnector_DocSettings.checkAll = function(){
 	var record_id=document.getElementsByName("record_id");
 	if (document.getElementById("selectall").checked) {
 		for(var i=0;i<record_id.length;i++){
@@ -80,7 +66,7 @@ function checkAll(){
 	}
 }
 
-document_setting.prototype._createHTML = function() {
+erpConnector_DocSettings.prototype._createHTML = function() {
 	var i = 0;
 	var html = new Array();
 	html[i++]="<table>";
@@ -91,7 +77,7 @@ document_setting.prototype._createHTML = function() {
 };
 /*....Record will be verified with OpenERP and add....*/
 
-function addRecord() {
+erpConnector_DocSettings.prototype.addRecord = function() {
 	var title=document.getElementById("document_title").value;
 	var docname=document.getElementById("document_docname").value;
 	title=title.trim();
@@ -172,18 +158,13 @@ function addRecord() {
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(success_insert,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
 		a.popup();
-		getTableRecords();
+		this.getTableRecords();
 	}
 	document.getElementById("document_title").value="";
 	document.getElementById("document_docname").value="";
 }
 
-function valid(){
-	var title=document.getElementById("document_title").value;
-	var docname=document.getElementById("document_docname").value;
-}
-
-function deleteRecord(){
+erpConnector_DocSettings.prototype.deleteRecord = function(){
 	var record_id=document.getElementsByName("record_id");
 	var param="";
 	var flg=0;
@@ -216,5 +197,5 @@ function deleteRecord(){
 	var a = appCtxt.getMsgDialog();
 	a.setMessage(success_delete,DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
 	a.popup();
-	getTableRecords();//Fill records after update.
+	this.getTableRecords();//Fill records after update.
 }

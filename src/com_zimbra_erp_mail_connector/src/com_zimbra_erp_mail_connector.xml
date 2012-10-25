@@ -23,11 +23,11 @@
 	<include>json2.js</include>
 	<include>com_zimbra_erp_mail_connector.js</include>
 	<include>erpConnectorSettings.js</include>
-	<include>document_setting.js</include>
 	<include>erpConnectorPush.js</include>
 	<include>erpConnector_AboutPage.js</include>
 	<include>templates/config.template.js</include>
 	<include>templates/about.template.js</include>
+	<include>erpConnector_DocSettings.js</include>
 	<includeCSS>openerp.css</includeCSS>
 	<resource>resources/submit_please_wait.gif</resource>
 	<resource>resources/about.png</resource>
