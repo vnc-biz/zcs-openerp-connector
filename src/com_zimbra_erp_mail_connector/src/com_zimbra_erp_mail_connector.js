@@ -17,23 +17,14 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################*/
-
-com_zimbra_erp_mail_connector_HandlerObject.getInstance = function () {
-	return com_zimbra_erp_mail_connector_HandlerObject._instance;
+function com_zimbra_erp_mail_connector_HandlerObject() {
 }
 
-var mail_from=[];
-var receiver = "";
-var msgFlag=0;
 com_zimbra_erp_mail_connector_HandlerObject.prototype= new ZmZimletBase;
+com_zimbra_erp_mail_connector_HandlerObject.constructor = com_zimbra_erp_mail_connector_HandlerObject;
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON2_ID="send_and_push";
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON3_ID="push_to_erp";
-
-var currentApt;
-var attendeesFlag;
 var zmlt;
-String.prototype.ltrim=function(){return this.replace(/^\s+/,'');}
-
 com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = function(app, toolbar, controller,view) {
 	var patt="COMPOSE";
 	// only add this button for the following 3 views
@@ -77,33 +68,32 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handle_push_and_save = fu
 	currController.sendMsg("","",respCallback);
 }
 
-var msg = "";
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleResponsefromsend = function(result) {
 	var resp=result.getResponse();
 	var ac = window.parentAppCtxt || window.appCtxt;
 	var msgid=resp.m[0].id;
 	var list = ac.getApp(ZmApp.MAIL).getMailListController().getList();
-	msg = new ZmMailMsg(resp.m[0].id, list, true); // do not cache this temp msg
-	msg._loadFromDom(resp.m[0]);
-	msg._loaded = true; // bug fix #8868 - force load for rfc822 msgs since they may not return any content
-	msg.readReceiptRequested = false; // bug #36247 - never allow read receipt for rfc/822 message
-	msg._part = resp.m[0].part;
+	this.msg = new ZmMailMsg(resp.m[0].id, list, true); // do not cache this temp msg
+	this.msg._loadFromDom(resp.m[0]);
+	this.msg._loaded = true; // bug fix #8868 - force load for rfc822 msgs since they may not return any content
+	this.msg.readReceiptRequested = false; // bug #36247 - never allow read receipt for rfc/822 message
+	this.msg._part = resp.m[0].part;
 	var from=new AjxEmailAddress(appCtxt.getUsername(),AjxEmailAddress.FROM);
 	var msgLoadCallback = new AjxCallback(this, this._msgLoaded,[result]);
-	msg.load({forceLoad:true,callback:msgLoadCallback});
+	this.msg.load({forceLoad:true,callback:msgLoadCallback});
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._msgLoaded = function(result){
 	var res=result.getResponse();
-	mail_from=[];
-	var rec=msg.getAddress(ZmMailMsg.HDR_TO);
+	this.mail_from=[];
+	var rec=this.msg.getAddress(ZmMailMsg.HDR_TO);
 	if(rec.toString().indexOf("<") > -1){
 		rec=rec.toString().split("<")[1];
 		rec=rec.toString().split(">")[0];
 	}
-	mail_from.push(rec);
-	msgFlag=1;
-	this.doDrop(msg);
+	this.mail_from.push(rec);
+	this.msgFlag=1;
+	this.doDrop(this.msg);
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleSOAPErrorResponseXML = function(result) {
@@ -161,28 +151,28 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.addMenuButton = function(c
 	}
 };
 
-var mailtopush="";
 com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = function(controller) {
+	this.mailtopush = "";
 	var con=appCtxt.getCurrentController();
-	mailtopush = controller.getCurrentView().getDnDSelection();
-	mailtopush = (mailtopush instanceof Array) ? mailtopush : [mailtopush];
+	this.mailtopush = controller.getCurrentView().getDnDSelection();
+	this.mailtopush = (this.mailtopush instanceof Array) ? this.mailtopush : [this.mailtopush];
 	var eml;
-	for ( var i = 0; i < mailtopush.length; i++) {
-		if (mailtopush[i].type === ZmId.ITEM_CONV) {
-			var arry = mailtopush[i].participants.getArray();
+	for ( var i = 0; i < this.mailtopush.length; i++) {
+		if (this.mailtopush[i].type === ZmId.ITEM_CONV) {
+			var arry = this.mailtopush[i].participants.getArray();
 			if(arry.length >0) {
 				eml = arry[arry.length - 1].address;
 			}
-		} else if (mailtopush[i].type === ZmId.ITEM_MSG) {
-			var obj = mailtopush[i].getAddress(AjxEmailAddress.FROM);
+		} else if (this.mailtopush[i].type === ZmId.ITEM_MSG) {
+			var obj = this.mailtopush[i].getAddress(AjxEmailAddress.FROM);
 			if(obj)
 			eml = obj.address;
 		}
 	}
-	mail_from=[];
-	mail_from.push(eml);
-	if(mailtopush != null){
-		this.doDrop(mailtopush[0]);
+	this.mail_from=[];
+	this.mail_from.push(eml);
+	if(this.mailtopush != null){
+		this.doDrop(this.mailtopush[0]);
 	}
 }; 
 
@@ -205,15 +195,12 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	erpConnector.urladdress = allConfigurations.urladdress;
 	erpConnector.port = allConfigurations.port;
 	erpConnector.getdatabase = allConfigurations.getdatabase;
+	this.tagcreate();
+	this.msgFlag = "";
+	this.participants = "";
 }
 
-/*   This is the init method     */
-function com_zimbra_erp_mail_connector_HandlerObject() {
-	com_zimbra_erp_mail_connector_HandlerObject._instance=this;
-	tagcreate();
-}
-
-function tagcreate(){
+com_zimbra_erp_mail_connector_HandlerObject.prototype.tagcreate = function(){
 	var tree=appCtxt.getTagTree(appCtxt.getActiveAccount());
 	var tag=tree.getByName("openERP_archived");
 	if(tag==null){
@@ -310,17 +297,13 @@ function TabDialog(parent,title,  view) {
 
 TabDialog.prototype = new ZmDialog;
 TabDialog.prototype.constructor = TabDialog;
-var arrayJSON; //create JSON Array...
-var msgids;
-var msgtype;
 var dialog=null;
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop =
 function(droppedItem) {
-	arrayJSON= [];
 	var ids = [];
-	msgids=[];
-	msgtype=[];
+	this.msgids=[];
+	this.msgtype=[];
 	try{
 		var dbname=erpConnector.getdatabase;
 		var urladdress=erpConnector.urladdress;
@@ -336,11 +319,11 @@ function(droppedItem) {
 				var obj = droppedItem[i].srcObj ?  droppedItem[i].srcObj :  droppedItem[i];
 				if (obj.type == "CONV" ) {
 					this._getMessageFromConv(obj);
-					mail_from[0]="";
+					this.mail_from[0]="";
 				} else if (obj.type == "MSG") {
 					this._getMessageFromMsg(obj);
 				}
-				mail_from[0]="";
+				this.mail_from[0]="";
 			}
 		} else {
 			var obj = droppedItem.srcObj ? droppedItem.srcObj : droppedItem;
@@ -357,36 +340,29 @@ function(droppedItem) {
 		a.popup();
 	}
 	if(obj.type != "APPT") {
-		new erpConnectorPush(this,msgids,mail_from[0],msgtype);
+		new erpConnectorPush(this,this.msgids,this.mail_from[0],this.msgtype);
 	}
 };
 
-	var participants;
-	var port;	
-	var baseURL;
-	var jspUrl;
-	var response;
-	var ids;
-	var mail_subject
 	/** Conversation Mails Detail...**/
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=function(convSrcObj) {
 	try{
-		msgids.push(convSrcObj.msgIds[0]);
-		msgtype.push(convSrcObj.type);
+		this.msgids.push(convSrcObj.msgIds[0]);
+		this.msgtype.push(convSrcObj.type);
 		ids=convSrcObj.msgIds;
 		mail_subject=convSrcObj.getFirstHotMsg().subject;
 		/* Get hhhh the CC , FROM, TO, BCC, SENDER ,REPLY_TO from Email */
 		if(convSrcObj.getFirstHotMsg().participants != null){
-			participants = convSrcObj.getFirstHotMsg().participants.getArray(); 
+			this.participants = convSrcObj.getFirstHotMsg().participants.getArray(); 
 		}
-		for(var i =0; i < participants.length; i++) {
-			if(participants[i].type == AjxEmailAddress.FROM) {
-				if(msgFlag == "0"){
-					mail_from = [];
-					mail_from.push(participants[i].address);
+		for(var i =0; i < this.participants.length; i++) {
+			if(this.participants[i].type == AjxEmailAddress.FROM) {
+				if(this.msgFlag == "0"){
+					this.mail_from = [];
+					this.mail_from.push(this.participants[i].address);
 				}else{
-					msgFlag=0;
+					this.msgFlag=0;
 				}
 			}
 		}
@@ -398,20 +374,20 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=functi
 };
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=function(convSrcObj) {
-	msgids.push(convSrcObj.id);
-	msgtype.push(convSrcObj.type);
+	this.msgids.push(convSrcObj.id);
+	this.msgtype.push(convSrcObj.type);
 	ids=convSrcObj.id;
 	mail_subject=convSrcObj.subject;
 	if(convSrcObj.participants != null){
-		var participants = convSrcObj.participants.getArray();
+		this.participants = convSrcObj.participants.getArray();
 	}
-	for(var i =0; i < participants.length; i++) {
-		if(participants[i].type == AjxEmailAddress.FROM) {
-			if(msgFlag == "0"){
-				mail_from = [];
-				mail_from.push(participants[i].address);
+	for(var i =0; i < this.participants.length; i++) {
+		if(this.participants[i].type == AjxEmailAddress.FROM) {
+			if(this.msgFlag == "0"){
+				this.mail_from = [];
+				this.mail_from.push(this.participants[i].address);
 			}else{
-				msgFlag=0;
+				this.msgFlag=0;
 			}
 		}
 	}
