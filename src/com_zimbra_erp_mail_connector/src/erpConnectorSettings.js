@@ -18,19 +18,16 @@
 #
 ##############################################################################*/
 
-configuration_setting.prototype = new DwtTabViewPage;
+erpConnectorSettings.prototype = new DwtTabViewPage;
 
-configuration_setting.prototype.constructor = configuration_setting;
-	var zm;
-	var proto="http://";
-	var flag=0;
-	var pat_https="^https";
-	var pat_http="^http";
-	String.prototype.trim = function() {
+erpConnectorSettings.prototype.constructor = erpConnectorSettings;
+var zm;
+String.prototype.trim = function() {
 	return this.replace(/^\s+|\s+$/g,"");
 }
 
-function configuration_setting(parent, zimlet,confi_btn_database){
+function erpConnectorSettings(parent, zimlet,confi_btn_database){
+	this.flag = 0;
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	zm=this.zimlet;
@@ -47,7 +44,7 @@ function configuration_setting(parent, zimlet,confi_btn_database){
 	this.setScrollStyle(Dwt.SCROLL);
 }
 
-configuration_setting.prototype.clearConfig = function() {
+erpConnectorSettings.prototype.clearConfig = function() {
 	document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	document.getElementById("port").value="";
 	document.getElementById("username").value="";
@@ -55,15 +52,15 @@ configuration_setting.prototype.clearConfig = function() {
 	document.getElementById("urladdress").value="";
 }
 
-configuration_setting.prototype._createHTML = function() {
+erpConnectorSettings.prototype._createHTML = function() {
 	var get_db = new DwtButton({parent:appCtxt.getShell()});
 	get_db.setText(config_btn_database);
 	get_db.setImage("getDB");
-	get_db.addSelectionListener(new AjxListener(this,getDatabase));
+	get_db.addSelectionListener(new AjxListener(this,this._getDatabase));
 	var connectBtn = new DwtButton({parent:appCtxt.getShell()});
 	connectBtn.setText(this.zimlet.getMessage("connector_configuration_lbl_connect"));
 	connectBtn.setImage("connect");
-	connectBtn.addSelectionListener(new AjxListener(this,checkConnection));
+	connectBtn.addSelectionListener(new AjxListener(this,this.checkConnection));
 	var i = 0;
 	var html = new Array();
 	var data={"zimlet":this.zimlet,random:Dwt.getNextId()};
@@ -72,7 +69,7 @@ configuration_setting.prototype._createHTML = function() {
 	document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
 };
 
-function showpass(){
+erpConnectorSettings.showpass = function(){
 	if(document.getElementById("passchk").checked){
 		document.getElementById("userpassword").type='text';
 	}else{
@@ -81,7 +78,7 @@ function showpass(){
 }
 
 /*Gives the Database List*/
-function getDatabase(){
+erpConnectorSettings.prototype._getDatabase = function(){
 	var urladdress=document.getElementById("urladdress").value;
 	var port=document.getElementById("port").value;
 	port=port.trim();
@@ -121,11 +118,11 @@ function getDatabase(){
 		document.getElementById("port").focus();
 		return;
 	}
-	var pro=urladdress.match(pat_https);
+	var pro=urladdress.match("^https");
 	if(pro != null && pro == "https"){
 		proto="https://"
 		urladdress=urladdress.substring(8);
-	}else if(urladdress.match(pat_http) == "http"){
+	}else if(urladdress.match("^http") == "http"){
 		proto="http://"
 		urladdress=urladdress.substring(7);
 	}	
@@ -155,8 +152,8 @@ function getDatabase(){
 	}
 }
 
-function checkConnection(){
-	flag=0;
+erpConnectorSettings.prototype.checkConnection = function(){
+	this.flag=0;
 	var url=document.getElementById("urladdress").value;
 	var database=document.getElementById("getdatabase").value;
 	var port=document.getElementById("port").value;
@@ -220,11 +217,11 @@ function checkConnection(){
 		document.getElementById("userpassword").focus();
 		return;
 	}
-	var pro=url.match(pat_https);
+	var pro=url.match("^https");
 	if(pro != null && pro == "https"){
 		proto="https://"
 		url=url.substring(8);
-	}else if(url.match(pat_http) == "http"){
+	}else if(url.match("^http") == "http"){
 		proto="http://"
 		url=url.substring(7);
 	}
@@ -244,6 +241,6 @@ function checkConnection(){
 		erpConnector.urladdress = allConfigurations.urladdress;
 		erpConnector.port = allConfigurations.port;
 		erpConnector.getdatabase = allConfigurations.getdatabase;
-		flag=1;
+		this.flag=1;
 	}
 }

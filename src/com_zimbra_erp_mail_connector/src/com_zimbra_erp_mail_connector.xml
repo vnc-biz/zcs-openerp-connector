@@ -22,7 +22,7 @@
 <zimlet name="@ZIMLET_NAME@" version="@ZIMLET_VERSION@" label="${msg.connector_panel_lbl}" description="$(msg.zimlet_description)">
 	<include>json2.js</include>
 	<include>com_zimbra_erp_mail_connector.js</include>
-	<include>configuration_setting.js</include>
+	<include>erpConnectorSettings.js</include>
 	<include>document_setting.js</include>
 	<include>erpConnectorPush.js</include>
 	<include>about_setting.js</include>

@@ -32,7 +32,7 @@
 			<tr>
 				<td><$=data.zimlet.getMessage("connector_configuration_lbl_password")$></td>
 				<td><input type='password' id='userpassword' class='textWidth'/></td>
-				<td class='showpass'><div><div style='float:left'><input type='checkbox' id='passchk' onclick='showpass()'/></div><div class='showpassLabel'><$=data.zimlet.getMessage("show_password")$></div></div></td>
+				<td class='showpass'><div><div style='float:left'><input type='checkbox' id='passchk' onclick='erpConnectorSettings.showpass()'/></div><div class='showpassLabel'><$=data.zimlet.getMessage("show_password")$></div></div></td>
 			</tr>
 		</table>
 		<table>
