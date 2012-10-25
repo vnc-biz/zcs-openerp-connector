@@ -357,7 +357,7 @@ function(droppedItem) {
 		a.popup();
 	}
 	if(obj.type != "APPT") {
-		new push_to_openERP(this,msgids,mail_from[0],msgtype);
+		new erpConnectorPush(this,msgids,mail_from[0],msgtype);
 	}
 };
 

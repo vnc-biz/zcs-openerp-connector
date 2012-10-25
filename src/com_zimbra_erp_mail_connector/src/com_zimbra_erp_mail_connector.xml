@@ -24,7 +24,7 @@
 	<include>com_zimbra_erp_mail_connector.js</include>
 	<include>configuration_setting.js</include>
 	<include>document_setting.js</include>
-	<include>push_to_openERP.js</include>
+	<include>erpConnectorPush.js</include>
 	<include>about_setting.js</include>
 	<include>templates/config.template.js</include>
 	<includeCSS>openerp.css</includeCSS>
@@ -35,6 +35,7 @@
 	<resource>resources/VNC-Logo.png</resource>
 	<resource>sync.png</resource>
 	<resource>OpenERP.png</resource>
+	<include>templates/push.template.js</include>
 	<handlerObject>com_zimbra_erp_mail_connector_HandlerObject</handlerObject>
 	<zimletPanelItem label="${msg.connector_panel_lbl}" icon="CalSync">
 		<toolTipText>${msg.connector_panel_tooltip}</toolTipText>

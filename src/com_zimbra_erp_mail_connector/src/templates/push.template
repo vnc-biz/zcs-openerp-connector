@@ -1,0 +1,26 @@
+<template id="pushEmail">
+    <$ var zmlt=data.zimlet;
+        var random=data.random;
+    $>
+	<div style='float:left;width:100%;'>
+		<table style='width:auto;margin-left:1%'>
+		<tr>
+			<td><font size='2'><$=zmlt.getMessage("connector_pushopenerp.search")$></font></td>
+			<td><input type='text' id='mailsearch<$=random$>' class='txt_from' /></td>
+			<td><div id='doc_search<$=random$>' class='btn_search'></div></td>
+		</tr>
+		</table>
+		<hr/>
+		<div id='push_documents<$=random$>' name='push_documents<$=random$>' style='width:98%;height:25%;overflow:auto;'></div>	
+		<hr/>
+		<div class='document_div'>
+		<b>
+		<font size='2'><$=zmlt.getMessage("documents")$></font></b>
+		<div id='wait<$=random$>' align='center'></div>
+	</div>
+	<div id='document_name<$=random$>' name='document_name<$=random$>' style='width:100%;height:50%;overflow:scroll;'></div>	
+	<hr />
+	<div id='pushEmail<$=random$>' style='float:left;margin-right:1%;'></div>
+	</div>
+	
+</template>
