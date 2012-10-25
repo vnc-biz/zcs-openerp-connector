@@ -25,6 +25,7 @@
 	<include>erpConnectorSettings.js</include>
 	<include>erpConnectorPush.js</include>
 	<include>erpConnector_AboutPage.js</include>
+	<include>erpConnector_DocSettings.js</include>
 	<include>templates/config.template.js</include>
 	<include>templates/about.template.js</include>
 	<include>erpConnector_DocSettings.js</include>
