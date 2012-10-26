@@ -246,7 +246,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab1"),this.configuration_setting));
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab2"),this.document_setting));
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab3"),this.about_setting));
-	canvas = new TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),view);
+	canvas = new erpConnector_TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),view);
 	canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_project_close"));
 	canvas.getButton(DwtDialog.OK_BUTTON).setText(this.getMessage("reset_configuration"));
 	canvas.registerCallback(DwtDialog.OK_BUTTON, new AjxCallback(this, this._handleResetClick));
@@ -283,7 +283,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._okBtnListener=function(){
 	canvas.popdown();
 }
 
-function TabDialog(parent,title,  view) {
+function erpConnector_TabDialog(parent,title,  view) {
 	if (arguments.length == 0) return;
 	DwtDialog.call(this, {parent:parent, title:title, standardButtons:[DwtDialog.OK_BUTTON,DwtDialog.CANCEL_BUTTON]});
 	if (!view) {
@@ -295,8 +295,8 @@ function TabDialog(parent,title,  view) {
 	this._opc = appCtxt.getOverviewController();
 };
 
-TabDialog.prototype = new ZmDialog;
-TabDialog.prototype.constructor = TabDialog;
+erpConnector_TabDialog.prototype = new ZmDialog;
+erpConnector_TabDialog.prototype.constructor = erpConnector_TabDialog;
 var dialog=null;
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop =
