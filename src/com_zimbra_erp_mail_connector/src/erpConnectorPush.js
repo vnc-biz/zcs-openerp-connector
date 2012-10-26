@@ -26,7 +26,7 @@ erpConnectorPush=function(zimlet,msgids,push_from,msgtype){
 	this.push_random=Math.round(Math.random()*100);
 	this.pushfrom=push_from;
 	this.message_type=msgtype;
-	this.fixheading="<table class='gridtable'><tr><td style='width:12%'><b></b></td><td style='width:60%'><b>"+zmlt.getMessage("connector_pushopener_name")+"</b></td><td style='width:33%'><b>"+zmlt.getMessage("connector_pushopener_document")+"</b></td></tr>";
+	this.fixheading= AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.push#fixheading");
 	this._displayDailog();
 };
 
