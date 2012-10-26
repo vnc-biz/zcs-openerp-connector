@@ -297,7 +297,6 @@ function erpConnector_TabDialog(parent,title,  view) {
 
 erpConnector_TabDialog.prototype = new ZmDialog;
 erpConnector_TabDialog.prototype.constructor = erpConnector_TabDialog;
-var dialog=null;
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop =
 function(droppedItem) {
