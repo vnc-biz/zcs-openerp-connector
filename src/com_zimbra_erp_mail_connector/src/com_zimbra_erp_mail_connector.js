@@ -180,6 +180,7 @@ var erpConnector = "";
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	//Read user credentials from database
+	this.mail_from = [];
 	AjxRpc.__RPC_CACHE_MAX = 200;
 	docList=this.getUserProperty("doc_list");
 	if(docList.length<=0){
@@ -303,7 +304,6 @@ function(droppedItem) {
 	var ids = [];
 	this.msgids=[];
 	this.msgtype=[];
-	this.mail_from = [];
 	try{
 		var dbname=erpConnector.getdatabase;
 		var urladdress=erpConnector.urladdress;

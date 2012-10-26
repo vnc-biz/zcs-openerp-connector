@@ -27,6 +27,9 @@ erpConnectorPush=function(zimlet,msgids,push_from,msgtype){
 	this.email_ids = msgids;
 	this.push_random=Math.round(Math.random()*100);
 	this.pushfrom=push_from;
+	if(this.pushfrom == undefined){
+		this.pushfrom = "";
+	}
 	this.message_type=msgtype;
 	this.fixheading= AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.push#fixheading");
 	this._displayDailog();
@@ -136,6 +139,7 @@ erpConnectorPush.prototype._createDialogView = function() {
 
 /*Provede All users name from Open ERP*/
 erpConnectorPush.prototype.getDocumentRecord = function() {
+	this.documentrecord = "";
 	record_check=document.getElementsByName("records"+this.push_random+"");
 	var flg=0;
 	for(var i=0;i<record_check.length;i++) {
