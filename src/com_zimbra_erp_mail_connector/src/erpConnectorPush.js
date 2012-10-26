@@ -229,10 +229,6 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 	document.getElementById("wait"+this.push_random+"").innerHTML="";
 }
 
-var partnerid="";
-erpConnectorPush.prototype._okBtnListener = function() {
-}
-
 erpConnectorPush.prototype._dismissBtnListener= function() {
 	this.pbDialog.popdown();
 }
