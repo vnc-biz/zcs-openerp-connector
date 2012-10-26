@@ -3,14 +3,14 @@
 		<table style='width:auto;margin-left:1%'>
 		<tr>
 			<td><font size='2'><$=data.zimlet.getMessage("connector_pushopenerp.search")$></font></td>
-			<td><input type='text' id='mailsearch<$=data.random$>' class='txt_from' /></td>
-			<td><div id='doc_search<$=data.random$>' class='btn_search'></div></td>
+			<td><input type='text' id='mailsearch<$=data.random$>' class='erpConnector_txt_from' /></td>
+			<td><div id='doc_search<$=data.random$>' class='erpConnector_btn_search'></div></td>
 		</tr>
 		</table>
 		<hr/>
 		<div id='push_documents<$=data.random$>' name='push_documents<$=data.random$>' style='width:98%;height:25%;overflow:auto;'></div>	
 		<hr/>
-		<div class='document_div'>
+		<div class='erpConnector_document_div'>
 		<b>
 		<font size='2'><$=data.zimlet.getMessage("documents")$></font></b>
 		<div id='wait<$=data.random$>' align='center'></div>
@@ -21,7 +21,7 @@
 	</div>
 </template>
 <template id="fixheading">
-	<table class='gridtable'>
+	<table class='erpConnector_gridtable'>
 		<tr><td style='width:12%'><b></b></td>
 			<td style='width:60%'><b><$=com_zimbra_erp_mail_connector.connector_pushopener_name$></b></td>
 			<td style='width:33%'><b><$=com_zimbra_erp_mail_connector.connector_pushopener_document$></b></td>

@@ -267,7 +267,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleResetClick=function
 com_zimbra_erp_mail_connector_HandlerObject.prototype._yesBtnListener=function(){
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/clearConfig.jsp";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
-	document.getElementById("urladdress").innerHTML="";	
+	document.getElementById("erpConnector_urladdress").innerHTML="";	
 	this._dialog.popdown();
 	erpConnector.port = "";
 	erpConnector.urladdress = "";
@@ -303,6 +303,7 @@ function(droppedItem) {
 	var ids = [];
 	this.msgids=[];
 	this.msgtype=[];
+	this.mail_from = [];
 	try{
 		var dbname=erpConnector.getdatabase;
 		var urladdress=erpConnector.urladdress;

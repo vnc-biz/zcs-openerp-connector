@@ -40,12 +40,12 @@ erpConnector_DocSettings.prototype.getTableRecords = function(){
 	var data=zm.getUserProperty("doc_list");
 	var elJson =JSON.parse(data);
 	var records=elJson.records;
-	var s="<table class='gridtable' align='right'><tr><td class='doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='erpConnector_DocSettings.checkAll()' class='doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
+	var s="<table class='erpConnector_gridtable' align='right'><tr><td class='erpConnector_doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='erpConnector_DocSettings.checkAll()' class='erpConnector_doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
 	for(var i=0;i<records.length;i++){
 		if(i%2==0){
-			s+="<tr class='d0'><td class='doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
+			s+="<tr class='d0'><td class='erpConnector_doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='erpConnector_doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
 		}else{
-			s+="<tr class='d1'><td class='doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
+			s+="<tr class='d1'><td class='erpConnector_doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='erpConnector_doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
 		}
 	}
 	s+="</table>";
@@ -78,36 +78,36 @@ erpConnector_DocSettings.prototype._createHTML = function() {
 /*....Record will be verified with OpenERP and add....*/
 
 erpConnector_DocSettings.prototype.addRecord = function() {
-	var title=document.getElementById("document_title").value;
-	var docname=document.getElementById("document_docname").value;
+	var title=document.getElementById("erpConnector_document_title").value;
+	var docname=document.getElementById("erpConnector_document_docname").value;
 	title=title.trim();
 	docname=docname.trim();
 	if(title==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("document_title").focus();
+		document.getElementById("erpConnector_document_title").focus();
 		return;
 	}
-	if(document.getElementById("document_title").value.match(/^\s*$/)){
+	if(document.getElementById("erpConnector_document_title").value.match(/^\s*$/)){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("document_title").focus();
+		document.getElementById("erpConnector_document_title").focus();
 		return;
 	}
 	if(docname==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("document_docname").focus();
+		document.getElementById("erpConnector_document_docname").focus();
 		return;
 	}
-	if(document.getElementById("document_docname").value.match(/^\s*$/)){
+	if(document.getElementById("erpConnector_document_docname").value.match(/^\s*$/)){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_document_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("document_docname").focus();
+		document.getElementById("erpConnector_document_docname").focus();
 		return;
 	}
 	try {
@@ -145,8 +145,8 @@ erpConnector_DocSettings.prototype.addRecord = function() {
 			a.setMessage(zm.getMessage("duplicate_error"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 			a.popup();
 			duplicateFlag=1;
-			document.getElementById("document_title").value="";
-			document.getElementById("document_docname").value="";
+			document.getElementById("erpConnector_document_title").value="";
+			document.getElementById("erpConnector_document_docname").value="";
 			return;
 		}
 	}
@@ -160,8 +160,8 @@ erpConnector_DocSettings.prototype.addRecord = function() {
 		a.popup();
 		this.getTableRecords();
 	}
-	document.getElementById("document_title").value="";
-	document.getElementById("document_docname").value="";
+	document.getElementById("erpConnector_document_title").value="";
+	document.getElementById("erpConnector_document_docname").value="";
 }
 
 erpConnector_DocSettings.prototype.deleteRecord = function(){

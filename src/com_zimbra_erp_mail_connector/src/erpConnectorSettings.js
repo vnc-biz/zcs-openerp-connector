@@ -33,23 +33,23 @@ function erpConnectorSettings(parent, zimlet,confi_btn_database){
 	zm=this.zimlet;
 	config_btn_database=confi_btn_database;
 	this._createHTML();
-	document.getElementById("urladdress").value=erpConnector.urladdress;
+	document.getElementById("erpConnector_urladdress").value=erpConnector.urladdress;
 	if(erpConnector.getdatabase=="" || erpConnector.getdatabase ==null || erpConnector.getdatabase == undefined){
-		document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+		document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	}else{
-		document.getElementById("getdatabase").innerHTML="<option value="+erpConnector.getdatabase+">"+erpConnector.getdatabase+"</option>";
+		document.getElementById("erpConnector_getdatabase").innerHTML="<option value="+erpConnector.getdatabase+">"+erpConnector.getdatabase+"</option>";
 	}
-	document.getElementById("port").value = erpConnector.port;
-	document.getElementById("username").value = "";
+	document.getElementById("erpConnector_port").value = erpConnector.port;
+	document.getElementById("erpConnector_username").value = "";
 	this.setScrollStyle(Dwt.SCROLL);
 }
 
 erpConnectorSettings.prototype.clearConfig = function() {
-	document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
-	document.getElementById("port").value="";
-	document.getElementById("username").value="";
-	document.getElementById("userpassword").value="";
-	document.getElementById("urladdress").value="";
+	document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+	document.getElementById("erpConnector_port").value="";
+	document.getElementById("erpConnector_username").value="";
+	document.getElementById("erpConnector_userpassword").value="";
+	document.getElementById("erpConnector_urladdress").value="";
 }
 
 erpConnectorSettings.prototype._createHTML = function() {
@@ -71,51 +71,51 @@ erpConnectorSettings.prototype._createHTML = function() {
 
 erpConnectorSettings.showpass = function(){
 	if(document.getElementById("passchk").checked){
-		document.getElementById("userpassword").type='text';
+		document.getElementById("erpConnector_userpassword").type='text';
 	}else{
-		document.getElementById("userpassword").type='password';
+		document.getElementById("erpConnector_userpassword").type='password';
 	}
 }
 
 /*Gives the Database List*/
 erpConnectorSettings.prototype._getDatabase = function(){
-	var urladdress=document.getElementById("urladdress").value;
-	var port=document.getElementById("port").value;
+	var urladdress=document.getElementById("erpConnector_urladdress").value;
+	var port=document.getElementById("erpConnector_port").value;
 	port=port.trim();
 	urladdress=urladdress.trim();
 	if(urladdress==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("urladdress").focus();
+		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
 	if(urladdress==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("urladdress").focus();
+		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
-	if(document.getElementById("urladdress").value.match(/^\s*$/)){
+	if(document.getElementById("erpConnector_urladdress").value.match(/^\s*$/)){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("urladdress").focus();
+		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
 	if(port==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("port").focus();
+		document.getElementById("erpConnector_port").focus();
 		return;
 	}
-	if(document.getElementById("port").value.match(/^\s*$/)){
+	if(document.getElementById("erpConnector_port").value.match(/^\s*$/)){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("port").focus();
+		document.getElementById("erpConnector_port").focus();
 		return;
 	}
 	var pro=urladdress.match("^https");
@@ -130,14 +130,14 @@ erpConnectorSettings.prototype._getDatabase = function(){
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	if (response.success == true && response.text.trim()!="fail") {
 		var res=response.text.trim();
-		var select= document.getElementById('getdatabase');
+		var select= document.getElementById('erpConnector_getdatabase');
 		if(res.length<=0){
 			var a = appCtxt.getMsgDialog();
 			a.setMessage(zm.getMessage("connector_configuration_lbl_database_notfound"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 			a.popup();
-			document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+			document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 		}else{
-			document.getElementById("getdatabase").innerHTML="";
+			document.getElementById("erpConnector_getdatabase").innerHTML="";
 			var dbname=res.substr(1,res.length-2).split(",");
 			for(i=0;i<dbname.length;i++){
 				select.options[select.options.length]= new Option(dbname[i], dbname[i]);
@@ -148,17 +148,17 @@ erpConnectorSettings.prototype._getDatabase = function(){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("time_out"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
 		a.popup();
-		document.getElementById("getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+		document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	}
 }
 
 erpConnectorSettings.prototype.checkConnection = function(){
 	this.flag=0;
-	var url=document.getElementById("urladdress").value;
-	var database=document.getElementById("getdatabase").value;
-	var port=document.getElementById("port").value;
-	var username=document.getElementById("username").value;
-	var z_password=document.getElementById("userpassword").value;
+	var url=document.getElementById("erpConnector_urladdress").value;
+	var database=document.getElementById("erpConnector_getdatabase").value;
+	var port=document.getElementById("erpConnector_port").value;
+	var username=document.getElementById("erpConnector_username").value;
+	var z_password=document.getElementById("erpConnector_userpassword").value;
 	port=port.trim();
 	username=username.trim();
 	url=url.trim();
@@ -166,28 +166,28 @@ erpConnectorSettings.prototype.checkConnection = function(){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("urladdress").focus();
+		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
-	if(document.getElementById("urladdress").value.match(/^\s*$/)){
+	if(document.getElementById("erpConnector_urladdress").value.match(/^\s*$/)){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("urladdress").focus();
+		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
 	if(port==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("port").focus();
+		document.getElementById("erpConnector_port").focus();
 		return;
 	}
-	if(document.getElementById("port").value.match(/^\s*$/)){
+	if(document.getElementById("erpConnector_port").value.match(/^\s*$/)){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("port").focus();
+		document.getElementById("erpConnector_port").focus();
 		return;
 	}
 	if(database=="select any database"){
@@ -200,21 +200,21 @@ erpConnectorSettings.prototype.checkConnection = function(){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("username").focus();
+		document.getElementById("erpConnector_username").focus();
 		return;
 	}
-	if(document.getElementById("username").value.match(/^\s*$/)){
+	if(document.getElementById("erpConnector_username").value.match(/^\s*$/)){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("username").focus();
+		document.getElementById("erpConnector_username").focus();
 		return;
 	}
 	if(z_password==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_password"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
 		a.popup();
-		document.getElementById("userpassword").focus();
+		document.getElementById("erpConnector_userpassword").focus();
 		return;
 	}
 	var pro=url.match("^https");

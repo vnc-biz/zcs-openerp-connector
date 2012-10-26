@@ -17,7 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 ##############################################################################*/
-table.gridtable
+table.erpConnector_gridtable
 {
 	font-family:verdana,arial,sans-serif;
 	font-size:12px;
@@ -28,7 +28,7 @@ table.gridtable
 	width:100%;
 }
 
-table.gridtable th
+table.erpConnector_gridtable th
 {
 	border-width:1px;
 	padding:8px;
@@ -37,7 +37,7 @@ table.gridtable th
 	background-color:#dedede;
 }
 
-table.gridtable td
+table.erpConnector_gridtable td
 {
 	border-width:1px;
 	padding:4px;
@@ -46,28 +46,17 @@ table.gridtable td
 	background-color:#ffffff;
 }
 
-table.gridtable tr.d0 td
+table.erpConnector_gridtable tr.d0 td
 {
 	background-color:#EBEBEB;
 }
 
-table.gridtable tr.d1 td
+table.erpConnector_gridtable tr.d1 td
 {
 	background-color:#FEFEF2;
 }
 
-.textbox1
-{
-	width:250%;
-	width:96%\9;		/* IE8/IE9 hack */
-}
-
-.fieldsetsize
-{
-	width:100%\9;		/* IE8/IE9 hack */
-}
-
-#urladdress
+#erpConnector_urladdress
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -75,7 +64,7 @@ table.gridtable tr.d1 td
 	margin-top:5px;
 }
 
-#port
+#erpConnector_port
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -84,7 +73,7 @@ table.gridtable tr.d1 td
 	width:50px;
 }
 
-#username
+#erpConnector_username
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -92,7 +81,7 @@ table.gridtable tr.d1 td
 	margin-top:7px;
 }
 
-#userpassword
+#erpConnector_userpassword
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -100,7 +89,7 @@ table.gridtable tr.d1 td
 	margin-top:5px;
 }
 
-#document_title
+#erpConnector_document_title
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -108,7 +97,7 @@ table.gridtable tr.d1 td
 	margin-top:5px;
 }
 
-#document_docname
+#erpConnector_document_docname
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -132,14 +121,7 @@ select
 	margin-top:5px;
 }
 
-#push_recor
-{
-	width:98%;
-	height:70px;
-	overflow:auto;
-}
-
-.about_logo
+.erpConnector_about_logo
 {
 	margin-top:20px;
 }
@@ -174,27 +156,27 @@ select
 	height:16px;
 }
 
-#getdatabase
+#erpConnector_getdatabase
 {
 	font-family:Times New Roman;
 	font-size:12px;
 }
 
-.marginIE
+.erpConnector_marginIE
 {
 	padding-left:12%;
 	margin-left:8%\9;	/* IE8/IE9 hack */
 	margin-top:3%;
 }
 
-.marginLogin
+.erpConnector_marginLogin
 {
 	margin-left:12%;
 	margin-top:3%;
 	margin-left:8%\9	/* IE8/IE9 hack */
 }
 
-.btn_search
+.erpConnector_btn_search
 {
 	padding-left:3px;
 	margin-left:56px;
@@ -202,25 +184,25 @@ select
 	padding-left:0px\9;	/* IE8/IE9 hack */
 }
 
-.txt_from
+.erpConnector_txt_from
 {
 	width:135%;
 	width:200px\9;		/* IE8/IE9 hack */
 }
 
-.document_div
+.erpConnector_document_div
 {
 	height:5%;
 	padding-bottom:5px\9;	/* IE8/IE9 hack */
 }
 
-.doc_setng_chkbx
+.erpConnector_doc_setng_chkbx
 {
 	width:10%;
 	width:50px\9;		/* IE8/IE9 hack */
 }
 
-.doc_setng_chkbx2
+.erpConnector_doc_setng_chkbx2
 {
 	margin-left:31%;
 	margin-left:20%\9;	/* IE8/IE9 hack */
@@ -231,13 +213,13 @@ select
 	background:url(resources/OpenERP.png) no-repeat 0 0;
 }
 
-.config_btn
+.erpConnector_config_btn
 {
 	padding-left:0;
 	margin-left:62%;
 }
 
-.config_btn1
+.erpConnector_config_btn1
 {
 	padding-left:0;
 	margin-left:76%;
@@ -245,50 +227,46 @@ select
 	-webkit-margin-left:60%;
 }
 
-.config_btnIE
+.erpConnector_config_btnIE
 {
 	padding-left:45%\9;	/* IE8/IE9 hack */
 }
 
-.textWidth
+.erpConnector_textWidth
 {
 	width:100%;
 }
 
-.fieldHeight
+.erpConnector_fieldHeight
 {
 	height:47%;
 	height:45%\9;		/* IE8/IE9 hack */
 }
 
-.urlWidth
+.erpConnector_urlWidth
 {
 	width:100%;
 }
 
-.alignBtn
+.erpConnector_alignBtn
 {
 	padding-left:0;
 	margin-top:5%;
 	margin-top:1%\9;	/* IE8/IE9 hack */
 }
 
-.showpass
-{
-}
-
-.showpassLabel
+.erpConnector_showpassLabel
 {
 	float:left;
 	padding-top:4px;
 }
 
-.m_save
+.erpConnector_m_save
 {
 	width:100%;
 }
 
-.m_save_button
+.erpConnector_m_save_button
 {
 	margin-left:0;
 	width:27%;
@@ -303,12 +281,12 @@ select
 	background:none repeat scroll 0 0 #C3CCD3;
 }
 
-.call_action
+.erpConnector_call_action
 {
 	width:88%;
 }
 
-#emailReminder_datefield
+#erpConnector_emailReminder_datefield
 {
 	height:24px;
 }
@@ -337,7 +315,7 @@ select
 	width:16px!important;
 }
 
-.scheduleCallBtn
+.erpConnector_scheduleCallBtn
 {
 	width:100%;
 	cursor:pointer;
