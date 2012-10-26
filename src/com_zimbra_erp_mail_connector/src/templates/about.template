@@ -1,0 +1,8 @@
+<template id="about">
+	<table align='center' class='about_logo'>
+		<tr><td><div id='logo' style='width:100%;height:50%;margin-left:80px;'><img src='<$=data.zmlt.getResource("resources/VNC-Logo.png")$>'/></div></td></tr>
+		<tr><td><font face='Times New Roman' size='5px'>VNC OpenERP Zimlet (VOZ)</font></td></tr>
+		<tr><td><b><center><$=com_zimbra_erp_mail_connector.ZIMLET_VERSION$></center></b></td></tr>
+		<tr><td><div class='voz_lincense'>http://www.vnc.biz </div><div>Copyright 2012, VNC - Virtual Network Consult GmbH </div><div class='voz_lincense2'>Released under AGPL Licenses. </div></font></center></td></tr>
+	</table>	
+</template>

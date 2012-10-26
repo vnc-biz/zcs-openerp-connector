@@ -237,7 +237,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	var document_unsuccess_blank=this.getMessage("connector_document_unsuccess_blank");
 	var view = new DwtComposite(appCtxt.getShell());
 	this.tabView = new DwtTabView(view,"SideStepTabView");
-	this.about_setting= new about_setting(this.tabView,this);
+	this.about_setting= new erpConnector_AboutPage(this.tabView,this);
 	this.configuration_setting = new erpConnectorSettings(this.tabView,this,confi_btn_database);
 	this.document_setting= new document_setting(this.tabView,this,document_lbl_title,document_lbl_docname,document_success_insert,document_unsuccess_insert,document_success_delete,document_unsuccess_delete,document_unsuccess_blank);
 	view.setSize("550px", "335px");
