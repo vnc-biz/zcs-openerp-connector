@@ -20,6 +20,7 @@
 var zmlt;
 erpConnectorPush=function(zimlet,msgids,push_from,msgtype){
 	this.zimlet=zimlet;
+	this.documentrecord="";
 	zmlt=this.zimlet;
 	this.email_ids = [];
 	this.email_ids = msgids;
@@ -132,7 +133,6 @@ erpConnectorPush.prototype._createDialogView = function() {
 	return html;
 };
 
-var documentrecord;
 /*Provede All users name from Open ERP*/
 erpConnectorPush.prototype.getDocumentRecord = function() {
 	record_check=document.getElementsByName("records"+this.push_random+"");
@@ -181,8 +181,7 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 	}
 	var tot_obj=obj_name.toString().split(',');
 	document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+zmlt.getResource("resources/submit_please_wait.gif")+"'/>";
-	documentrecord="";
-	documentrecord+=this.fixheading;
+	this.documentrecord+=this.fixheading;
 	for (var j=0;j<tot_obj.length-1;j++) {
 		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentlist.jsp?emailsearch="+emailsearch.trim()+"&obj_name="+tot_obj[j];
 		var response = AjxRpc.invoke(null,jspurl, null, null, true);
@@ -202,9 +201,9 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 					var record_id=docrecord[i].toString().split(',')[0];
 					var record_names=docrecord[i].toString().split(',')[1];
 					if (i%2==0) {
-						documentrecord+="<tr class='d0'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
+						this.documentrecord+="<tr class='d0'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
 					} else {
-						documentrecord+="<tr class='d1'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
+						this.documentrecord+="<tr class='d1'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
 					}
 				}
 			} else {
@@ -225,7 +224,7 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 	}
 	var radiofill=document.getElementsByName("document_name"+this.push_random+"");
 	for (var i=0;i<radiofill.length;i++) {
-		radiofill[i].innerHTML=documentrecord;
+		radiofill[i].innerHTML=this.documentrecord;
 	}
 	document.getElementById("wait"+this.push_random+"").innerHTML="";
 }
