@@ -240,7 +240,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	this.about_setting= new erpConnector_AboutPage(this.tabView,this);
 	this.configuration_setting = new erpConnectorSettings(this.tabView,this,confi_btn_database);
 	this.document_setting= new erpConnector_DocSettings(this.tabView,this);
-	this.configuration_setting = new erpConnectorSettings(this.tabView,this,confi_btn_database);
 	view.setSize("550px", "335px");
 	this.tabView.setSize("550px", "345px");
 	this.tabkeys = [];
@@ -340,7 +339,7 @@ function(droppedItem) {
 		a.popup();
 	}
 	if(obj.type != "APPT") {
-		new erpConnectorPush(this,msgids,mail_from[0],msgtype);
+		new erpConnectorPush(this,this.msgids,this.mail_from[0],this.msgtype);
 	}
 };
 
