@@ -21,6 +21,7 @@
 com_zimbra_erp_mail_connector_Settings.prototype = new DwtTabViewPage;
 
 com_zimbra_erp_mail_connector_Settings.prototype.constructor = com_zimbra_erp_mail_connector_Settings;
+
 function com_zimbra_erp_mail_connector_Settings(parent, zimlet,confi_btn_database){
 	this.flag = 0;
 	DwtTabViewPage.call(this,parent);

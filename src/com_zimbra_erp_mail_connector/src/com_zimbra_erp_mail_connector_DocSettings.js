@@ -17,7 +17,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################*/
+
 com_zimbra_erp_mail_connector_DocSettings.prototype = new DwtTabViewPage;
+
 com_zimbra_erp_mail_connector_DocSettings.prototype.constructor = com_zimbra_erp_mail_connector_DocSettings;
 
 /*...Constructor....*/
@@ -28,7 +30,6 @@ function com_zimbra_erp_mail_connector_DocSettings(parent, zimlet){
 	this.getTableRecords();
 	this.setScrollStyle(Dwt.SCROLL);
 }
-
 
 /*...........getRecords from zimbra proeprty...*/
 com_zimbra_erp_mail_connector_DocSettings.prototype.getTableRecords = function(){

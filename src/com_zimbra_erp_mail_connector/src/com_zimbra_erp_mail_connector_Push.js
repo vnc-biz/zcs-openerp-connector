@@ -17,6 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################*/
+
 com_zimbra_erp_mail_connector_Push=function(zimlet,msgids,push_from,msgtype){
 	this.zimlet=zimlet;
 	this.documentrecord="";
@@ -34,9 +35,10 @@ com_zimbra_erp_mail_connector_Push=function(zimlet,msgids,push_from,msgtype){
 };
 
 com_zimbra_erp_mail_connector_Push.prototype=new ZmZimletBase;
-com_zimbra_erp_mail_connector_Push.prototype.constructor = com_zimbra_erp_mail_connector_Push;
-/*Display dilogbox when Email will be pushed on zimlet*/
 
+com_zimbra_erp_mail_connector_Push.prototype.constructor = com_zimbra_erp_mail_connector_Push;
+
+/*Display dilogbox when Email will be pushed on zimlet*/
 com_zimbra_erp_mail_connector_Push.prototype._displayDailog = function() { 
 	var searchDocBtn = new DwtButton({parent:appCtxt.getShell()});
 	searchDocBtn.setText(this.zimlet.getMessage("connector_pushopener_.search"));

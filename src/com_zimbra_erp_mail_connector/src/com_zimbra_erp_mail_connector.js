@@ -27,6 +27,7 @@ com_zimbra_erp_mail_connector_HandlerObject.constructor = com_zimbra_erp_mail_co
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON2_ID="send_and_push";
 
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON3_ID="push_to_erp";
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = function(app, toolbar, controller,view) {
 	var patt="COMPOSE";
 	// only add this button for the following 3 views
@@ -267,7 +268,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._handleResetClick=function
 com_zimbra_erp_mail_connector_HandlerObject.prototype._yesBtnListener=function(){
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/clearConfig.jsp";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
-	document.getElementById("com_zimbra_erp_mail_connector_urladdress").innerHTML="";	
+	document.getElementById("com_zimbra_erp_mail_connector_urladdress").innerHTML="";
 	this._dialog.popdown();
 	erpConnector.port = "";
 	erpConnector.urladdress = "";
@@ -296,9 +297,10 @@ function erpConnector_TabDialog(parent,title, view) {
 };
 
 erpConnector_TabDialog.prototype = new ZmDialog;
+
 erpConnector_TabDialog.prototype.constructor = erpConnector_TabDialog;
 
-com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop =function(droppedItem) {
+com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop = function(droppedItem) {
 	var ids = [];
 	this.msgids=[];
 	this.msgtype=[];
@@ -383,9 +385,11 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 		}
 	}
 };
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype.trim=function(data){
 	return data.replace(/^\s+|\s+$/g,""); 
 }
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_text = function(text) {
     var a = appCtxt.getMsgDialog();
     a.setMessage(text,DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
