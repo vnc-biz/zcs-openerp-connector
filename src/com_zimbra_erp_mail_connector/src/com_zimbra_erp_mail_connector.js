@@ -21,8 +21,11 @@ function com_zimbra_erp_mail_connector_HandlerObject() {
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype= new ZmZimletBase;
+
 com_zimbra_erp_mail_connector_HandlerObject.constructor = com_zimbra_erp_mail_connector_HandlerObject;
+
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON2_ID="send_and_push";
+
 com_zimbra_erp_mail_connector_HandlerObject.BUTTON3_ID="push_to_erp";
 com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = function(app, toolbar, controller,view) {
 	var patt="COMPOSE";
@@ -335,8 +338,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop =function(droppedIt
 	}
 };
 
-	/** Conversation Mails Detail...**/
-
+/** Conversation Mails Detail...**/
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=function(convSrcObj) {
 	try{
 		this.msgids.push(convSrcObj.msgIds[0]);

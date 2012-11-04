@@ -64,7 +64,6 @@ com_zimbra_erp_mail_connector_DocSettings.checkAll = function(){
 com_zimbra_erp_mail_connector_DocSettings.prototype._createHTML = function() {
 	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.documentList#docList");
 };
-/*....Record will be verified with OpenERP and add....*/
 
 com_zimbra_erp_mail_connector_DocSettings.prototype.addRecord = function() {
 	var title=document.getElementById("erpConnector_document_title").value;
