@@ -23,6 +23,11 @@ import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcStruct;
 import org.apache.commons.codec.binary.Base64;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Connector {
 	UserPrefs prefs;
@@ -197,6 +202,25 @@ public class Connector {
 			_err("getDocumentList() failed", ex);
 			return "Exception";
 		}
+	}
+	//get mail data
+	public String getMailData(String msg_id, String urlprefix, String authToken)
+	throws IOException, UnsupportedEncodingException {
+		URL row = new URL(urlprefix+"service/home/~/?auth=qp&id="+URLEncoder.encode(msg_id,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8"));
+		_info("sendMail(): url: "+row.toString());
+		HttpURLConnection connection = (HttpURLConnection)row.openConnection();
+		connection.connect();
+		InputStream stream = connection.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream,"UTF-8"));
+		StringBuffer rowstrbuffer=new StringBuffer();
+		String str = "";
+		while((str = br.readLine()) != null) {
+			rowstrbuffer.append(str);
+			rowstrbuffer.append('\n');
+		}
+		connection.disconnect();
+		stream.close();
+		return new String(rowstrbuffer);
 	}
 
 	/*Gel Email Information from */
