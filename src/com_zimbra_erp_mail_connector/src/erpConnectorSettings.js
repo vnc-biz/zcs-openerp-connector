@@ -118,6 +118,7 @@ erpConnectorSettings.prototype._getDatabase = function(){
 		document.getElementById("erpConnector_port").focus();
 		return;
 	}
+	var proto = "http://";
 	var pro=urladdress.match("^https");
 	if(pro != null && pro == "https"){
 		proto="https://"
@@ -217,6 +218,7 @@ erpConnectorSettings.prototype.checkConnection = function(){
 		document.getElementById("erpConnector_userpassword").focus();
 		return;
 	}
+	var proto = "http://";
 	var pro=url.match("^https");
 	if(pro != null && pro == "https"){
 		proto="https://"
