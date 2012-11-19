@@ -164,7 +164,7 @@ select
 
 .com_zimbra_erp_mail_connector_marginIE
 {
-	padding-left:12%;
+	margin-left:12%;
 	margin-left:8%\9;	/* IE8/IE9 hack */
 	margin-top:3%;
 }
@@ -239,7 +239,6 @@ select
 
 .com_zimbra_erp_mail_connector_fieldHeight
 {
-	border:1px solid;
 	height:47%;
 	height:45%\9;		/* IE8/IE9 hack */
 }
@@ -251,7 +250,7 @@ select
 
 .com_zimbra_erp_mail_connector_alignBtn
 {
-	padding-left:0;
+	padding-left:7%;
 	margin-top:5%;
 	margin-top:1%\9;	/* IE8/IE9 hack */
 }
