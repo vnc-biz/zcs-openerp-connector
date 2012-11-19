@@ -3,7 +3,7 @@ package biz.vnc.zimbra.openerp_zimlet;
 import biz.vnc.zimbra.util.ZLog;
 import biz.vnc.zimbra.util.JSPUtil;
 import com.csvreader.CsvWriter;
-import com.google.gson.Gson;
+import com.google.gson22.Gson;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -21,6 +21,11 @@ import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcStruct;
 import org.apache.commons.codec.binary.Base64;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Connector {
 	ArrayList<Object> list;
@@ -239,6 +244,25 @@ public class Connector {
 			return "Exception";
 		}
 	}
+	//get mail data
+	public String getMailData(String msg_id, String urlprefix, String authToken)
+	throws IOException, UnsupportedEncodingException {
+		URL row = new URL(urlprefix+"service/home/~/?auth=qp&id="+URLEncoder.encode(msg_id,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8"));
+		_info("sendMail(): url: "+row.toString());
+		HttpURLConnection connection = (HttpURLConnection)row.openConnection();
+		connection.connect();
+		InputStream stream = connection.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream,"UTF-8"));
+		StringBuffer rowstrbuffer=new StringBuffer();
+		String str = "";
+		while((str = br.readLine()) != null) {
+			rowstrbuffer.append(str);
+			rowstrbuffer.append('\n');
+		}
+		connection.disconnect();
+		stream.close();
+		return new String(rowstrbuffer);
+	}
 
 	/*Gel Email Information from */
 	public String sendMail(String msg_id,String urlprefix,String push_id,String authToken) {
@@ -246,23 +270,7 @@ public class Connector {
 		try {
 			String msgID = msg_id;
 			if(msgID != null) {
-				/*Row data*/
-				_info("sendMail(): Inside msg is not null");
-				URL urlrow = new URL(urlprefix+"service/home/~/?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8"));
-				_info("sendMail(): url: "+urlrow.toString());
-				HttpURLConnection row_connection = (HttpURLConnection)urlrow.openConnection();
-				row_connection.connect();
-				InputStream rowis =row_connection.getInputStream();
-				int rowlineLength = 72;
-				StringBuffer rowstrbuffer=new StringBuffer();
-				byte[] rowbuf = new byte[rowlineLength/4*3];
-				int rowlen = 0;
-				while((rowlen = rowis.read(rowbuf)) != -1) {
-					rowstrbuffer.append(new String(rowbuf));
-					rowbuf = null;
-					rowbuf = new byte[rowlineLength/4*3];
-				}
-				String rowdata=new String(rowstrbuffer);
+				String rowdata=getMailData(msg_id, urlprefix, authToken);;
 				_info("sendMail(): raw data: "+rowdata);
 				byte[] temp = Base64.encodeBase64(rowdata.getBytes());
 				rowdata = new String(temp);
@@ -297,9 +305,6 @@ public class Connector {
 					main_vec
 				}
 				       );
-				row_connection.disconnect();
-				rowstrbuffer.delete(0,rowstrbuffer.length());
-				rowis.close();
 				try {
 					main_vec.clear();
 					mail_vec.clear();
