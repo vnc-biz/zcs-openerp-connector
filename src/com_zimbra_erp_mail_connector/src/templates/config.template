@@ -9,13 +9,13 @@
 	$>
 	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight'>
 	<legend><$=data.zimlet.getMessage("action")$></legend>
-	<table class='com_zimbra_erp_mail_connector_marginIE'>
+	<table class='erpConnector_marginIE' style='margin-left:12%;'>
 		<tr>
 			<td><$=data.zimlet.getMessage("connector_configuration_lbl_urladdress")$></td>
-			<td><input type='text' id='com_zimbra_erp_mail_connector_urladdress' value='' class='com_zimbra_erp_mail_connector_urlWidth'/></td>
-			<td style='width:8%;'><$=data.zimlet.getMessage("connector_configuration_lbl_port")$></td>
-			<td><input type='text' id='com_zimbra_erp_mail_connector_port'></td>
-			<td id='getDatabase'></td>
+			<td><input type='text' id='erpConnector_urladdress' value='' class='erpConnector_urlWidth'/></td>
+			<td><$=data.zimlet.getMessage("connector_configuration_lbl_port")$></td>
+			<td><input type='text' id='erpConnector_port'></td>
+			<td id='getDatabase' style='padding-left:2%;'></td>
 		</tr>
 		<tr>
 			<td style='width:15%'><$=data.zimlet.getMessage("connector_configuration_lbl_database")$></td>
