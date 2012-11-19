@@ -155,7 +155,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.addMenuButton = function(c
 com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = function(controller) {
 	this.mailtopush = "";
 	var con=appCtxt.getCurrentController();
-	this.mailtopush = controller.getCurrentView().getDnDSelection();
+	this.mailtopush = controller.getListView().getDnDSelection(); 
 	this.mailtopush = (this.mailtopush instanceof Array) ? this.mailtopush : [this.mailtopush];
 	var eml;
 	for ( var i = 0; i < this.mailtopush.length; i++) {
