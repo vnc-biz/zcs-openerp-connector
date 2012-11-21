@@ -185,7 +185,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	docList=this.getUserProperty("doc_list");
 	if(docList.length<=0){
 		var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"2\",\"title\":\"Address\",\"docname\":\"res.partner.address\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
-		this.setUserProperty("doc_list",doclist.trim());
+		this.setUserProperty("doc_list",this.trim(doclist));
 		this.saveUserProperties();
 	}
 	zmlt=this;
@@ -392,3 +392,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 		}
 	}
 };
+com_zimbra_erp_mail_connector_HandlerObject.prototype.trim=function(data){
+	return data.replace(/^\s+|\s+$/g,""); 
+}

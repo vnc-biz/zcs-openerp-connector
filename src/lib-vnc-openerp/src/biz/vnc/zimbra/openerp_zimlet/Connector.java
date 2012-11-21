@@ -3,7 +3,7 @@ package biz.vnc.zimbra.openerp_zimlet;
 import biz.vnc.zimbra.util.ZLog;
 import biz.vnc.zimbra.util.JSPUtil;
 import com.csvreader.CsvWriter;
-import com.google.gson.Gson;
+import com.google.gson22.Gson;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;

@@ -188,12 +188,12 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 	document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+zmlt.getResource("resources/submit_please_wait.gif")+"'/>";
 	this.documentrecord+=this.fixheading;
 	for (var j=0;j<tot_obj.length-1;j++) {
-		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentlist.jsp?emailsearch="+emailsearch.trim()+"&obj_name="+tot_obj[j];
+		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentlist.jsp?emailsearch="+this.zimlet.trim(emailsearch)+"&obj_name="+tot_obj[j];
 		var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		/*response will have documents list*/
 		if (response.success == true) {
-			if (response.text.trim().length>2 && response.text.trim()!="Exception") {
-				var docrecord=JSON.parse(response.text.trim());
+			if (this.zimlet.trim(response.text).length>2 && (this.zimlet.trim(response.text))!="Exception") {
+				var docrecord=JSON.parse(this.zimlet.trim(response.text));
 				var title;
 				dd_list=zmlt.getUserProperty("doc_list");
 				dd_json=JSON.parse(dd_list);
@@ -212,7 +212,7 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 					}
 				}
 			} else {
-				if (response.text.trim()=="Exception") {
+				if (this.zimlet.trim(response.text)=="Exception") {
 					var a = appCtxt.getMsgDialog();
 					a.setMessage(zmlt.getMessage("error_in_gettingrecords")+tot_obj[j],DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
 					a.popup();
@@ -267,8 +267,7 @@ erpConnectorPush.prototype.pushEmail = function(push_random) {
 		return 0;
 	}
 	var dbname = erpConnector.getdatabase;
-	String.prototype.ltrim=function(){return this.replace(/^\s+/,'');}
-	dbname=dbname.ltrim();
+	dbname=this.zimlet.trim(dbname);
 	var flag=0;
 	var dialogMsg=null;
 	if (this.message_type!="APPT") {
@@ -277,7 +276,7 @@ erpConnectorPush.prototype.pushEmail = function(push_random) {
 			var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/PushEmail.jsp?push_id="+this.push_id+"&msgid="+this.email_ids[i];
 			var response = AjxRpc.invoke(null,jspurl, null, null, true);
 			if (response.success==true) {
-				if(response.text.trim()=="1"){
+				if(this.zimlet.trim(response.text)=="1"){
 					var tagObj = appCtxt.getActiveAccount().trees.TAG.getByName("openERP_archived");
 					if(!tagObj)
 						return;
@@ -294,11 +293,11 @@ erpConnectorPush.prototype.pushEmail = function(push_random) {
 					var params = {asyncMode: true, callback: null, jsonObj:itemActionRequest};
 					appCtxt.getAppController().sendRequest(params);
 				} else {
-					if (response.text.trim()=="2") {
+					if (this.zimlet.trim(response.text)=="2") {
 						var a = appCtxt.getMsgDialog();
 						a.setMessage(zmlt.getMessage("reconnect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
 						a.popup();
-					} else if(response.text.trim() == "Fail"){
+					} else if(this.zimlet.trim(response.text) == "Fail"){
 						var a = appCtxt.getMsgDialog();
 						a.setMessage(zmlt.getMessage("email_archive_failed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
 						a.popup();

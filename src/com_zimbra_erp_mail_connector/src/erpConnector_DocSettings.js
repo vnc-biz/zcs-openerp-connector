@@ -31,9 +31,6 @@ function erpConnector_DocSettings(parent, zimlet){
 	this.setScrollStyle(Dwt.SCROLL);
 }
 
-String.prototype.trim = function() {
-	return this.replace(/^\s+|\s+$/g,"");
-}
 
 /*...........getRecords from zimbra proeprty...*/
 erpConnector_DocSettings.prototype.getTableRecords = function(){
@@ -80,8 +77,8 @@ erpConnector_DocSettings.prototype._createHTML = function() {
 erpConnector_DocSettings.prototype.addRecord = function() {
 	var title=document.getElementById("erpConnector_document_title").value;
 	var docname=document.getElementById("erpConnector_document_docname").value;
-	title=title.trim();
-	docname=docname.trim();
+	title=this.zimlet.trim(title);
+	docname=this.zimlet.trim(docname);
 	if(title==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_document_title_blank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));

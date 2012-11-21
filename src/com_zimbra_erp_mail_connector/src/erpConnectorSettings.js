@@ -22,10 +22,6 @@ erpConnectorSettings.prototype = new DwtTabViewPage;
 
 erpConnectorSettings.prototype.constructor = erpConnectorSettings;
 var zm;
-String.prototype.trim = function() {
-	return this.replace(/^\s+|\s+$/g,"");
-}
-
 function erpConnectorSettings(parent, zimlet,confi_btn_database){
 	this.flag = 0;
 	DwtTabViewPage.call(this,parent);
@@ -81,8 +77,8 @@ erpConnectorSettings.showpass = function(){
 erpConnectorSettings.prototype._getDatabase = function(){
 	var urladdress=document.getElementById("erpConnector_urladdress").value;
 	var port=document.getElementById("erpConnector_port").value;
-	port=port.trim();
-	urladdress=urladdress.trim();
+	port=this.zimlet.trim(port);
+	urladdress=this.zimlet.trim(urladdress);
 	if(urladdress==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
@@ -128,8 +124,8 @@ erpConnectorSettings.prototype._getDatabase = function(){
 	}	
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDatabaseRpc.jsp?urladdress="+(proto+urladdress)+"&port="+port;
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
-	if (response.success == true && response.text.trim()!="fail") {
-		var res=response.text.trim();
+	if (response.success == true && (this.zimlet.trim(response.text))!="fail") {
+		var res=this.zimlet.trim(response.text);
 		var select= document.getElementById('erpConnector_getdatabase');
 		if(res.length<=0){
 			var a = appCtxt.getMsgDialog();
@@ -159,9 +155,9 @@ erpConnectorSettings.prototype.checkConnection = function(){
 	var port=document.getElementById("erpConnector_port").value;
 	var username=document.getElementById("erpConnector_username").value;
 	var z_password=document.getElementById("erpConnector_userpassword").value;
-	port=port.trim();
-	username=username.trim();
-	url=url.trim();
+	port=this.zimlet.trim(port);
+	username=this.zimlet.trim(username);
+	url=this.zimlet.trim(url);
 	if(url==""){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
@@ -225,9 +221,9 @@ erpConnectorSettings.prototype.checkConnection = function(){
 		proto="http://"
 		url=url.substring(7);
 	}
-	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+database.trim()+"&username="+username.trim()+"&userpassword="+z_password+"&temp=tt";
+	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+this.zimlet.trim(database)+"&username="+this.zimlet.trim(username)+"&userpassword="+z_password+"&temp=tt";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
-	if(response.text.trim() == 'false'){
+	if(this.zimlet.trim(response.text) == 'false'){
 		var a = appCtxt.getMsgDialog();
 		a.setMessage(zm.getMessage("connector_configuration_userandpassword"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("error"));
 		a.popup();
