@@ -64,13 +64,7 @@ erpConnector_DocSettings.checkAll = function(){
 }
 
 erpConnector_DocSettings.prototype._createHTML = function() {
-	var i = 0;
-	var html = new Array();
-	html[i++]="<table>";
-	html[i++]="</table>";
-	html[i++]="<br>";
-	html[i++]="<div id='doc_record'></div>";
-	this.getHtmlElement().innerHTML = html.join("");
+	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.documentList#docList");
 };
 /*....Record will be verified with OpenERP and add....*/
 

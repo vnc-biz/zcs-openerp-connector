@@ -1,0 +1,6 @@
+<template id="docList">
+	<table>
+	</table>	
+	<br/>
+	<div id='doc_record'></div>
+</template>

@@ -26,6 +26,7 @@
 	<include>erpConnector_AboutPage.js</include>
 	<include>erpConnector_DocSettings.js</include>
 	<include>templates/config.template.js</include>
+	<include>templates/documentList.template.js</include>
 	<include>templates/about.template.js</include>
 	<include>erpConnector_DocSettings.js</include>
 	<includeCSS>openerp.css</includeCSS>
