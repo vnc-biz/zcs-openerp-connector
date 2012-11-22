@@ -199,6 +199,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	this.tagcreate();
 	this.msgFlag = "";
 	this.participants = "";
+	AjxPackage.require("vnc.json.json2");
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.tagcreate = function(){
