@@ -80,37 +80,27 @@ erpConnectorSettings.prototype._getDatabase = function(){
 	port=this.zimlet.trim(port);
 	urladdress=this.zimlet.trim(urladdress);
 	if(urladdress==""){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
 		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
 	if(urladdress==""){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
 		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
 	if(document.getElementById("erpConnector_urladdress").value.match(/^\s*$/)){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
 		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
 	if(port==""){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_port");
 		document.getElementById("erpConnector_port").focus();
 		return;
 	}
 	if(document.getElementById("erpConnector_port").value.match(/^\s*$/)){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_port");
 		document.getElementById("erpConnector_port").focus();
 		return;
 	}
@@ -128,9 +118,7 @@ erpConnectorSettings.prototype._getDatabase = function(){
 		var res=this.zimlet.trim(response.text);
 		var select= document.getElementById('erpConnector_getdatabase');
 		if(res.length<=0){
-			var a = appCtxt.getMsgDialog();
-			a.setMessage(zm.getMessage("connector_configuration_lbl_database_notfound"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-			a.popup();
+			this.zimlet.alert_critical_msg("connector_configuration_lbl_database_notfound");
 			document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 		}else{
 			document.getElementById("erpConnector_getdatabase").innerHTML="";
@@ -141,9 +129,7 @@ erpConnectorSettings.prototype._getDatabase = function(){
 		}
 	}
 	else{
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("time_out"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("warning"));
-		a.popup();
+		this.zimlet.alert_warning_msg("time_out");
 		document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	}
 }
@@ -159,57 +145,41 @@ erpConnectorSettings.prototype.checkConnection = function(){
 	username=this.zimlet.trim(username);
 	url=this.zimlet.trim(url);
 	if(url==""){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
 		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
 	if(document.getElementById("erpConnector_urladdress").value.match(/^\s*$/)){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_urlblank"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
 		document.getElementById("erpConnector_urladdress").focus();
 		return;
 	}
 	if(port==""){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_port");
 		document.getElementById("erpConnector_port").focus();
 		return;
 	}
 	if(document.getElementById("erpConnector_port").value.match(/^\s*$/)){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_port"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_port");
 		document.getElementById("erpConnector_port").focus();
 		return;
 	}
 	if(database=="select any database"){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_selectdatabase"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("warning"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_selectdatabase");
 		return;
 	}
 	if(username==""){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_username");
 		document.getElementById("erpConnector_username").focus();
 		return;
 	}
 	if(document.getElementById("erpConnector_username").value.match(/^\s*$/)){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_username"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_username");
 		document.getElementById("erpConnector_username").focus();
 		return;
 	}
 	if(z_password==""){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_password"),DwtMessageDialog.CRITICAL_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_password");
 		document.getElementById("erpConnector_userpassword").focus();
 		return;
 	}
@@ -224,13 +194,9 @@ erpConnectorSettings.prototype.checkConnection = function(){
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+this.zimlet.trim(database)+"&username="+this.zimlet.trim(username)+"&userpassword="+z_password+"&temp=tt";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	if(this.zimlet.trim(response.text) == 'false'){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_userandpassword"),DwtMessageDialog.WARNING_STYLE,zm.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_configuration_userandpassword");
 	}else{
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zm.getMessage("connector_configuration_lbl_conection_saved"),DwtMessageDialog.INFO_STYLE,zm.getMessage("msg"));
-		a.popup();
+		this.zimlet.alert_info_msg("connector_configuration_lbl_conection_saved");
 		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/readConfig.jsp";
 		var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		var allConfigurations = JSON.parse(response.text);

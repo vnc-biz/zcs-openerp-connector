@@ -148,15 +148,11 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 		}
 	}
 	if (record_check.length==0) {
-		var ab = appCtxt.getMsgDialog();
-		ab.setMessage(zmlt.getMessage("no_document_added"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
-		ab.popup();
+		this.zimlet.alert_warning_msg("no_document_added");
 		return;
 	}
 	if (flg==0) {
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zmlt.getMessage("connector_pushopenerp_moduleselect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
-		a.popup();
+		this.zimlet.alert_warning_msg("connector_pushopenerp_moduleselect");
 		return;
 	}
 	var radiofill=document.getElementsByName("document_name"+this.push_random+"");
@@ -177,9 +173,7 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 	var port = erpConnector.port;
 	var emailsearch=document.getElementById("mailsearch"+this.push_random+"").value;
 	if(dbname=="" || urladdress=="" || port=="" ){
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zmlt.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_pushopenerp_checkconection");
 		document.getElementById("document_name"+this.push_random+"").innerHTML=""+this.fixheading;
 		document.getElementById("mailsearch"+this.push_random+"").focus();
 		return;
@@ -213,15 +207,11 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 				}
 			} else {
 				if (this.zimlet.trim(response.text)=="Exception") {
-					var a = appCtxt.getMsgDialog();
-					a.setMessage(zmlt.getMessage("error_in_gettingrecords")+tot_obj[j],DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
-					a.popup();
+					this.zimlet.alert_critical_text(this.zimlet.getMessage("error_in_gettingrecords")+tot_obj[j]);
 				}
 			}
 		} else {
-			var a = appCtxt.getMsgDialog();
-			a.setMessage(zmlt.getMessage("connector_pushopenerp_responseproblem"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
-			a.popup();
+			this.zimlet.alert_warning_msg("connector_pushopenerp_responseproblem");
 			document.getElementById("document_name"+this.push_random+"").innerHTML=""+this.fixheading;
 			document.getElementById("wait"+this.push_random+"").innerHTML="";
 			return;
@@ -245,9 +235,7 @@ erpConnectorPush.prototype.pushEmail = function(push_random) {
 	var port =erpConnector.port;
 
 	if (dbname=="" || urladdress=="" || port=="" ) {
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zmlt.getMessage("connector_pushopenerp_checkconection"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
-		a.popup();
+		this.zimlet.alert_critical_msg("connector_pushopenerp_checkconection");
 		document.getElementById("document_name"+this.push_random+"").innerHTML=""+this.fixheading;
 		document.getElementById("mailsearch"+this.push_random+"").focus();
 		return;
@@ -261,9 +249,7 @@ erpConnectorPush.prototype.pushEmail = function(push_random) {
 		}
 	}
 	if (flag==1) {
-		var a = appCtxt.getMsgDialog();
-		a.setMessage(zmlt.getMessage("connector_pushopenerp_sel_name"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
-		a.popup();
+		this.zimlet.alert_warning_msg("connector_pushopenerp_sel_name");
 		return 0;
 	}
 	var dbname = erpConnector.getdatabase;
@@ -294,27 +280,19 @@ erpConnectorPush.prototype.pushEmail = function(push_random) {
 					appCtxt.getAppController().sendRequest(params);
 				} else {
 					if (this.zimlet.trim(response.text)=="2") {
-						var a = appCtxt.getMsgDialog();
-						a.setMessage(zmlt.getMessage("reconnect"),DwtMessageDialog.WARNING_STYLE,zmlt.getMessage("warning"));
-						a.popup();
+						 this.zimlet.alert_warning_msg("reconnect");
 					} else if(this.zimlet.trim(response.text) == "Fail"){
-						var a = appCtxt.getMsgDialog();
-						a.setMessage(zmlt.getMessage("email_archive_failed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
-						a.popup();
+						this.zimlet.alert_critical_msg("email_archive_failed");
 						flag=1;
 					}else{
-						var a = appCtxt.getMsgDialog();
-						a.setMessage(zmlt.getMessage("duplicate_mail_not_allowed"),DwtMessageDialog.CRITICAL_STYLE,zmlt.getMessage("error"));
-						a.popup();
+						this.zimlet.alert_critical_msg("duplicate_mail_not_allowed");
 						flag=1;
 					}
 				}
 			}
 		}
 		if (flag!=1) {
-			var a = appCtxt.getMsgDialog();
-			a.setMessage(zmlt.getMessage("connector_pushopenerp_process_success"),DwtMessageDialog.INFO_STYLE,zmlt.getMessage("msg"));
-			a.popup();
+			this.zimlet.alert_info_msg("connector_pushopenerp_process_success");
 		}
 		document.getElementById("wait"+this.push_random+"").innerHTML="";
 	}
