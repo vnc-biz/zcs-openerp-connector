@@ -237,9 +237,9 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	var document_unsuccess_blank=this.getMessage("connector_document_unsuccess_blank");
 	var view = new DwtComposite(appCtxt.getShell());
 	this.tabView = new DwtTabView(view,"SideStepTabView");
-	this.about_setting= new erpConnector_AboutPage(this.tabView,this);
-	this.configuration_setting = new erpConnectorSettings(this.tabView,this,confi_btn_database);
-	this.document_setting= new erpConnector_DocSettings(this.tabView,this);
+	this.about_setting= new com_zimbra_erp_mail_connector_AboutPage(this.tabView,this);
+	this.configuration_setting = new com_zimbra_erp_mail_connector_Settings(this.tabView,this,confi_btn_database);
+	this.document_setting= new com_zimbra_erp_mail_connector_DocSettings(this.tabView,this);
 	view.setSize("550px", "335px");
 	this.tabView.setSize("550px", "345px");
 	this.tabkeys = [];
@@ -334,7 +334,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop =function(droppedIt
 		this.alert_critical("mail_push_exception");
 	}
 	if(obj.type != "APPT") {
-		new erpConnectorPush(this,this.msgids,this.mail_from[0],this.msgtype);
+		new com_zimbra_erp_mail_connector_Push(this,this.msgids,this.mail_from[0],this.msgtype);
 	}
 };
 

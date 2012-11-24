@@ -17,12 +17,12 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################*/
-erpConnector_DocSettings.prototype = new DwtTabViewPage;
-erpConnector_DocSettings.prototype.constructor = erpConnector_DocSettings;
+com_zimbra_erp_mail_connector_DocSettings.prototype = new DwtTabViewPage;
+com_zimbra_erp_mail_connector_DocSettings.prototype.constructor = com_zimbra_erp_mail_connector_DocSettings;
 var zm;
 
 /*...Constructor....*/
-function erpConnector_DocSettings(parent, zimlet){
+function com_zimbra_erp_mail_connector_DocSettings(parent, zimlet){
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	zm=this.zimlet;
@@ -33,16 +33,16 @@ function erpConnector_DocSettings(parent, zimlet){
 
 
 /*...........getRecords from zimbra proeprty...*/
-erpConnector_DocSettings.prototype.getTableRecords = function(){
+com_zimbra_erp_mail_connector_DocSettings.prototype.getTableRecords = function(){
 	var data=zm.getUserProperty("doc_list");
 	var elJson =JSON.parse(data);
 	var records=elJson.records;
-	var s="<table class='erpConnector_gridtable' align='right'><tr><td class='erpConnector_doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='erpConnector_DocSettings.checkAll()' class='erpConnector_doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
+	var s="<table class='com_zimbra_erp_mail_connector_gridtable' align='right'><tr><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='com_zimbra_erp_mail_connector_DocSettings.checkAll()' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
 	for(var i=0;i<records.length;i++){
 		if(i%2==0){
-			s+="<tr class='d0'><td class='erpConnector_doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='erpConnector_doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
+			s+="<tr class='d0'><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
 		}else{
-			s+="<tr class='d1'><td class='erpConnector_doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='erpConnector_doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
+			s+="<tr class='d1'><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
 		}
 	}
 	s+="</table>";
@@ -50,7 +50,7 @@ erpConnector_DocSettings.prototype.getTableRecords = function(){
 }
 
 /*...........Check whether "ALL" chkbox is selected ...*/
-erpConnector_DocSettings.checkAll = function(){
+com_zimbra_erp_mail_connector_DocSettings.checkAll = function(){
 	var record_id=document.getElementsByName("record_id");
 	if (document.getElementById("selectall").checked) {
 		for(var i=0;i<record_id.length;i++){
@@ -63,12 +63,12 @@ erpConnector_DocSettings.checkAll = function(){
 	}
 }
 
-erpConnector_DocSettings.prototype._createHTML = function() {
+com_zimbra_erp_mail_connector_DocSettings.prototype._createHTML = function() {
 	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.documentList#docList");
 };
 /*....Record will be verified with OpenERP and add....*/
 
-erpConnector_DocSettings.prototype.addRecord = function() {
+com_zimbra_erp_mail_connector_DocSettings.prototype.addRecord = function() {
 	var title=document.getElementById("erpConnector_document_title").value;
 	var docname=document.getElementById("erpConnector_document_docname").value;
 	title=this.zimlet.trim(title);
@@ -137,7 +137,7 @@ erpConnector_DocSettings.prototype.addRecord = function() {
 	document.getElementById("erpConnector_document_docname").value="";
 }
 
-erpConnector_DocSettings.prototype.deleteRecord = function(){
+com_zimbra_erp_mail_connector_DocSettings.prototype.deleteRecord = function(){
 	var record_id=document.getElementsByName("record_id");
 	var param="";
 	var flg=0;

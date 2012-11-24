@@ -18,7 +18,7 @@
 #
 ##############################################################################*/
 var zmlt;
-erpConnectorPush=function(zimlet,msgids,push_from,msgtype){
+com_zimbra_erp_mail_connector_Push=function(zimlet,msgids,push_from,msgtype){
 	this.zimlet=zimlet;
 	this.documentrecord="";
 	this.push_id = "";
@@ -35,19 +35,19 @@ erpConnectorPush=function(zimlet,msgids,push_from,msgtype){
 	this._displayDailog();
 };
 
-erpConnectorPush.prototype=new ZmZimletBase;
-erpConnectorPush.prototype.constructor = erpConnectorPush;
+com_zimbra_erp_mail_connector_Push.prototype=new ZmZimletBase;
+com_zimbra_erp_mail_connector_Push.prototype.constructor = com_zimbra_erp_mail_connector_Push;
 /*Display dilogbox when Email will be pushed on zimlet*/
 
-erpConnectorPush.prototype._displayDailog = function() { 
+com_zimbra_erp_mail_connector_Push.prototype._displayDailog = function() { 
 	var searchDocBtn = new DwtButton({parent:appCtxt.getShell()});
 	searchDocBtn.setText(this.zimlet.getMessage("connector_pushopener_.search"));
-	searchDocBtn.setImage("getDB");
+	searchDocBtn.setImage("com_zimbra_erp_mail_connector_getDB");
 	searchDocBtn.addSelectionListener(new AjxListener(this,this.getDocumentRecord));
 
 	var pushMailBtn = new DwtButton({parent:appCtxt.getShell()});
 	pushMailBtn.setText(this.zimlet.getMessage("push_button"));
-	pushMailBtn.setImage("PushMail");
+	pushMailBtn.setImage("com_zimbra_erp_mail_connector_PushMail");
 	pushMailBtn.addSelectionListener(new AjxListener(this,this.pushEmail,[this.push_random,false]));
 
 	var dialogtitle=this.zimlet.getMessage("connector_create_pushtoopenerp_title");
@@ -71,13 +71,13 @@ erpConnectorPush.prototype._displayDailog = function() {
 }
 
 /*Retrives all records stored from add document*/
-erpConnectorPush.prototype.getRecords = function() {
+com_zimbra_erp_mail_connector_Push.prototype.getRecords = function() {
 	var dl_list=zmlt.getUserProperty("doc_list");
 	var elJson =JSON.parse(dl_list);
 	var records=elJson.records;
 	var s="";
 	s+="<table style='width:98%;'><tr><td style='width:33%;'>"
-	s+="<input type='checkbox' id='sel"+this.push_random+"' name='sel"+this.push_random+"' onclick='erpConnectorPush.checkdAll("+this.push_random+")' />All";
+	s+="<input type='checkbox' id='sel"+this.push_random+"' name='sel"+this.push_random+"' onclick='com_zimbra_erp_mail_connector_Push.checkdAll("+this.push_random+")' />All";
 	document.getElementById("push_documents"+this.push_random).innerHTML=s;
 	s+="</td>";
 	var j=0;
@@ -85,14 +85,14 @@ erpConnectorPush.prototype.getRecords = function() {
 		j=j+1;
 		if (i==0) {
 			s+="<td style='width:33%;'>";
-			s+="<input type='checkbox' id='records"+this.push_random+"' name='records"+this.push_random+"' value='"+records[i].docname+"' onclick='erpConnectorPush.AllCheckbox("+this.push_random+")' checked/>"+records[i].title;
+			s+="<input type='checkbox' id='records"+this.push_random+"' name='records"+this.push_random+"' value='"+records[i].docname+"' onclick='com_zimbra_erp_mail_connector_Push.AllCheckbox("+this.push_random+")' checked/>"+records[i].title;
 			s+="</td>"
 		} else {
 			if (j%3==0) {
 				s+="</tr><tr>"
 			}
 			s+="<td style='width:32%;'>"
-			s+="<input type='checkbox' id='records"+this.push_random+"' name='records"+this.push_random+"' value='"+records[i].docname+"' onclick='erpConnectorPush.AllCheckbox("+this.push_random+")'/>"+records[i].title;
+			s+="<input type='checkbox' id='records"+this.push_random+"' name='records"+this.push_random+"' value='"+records[i].docname+"' onclick='com_zimbra_erp_mail_connector_Push.AllCheckbox("+this.push_random+")'/>"+records[i].title;
 			s+="</td>"
 		}
 	}
@@ -101,7 +101,7 @@ erpConnectorPush.prototype.getRecords = function() {
 }
 
 /*Check if "Select All" checkbox is checked*/
-erpConnectorPush.AllCheckbox = function(ran) {
+com_zimbra_erp_mail_connector_Push.AllCheckbox = function(ran) {
 	record_all=document.getElementsByName("records"+ran+"");
 	var count=0;
 	for(var i=0;i<record_all.length;i++){
@@ -117,7 +117,7 @@ erpConnectorPush.AllCheckbox = function(ran) {
 }
 
 /*Will select all documents*/
-erpConnectorPush.checkdAll = function(ran) {
+com_zimbra_erp_mail_connector_Push.checkdAll = function(ran) {
 	record=document.getElementsByName("records"+ran+"");
 	if (document.getElementById("sel"+ran+"").checked) {
 		for (var i=0;i<record.length;i++) {
@@ -131,14 +131,14 @@ erpConnectorPush.checkdAll = function(ran) {
 }
 
 /*Create a dialog view for push Email*/
-erpConnectorPush.prototype._createDialogView = function() {
+com_zimbra_erp_mail_connector_Push.prototype._createDialogView = function() {
 	var data={"zimlet":this.zimlet,random:this.push_random};
 	var html = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.push#pushEmail",data);	
 	return html;
 };
 
 /*Provede All users name from Open ERP*/
-erpConnectorPush.prototype.getDocumentRecord = function() {
+com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 	this.documentrecord = "";
 	record_check=document.getElementsByName("records"+this.push_random+"");
 	var flg=0;
@@ -224,12 +224,12 @@ erpConnectorPush.prototype.getDocumentRecord = function() {
 	document.getElementById("wait"+this.push_random+"").innerHTML="";
 }
 
-erpConnectorPush.prototype._dismissBtnListener= function() {
+com_zimbra_erp_mail_connector_Push.prototype._dismissBtnListener= function() {
 	this.pbDialog.popdown();
 }
 
 /*Ajax call with all mail details to push Email*/
-erpConnectorPush.prototype.pushEmail = function(push_random) {
+com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random) {
 	var dbname = erpConnector.getdatabase;
 	var urladdress = erpConnector.urladdress;
 	var port =erpConnector.port;

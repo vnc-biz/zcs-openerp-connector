@@ -20,16 +20,16 @@
 
 /* This file contains about information */
 
-erpConnector_AboutPage.prototype = new DwtTabViewPage;
+com_zimbra_erp_mail_connector_AboutPage.prototype = new DwtTabViewPage;
 
-erpConnector_AboutPage.prototype.constructor = erpConnector_AboutPage;
-function erpConnector_AboutPage(parent, zimlet){
+com_zimbra_erp_mail_connector_AboutPage.prototype.constructor = com_zimbra_erp_mail_connector_AboutPage;
+function com_zimbra_erp_mail_connector_AboutPage(parent, zimlet){
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	this._createHTML();
 }
 
-erpConnector_AboutPage.prototype._createHTML = function() {
+com_zimbra_erp_mail_connector_AboutPage.prototype._createHTML = function() {
 	var data = {"zmlt":this.zimlet}
 	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.about#about",data); 
 }

@@ -4,35 +4,35 @@
 		if (navigator.userAgent.indexOf('Chrome')>-1) {
 			btn = "<div id='connect_database' style = 'margin-left:210px;'></div>";
 		} else {
-			btn = "<div id='connect_database' class = 'erpConnector_config_btn1'></div>";
+			btn = "<div id='connect_database' class = 'com_zimbra_erp_mail_connector_config_btn1'></div>";
 		}
 	$>
-	<fieldset class='erpConnector_fieldHeight'>
+	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight'>
 	<legend><$=data.zimlet.getMessage("action")$></legend>
-	<table class='erpConnector_marginIE'>
+	<table class='com_zimbra_erp_mail_connector_marginIE'>
 		<tr>
 			<td><$=data.zimlet.getMessage("connector_configuration_lbl_urladdress")$></td>
-			<td><input type='text' id='erpConnector_urladdress' value='' class='erpConnector_urlWidth'/></td>
+			<td><input type='text' id='com_zimbra_erp_mail_connector_urladdress' value='' class='com_zimbra_erp_mail_connector_urlWidth'/></td>
 			<td><$=data.zimlet.getMessage("connector_configuration_lbl_port")$></td>
-			<td><input type='text' id='erpConnector_port'></td>
+			<td><input type='text' id='com_zimbra_erp_mail_connector_port'></td>
 			<td id='getDatabase'></td>
 		</tr>
 		<tr>
 			<td><$=data.zimlet.getMessage("connector_configuration_lbl_database")$></td>
-			<td><select id='erpConnector_getdatabase' style='width:145px;'></select></td>
+			<td><select id='com_zimbra_erp_mail_connector_getdatabase' style='width:145px;'></select></td>
 		</tr>
 	</table>
 	</fieldset>
-	<fieldset class='erpConnector_fieldHeight'>
-		<table class='erpConnector_marginLogin'>
+	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight'>
+		<table class='com_zimbra_erp_mail_connector_marginLogin'>
 			<tr>
 				<td><$=data.zimlet.getMessage("connector_configuration_lbl_username")$></td>
-				<td class='voz_text_width'><input type='text' id='erpConnector_username' class='erpConnector_textWidth'/></td>
+				<td class='voz_text_width'><input type='text' id='com_zimbra_erp_mail_connector_username' class='com_zimbra_erp_mail_connector_textWidth'/></td>
 			</tr>
 			<tr>
 				<td><$=data.zimlet.getMessage("connector_configuration_lbl_password")$></td>
-				<td><input type='password' id='erpConnector_userpassword' class='erpConnector_textWidth'/></td>
-				<td class='erpConnector_showpass'><div><div style='float:left'><input type='checkbox' id='passchk' onclick='erpConnectorSettings.showpass()'/></div><div class='erpConnector_showpassLabel'><$=data.zimlet.getMessage("show_password")$></div></div></td>
+				<td><input type='password' id='com_zimbra_erp_mail_connector_userpassword' class='com_zimbra_erp_mail_connector_textWidth'/></td>
+				<td class='com_zimbra_erp_mail_connector_showpass'><div><div style='float:left'><input type='checkbox' id='passchk' onclick='com_zimbra_erp_mail_connector_Settings.showpass()'/></div><div class='com_zimbra_erp_mail_connector_showpassLabel'><$=data.zimlet.getMessage("show_password")$></div></div></td>
 			</tr>
 		</table>
 		<table>

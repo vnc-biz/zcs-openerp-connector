@@ -17,7 +17,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 ##############################################################################*/
-table.erpConnector_gridtable
+table.com_zimbra_erp_mail_connector_gridtable
 {
 	font-family:verdana,arial,sans-serif;
 	font-size:12px;
@@ -28,7 +28,7 @@ table.erpConnector_gridtable
 	width:100%;
 }
 
-table.erpConnector_gridtable th
+table.com_zimbra_erp_mail_connector_gridtable th
 {
 	border-width:1px;
 	padding:8px;
@@ -37,7 +37,7 @@ table.erpConnector_gridtable th
 	background-color:#dedede;
 }
 
-table.erpConnector_gridtable td
+table.com_zimbra_erp_mail_connector_gridtable td
 {
 	border-width:1px;
 	padding:4px;
@@ -46,17 +46,17 @@ table.erpConnector_gridtable td
 	background-color:#ffffff;
 }
 
-table.erpConnector_gridtable tr.d0 td
+table.com_zimbra_erp_mail_connector_gridtable tr.d0 td
 {
 	background-color:#EBEBEB;
 }
 
-table.erpConnector_gridtable tr.d1 td
+table.com_zimbra_erp_mail_connector_gridtable tr.d1 td
 {
 	background-color:#FEFEF2;
 }
 
-#erpConnector_urladdress
+#com_zimbra_erp_mail_connector_urladdress
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -64,7 +64,7 @@ table.erpConnector_gridtable tr.d1 td
 	margin-top:5px;
 }
 
-#erpConnector_port
+#com_zimbra_erp_mail_connector_port
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -73,7 +73,7 @@ table.erpConnector_gridtable tr.d1 td
 	width:50px;
 }
 
-#erpConnector_username
+#com_zimbra_erp_mail_connector_username
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -81,7 +81,7 @@ table.erpConnector_gridtable tr.d1 td
 	margin-top:7px;
 }
 
-#erpConnector_userpassword
+#com_zimbra_erp_mail_connector_userpassword
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -89,7 +89,7 @@ table.erpConnector_gridtable tr.d1 td
 	margin-top:5px;
 }
 
-#erpConnector_document_title
+#com_zimbra_erp_mail_connector_document_title
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -97,7 +97,7 @@ table.erpConnector_gridtable tr.d1 td
 	margin-top:5px;
 }
 
-#erpConnector_document_docname
+#com_zimbra_erp_mail_connector_document_docname
 {
 	font-family:Times New Roman;
 	font-size:12px;
@@ -121,12 +121,12 @@ select
 	margin-top:5px;
 }
 
-.erpConnector_about_logo
+.com_zimbra_erp_mail_connector_about_logo
 {
 	margin-top:20px;
 }
 
-.ImgSideStep-about
+.Imgcom_zimbra_erp_mail_connector_SideStep-about
 {
 	background:url(resources/about.png) no-repeat 0 0;
 	width:25px;
@@ -134,7 +134,7 @@ select
 	overflow:hidden;
 }
 
-.ImgSideStep-configuration
+.Imgcom_zimbra_erp_mail_connector_SideStep-configuration
 {
 	background:url(resources/configuration.png) no-repeat 0 0;
 	width:20px;
@@ -142,41 +142,41 @@ select
 	overflow:hidden;
 }
 
-.ImgSideStep-document
+.Imgcom_zimbra_erp_mail_connector_SideStep-document
 {
 	background:url(resources/document.png) no-repeat 0 0;
 	width:20px;
 	height:16px;
 }
 
-.ImgCalSync
+.Imgcom_zimbra_erp_mail_connector_CalSync
 {
 	background:url(resources/OpenERP.png) no-repeat 0 0;
 	width:16px;
 	height:16px;
 }
 
-#erpConnector_getdatabase
+#com_zimbra_erp_mail_connector_getdatabase
 {
 	font-family:Times New Roman;
 	font-size:12px;
 }
 
-.erpConnector_marginIE
+.com_zimbra_erp_mail_connector_marginIE
 {
 	padding-left:12%;
 	margin-left:8%\9;	/* IE8/IE9 hack */
 	margin-top:3%;
 }
 
-.erpConnector_marginLogin
+.com_zimbra_erp_mail_connector_marginLogin
 {
 	margin-left:12%;
 	margin-top:3%;
 	margin-left:8%\9	/* IE8/IE9 hack */
 }
 
-.erpConnector_btn_search
+.com_zimbra_erp_mail_connector_btn_search
 {
 	padding-left:3px;
 	margin-left:56px;
@@ -184,42 +184,42 @@ select
 	padding-left:0px\9;	/* IE8/IE9 hack */
 }
 
-.erpConnector_txt_from
+.com_zimbra_erp_mail_connector_txt_from
 {
 	width:135%;
 	width:200px\9;		/* IE8/IE9 hack */
 }
 
-.erpConnector_document_div
+.com_zimbra_erp_mail_connector_document_div
 {
 	height:5%;
 	padding-bottom:5px\9;	/* IE8/IE9 hack */
 }
 
-.erpConnector_doc_setng_chkbx
+.com_zimbra_erp_mail_connector_doc_setng_chkbx
 {
 	width:10%;
 	width:50px\9;		/* IE8/IE9 hack */
 }
 
-.erpConnector_doc_setng_chkbx2
+.com_zimbra_erp_mail_connector_doc_setng_chkbx2
 {
 	margin-left:31%;
 	margin-left:20%\9;	/* IE8/IE9 hack */
 }
 
-.Imgopen_erp
+.Imgcom_zimbra_erp_mail_connector_open_erp
 {
 	background:url(resources/OpenERP.png) no-repeat 0 0;
 }
 
-.erpConnector_config_btn
+.com_zimbra_erp_mail_connector_config_btn
 {
 	padding-left:0;
 	margin-left:62%;
 }
 
-.erpConnector_config_btn1
+.com_zimbra_erp_mail_connector_config_btn1
 {
 	padding-left:0;
 	margin-left:76%;
@@ -227,46 +227,46 @@ select
 	-webkit-margin-left:60%;
 }
 
-.erpConnector_config_btnIE
+.com_zimbra_erp_mail_connector_config_btnIE
 {
 	padding-left:45%\9;	/* IE8/IE9 hack */
 }
 
-.erpConnector_textWidth
+.com_zimbra_erp_mail_connector_textWidth
 {
 	width:100%;
 }
 
-.erpConnector_fieldHeight
+.com_zimbra_erp_mail_connector_fieldHeight
 {
 	height:47%;
 	height:45%\9;		/* IE8/IE9 hack */
 }
 
-.erpConnector_urlWidth
+.com_zimbra_erp_mail_connector_urlWidth
 {
 	width:100%;
 }
 
-.erpConnector_alignBtn
+.com_zimbra_erp_mail_connector_alignBtn
 {
 	padding-left:0;
 	margin-top:5%;
 	margin-top:1%\9;	/* IE8/IE9 hack */
 }
 
-.erpConnector_showpassLabel
+.com_zimbra_erp_mail_connector_showpassLabel
 {
 	float:left;
 	padding-top:4px;
 }
 
-.erpConnector_m_save
+.com_zimbra_erp_mail_connector_m_save
 {
 	width:100%;
 }
 
-.erpConnector_m_save_button
+.com_zimbra_erp_mail_connector_m_save_button
 {
 	margin-left:0;
 	width:27%;
@@ -281,17 +281,17 @@ select
 	background:none repeat scroll 0 0 #C3CCD3;
 }
 
-.erpConnector_call_action
+.com_zimbra_erp_mail_connector_call_action
 {
 	width:88%;
 }
 
-#erpConnector_emailReminder_datefield
+#com_zimbra_erp_mail_connector_emailReminder_datefield
 {
 	height:24px;
 }
 
-.ImggetDB
+.Imgcom_zimbra_erp_mail_connector_getDB
 {
 	background:url(resources/get_database.png) no-repeat scroll 0 0;
 	height:16px!important;
@@ -299,7 +299,7 @@ select
 	width:16px!important;
 }
 
-.ImgConnectDB
+.Imgcom_zimbra_erp_mail_connector_ConnectDB
 {
 	background:url(resources/connect.png) no-repeat scroll 0 0;
 	height:16px!important;
@@ -307,7 +307,7 @@ select
 	width:16px!important;
 }
 
-.Imgschedulecall
+.Imgcom_zimbra_erp_mail_connector_schedulecall
 {
 	background:url(resources/call.png) no-repeat scroll 0 0;
 	height:16px!important;
@@ -315,13 +315,13 @@ select
 	width:16px!important;
 }
 
-.erpConnector_scheduleCallBtn
+.com_zimbra_erp_mail_connector_scheduleCallBtn
 {
 	width:100%;
 	cursor:pointer;
 }
 
-.Imgschedulemeeting
+.Imgcom_zimbra_erp_mail_connector_schedulemeeting
 {
 	background:url(resources/meeting.png) no-repeat scroll 0 0;
 	height:16px!important;
@@ -329,7 +329,7 @@ select
 	width:16px!important;
 }
 
-.ImgPushMail
+.Imgcom_zimbra_erp_mail_connector_PushMail
 {
 	background:url(resources/push.png) no-repeat scroll 0 0;
 	height:16px!important;
@@ -342,12 +342,12 @@ select
 	width:62%;
 }
 
-.voz_lincense
+.com_zimbra_erp_mail_connector_lincense
 {
 	margin-left:30%;
 }
 
-.voz_lincense2
+.com_zimbra_erp_mail_connector_lincense2
 {
 	margin-left:24%;
 }

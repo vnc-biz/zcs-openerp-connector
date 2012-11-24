@@ -21,10 +21,10 @@
 -->
 <zimlet name="@ZIMLET_NAME@" version="@ZIMLET_VERSION@" label="${msg.connector_panel_lbl}" description="$(msg.zimlet_description)">
 	<include>com_zimbra_erp_mail_connector.js</include>
-	<include>erpConnectorSettings.js</include>
-	<include>erpConnectorPush.js</include>
-	<include>erpConnector_AboutPage.js</include>
-	<include>erpConnector_DocSettings.js</include>
+	<include>com_zimbra_erp_mail_connector_Settings.js</include>
+	<include>com_zimbra_erp_mail_connector_Push.js</include>
+	<include>com_zimbra_erp_mail_connector_AboutPage.js</include>
+	<include>com_zimbra_erp_mail_connector_DocSettings.js</include>
 	<include>templates/config.template.js</include>
 	<include>templates/documentList.template.js</include>
 	<include>templates/about.template.js</include>
@@ -39,7 +39,7 @@
 	<resource>OpenERP.png</resource>
 	<include>templates/push.template.js</include>
 	<handlerObject>com_zimbra_erp_mail_connector_HandlerObject</handlerObject>
-	<zimletPanelItem label="${msg.connector_panel_lbl}" icon="CalSync">
+	<zimletPanelItem label="${msg.connector_panel_lbl}" icon="com_zimbra_erp_mail_connector_CalSync">
 		<toolTipText>${msg.connector_panel_tooltip}</toolTipText>
 		<dragSource type="ZmAppt" />
 		<dragSource type="ZmContact" />

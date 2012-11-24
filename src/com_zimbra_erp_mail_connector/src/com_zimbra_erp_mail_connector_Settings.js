@@ -18,37 +18,37 @@
 #
 ##############################################################################*/
 
-erpConnectorSettings.prototype = new DwtTabViewPage;
+com_zimbra_erp_mail_connector_Settings.prototype = new DwtTabViewPage;
 
-erpConnectorSettings.prototype.constructor = erpConnectorSettings;
+com_zimbra_erp_mail_connector_Settings.prototype.constructor = com_zimbra_erp_mail_connector_Settings;
 var zm;
-function erpConnectorSettings(parent, zimlet,confi_btn_database){
+function com_zimbra_erp_mail_connector_Settings(parent, zimlet,confi_btn_database){
 	this.flag = 0;
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	zm=this.zimlet;
 	config_btn_database=confi_btn_database;
 	this._createHTML();
-	document.getElementById("erpConnector_urladdress").value=erpConnector.urladdress;
+	document.getElementById("com_zimbra_erp_mail_connector_urladdress").value=erpConnector.urladdress;
 	if(erpConnector.getdatabase=="" || erpConnector.getdatabase ==null || erpConnector.getdatabase == undefined){
-		document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+		document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	}else{
-		document.getElementById("erpConnector_getdatabase").innerHTML="<option value="+erpConnector.getdatabase+">"+erpConnector.getdatabase+"</option>";
+		document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML="<option value="+erpConnector.getdatabase+">"+erpConnector.getdatabase+"</option>";
 	}
-	document.getElementById("erpConnector_port").value = erpConnector.port;
-	document.getElementById("erpConnector_username").value = "";
+	document.getElementById("com_zimbra_erp_mail_connector_port").value = erpConnector.port;
+	document.getElementById("com_zimbra_erp_mail_connector_username").value = "";
 	this.setScrollStyle(Dwt.SCROLL);
 }
 
-erpConnectorSettings.prototype.clearConfig = function() {
-	document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
-	document.getElementById("erpConnector_port").value="";
-	document.getElementById("erpConnector_username").value="";
-	document.getElementById("erpConnector_userpassword").value="";
-	document.getElementById("erpConnector_urladdress").value="";
+com_zimbra_erp_mail_connector_Settings.prototype.clearConfig = function() {
+	document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+	document.getElementById("com_zimbra_erp_mail_connector_port").value="";
+	document.getElementById("com_zimbra_erp_mail_connector_username").value="";
+	document.getElementById("com_zimbra_erp_mail_connector_userpassword").value="";
+	document.getElementById("com_zimbra_erp_mail_connector_urladdress").value="";
 }
 
-erpConnectorSettings.prototype._createHTML = function() {
+com_zimbra_erp_mail_connector_Settings.prototype._createHTML = function() {
 	var get_db = new DwtButton({parent:appCtxt.getShell()});
 	get_db.setText(config_btn_database);
 	get_db.setImage("getDB");
@@ -65,43 +65,43 @@ erpConnectorSettings.prototype._createHTML = function() {
 	document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
 };
 
-erpConnectorSettings.showpass = function(){
+com_zimbra_erp_mail_connector_Settings.showpass = function(){
 	if(document.getElementById("passchk").checked){
-		document.getElementById("erpConnector_userpassword").type='text';
+		document.getElementById("com_zimbra_erp_mail_connector_userpassword").type='text';
 	}else{
-		document.getElementById("erpConnector_userpassword").type='password';
+		document.getElementById("com_zimbra_erp_mail_connector_userpassword").type='password';
 	}
 }
 
 /*Gives the Database List*/
-erpConnectorSettings.prototype._getDatabase = function(){
-	var urladdress=document.getElementById("erpConnector_urladdress").value;
-	var port=document.getElementById("erpConnector_port").value;
+com_zimbra_erp_mail_connector_Settings.prototype._getDatabase = function(){
+	var urladdress=document.getElementById("com_zimbra_erp_mail_connector_urladdress").value;
+	var port=document.getElementById("com_zimbra_erp_mail_connector_port").value;
 	port=this.zimlet.trim(port);
 	urladdress=this.zimlet.trim(urladdress);
 	if(urladdress==""){
 		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
-		document.getElementById("erpConnector_urladdress").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_urladdress").focus();
 		return;
 	}
 	if(urladdress==""){
 		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
-		document.getElementById("erpConnector_urladdress").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_urladdress").focus();
 		return;
 	}
-	if(document.getElementById("erpConnector_urladdress").value.match(/^\s*$/)){
+	if(document.getElementById("com_zimbra_erp_mail_connector_urladdress").value.match(/^\s*$/)){
 		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
-		document.getElementById("erpConnector_urladdress").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_urladdress").focus();
 		return;
 	}
 	if(port==""){
 		this.zimlet.alert_critical_msg("connector_configuration_port");
-		document.getElementById("erpConnector_port").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_port").focus();
 		return;
 	}
-	if(document.getElementById("erpConnector_port").value.match(/^\s*$/)){
+	if(document.getElementById("com_zimbra_erp_mail_connector_port").value.match(/^\s*$/)){
 		this.zimlet.alert_critical_msg("connector_configuration_port");
-		document.getElementById("erpConnector_port").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_port").focus();
 		return;
 	}
 	var pro=urladdress.match("^https");
@@ -116,12 +116,12 @@ erpConnectorSettings.prototype._getDatabase = function(){
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	if (response.success == true && (this.zimlet.trim(response.text))!="fail") {
 		var res=this.zimlet.trim(response.text);
-		var select= document.getElementById('erpConnector_getdatabase');
+		var select= document.getElementById('com_zimbra_erp_mail_connector_getdatabase');
 		if(res.length<=0){
 			this.zimlet.alert_critical_msg("connector_configuration_lbl_database_notfound");
-			document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+			document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 		}else{
-			document.getElementById("erpConnector_getdatabase").innerHTML="";
+			document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML="";
 			var dbname=res.substr(1,res.length-2).split(",");
 			for(i=0;i<dbname.length;i++){
 				select.options[select.options.length]= new Option(dbname[i], dbname[i]);
@@ -130,38 +130,38 @@ erpConnectorSettings.prototype._getDatabase = function(){
 	}
 	else{
 		this.zimlet.alert_warning_msg("time_out");
-		document.getElementById("erpConnector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
+		document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML=""+"<option>"+zm.getMessage("select_any_database")+"</option>";
 	}
 }
 
-erpConnectorSettings.prototype.checkConnection = function(){
+com_zimbra_erp_mail_connector_Settings.prototype.checkConnection = function(){
 	this.flag=0;
-	var url=document.getElementById("erpConnector_urladdress").value;
-	var database=document.getElementById("erpConnector_getdatabase").value;
-	var port=document.getElementById("erpConnector_port").value;
-	var username=document.getElementById("erpConnector_username").value;
-	var z_password=document.getElementById("erpConnector_userpassword").value;
+	var url=document.getElementById("com_zimbra_erp_mail_connector_urladdress").value;
+	var database=document.getElementById("com_zimbra_erp_mail_connector_getdatabase").value;
+	var port=document.getElementById("com_zimbra_erp_mail_connector_port").value;
+	var username=document.getElementById("com_zimbra_erp_mail_connector_username").value;
+	var z_password=document.getElementById("com_zimbra_erp_mail_connector_userpassword").value;
 	port=this.zimlet.trim(port);
 	username=this.zimlet.trim(username);
 	url=this.zimlet.trim(url);
 	if(url==""){
 		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
-		document.getElementById("erpConnector_urladdress").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_urladdress").focus();
 		return;
 	}
-	if(document.getElementById("erpConnector_urladdress").value.match(/^\s*$/)){
+	if(document.getElementById("com_zimbra_erp_mail_connector_urladdress").value.match(/^\s*$/)){
 		this.zimlet.alert_critical_msg("connector_configuration_urlblank");
-		document.getElementById("erpConnector_urladdress").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_urladdress").focus();
 		return;
 	}
 	if(port==""){
 		this.zimlet.alert_critical_msg("connector_configuration_port");
-		document.getElementById("erpConnector_port").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_port").focus();
 		return;
 	}
-	if(document.getElementById("erpConnector_port").value.match(/^\s*$/)){
+	if(document.getElementById("com_zimbra_erp_mail_connector_port").value.match(/^\s*$/)){
 		this.zimlet.alert_critical_msg("connector_configuration_port");
-		document.getElementById("erpConnector_port").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_port").focus();
 		return;
 	}
 	if(database=="select any database"){
@@ -170,17 +170,17 @@ erpConnectorSettings.prototype.checkConnection = function(){
 	}
 	if(username==""){
 		this.zimlet.alert_critical_msg("connector_configuration_username");
-		document.getElementById("erpConnector_username").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_username").focus();
 		return;
 	}
-	if(document.getElementById("erpConnector_username").value.match(/^\s*$/)){
+	if(document.getElementById("com_zimbra_erp_mail_connector_username").value.match(/^\s*$/)){
 		this.zimlet.alert_critical_msg("connector_configuration_username");
-		document.getElementById("erpConnector_username").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_username").focus();
 		return;
 	}
 	if(z_password==""){
 		this.zimlet.alert_critical_msg("connector_configuration_password");
-		document.getElementById("erpConnector_userpassword").focus();
+		document.getElementById("com_zimbra_erp_mail_connector_userpassword").focus();
 		return;
 	}
 	var pro=url.match("^https");
