@@ -7,23 +7,24 @@
 			btn = "<div id='connect_database' class = 'com_zimbra_erp_mail_connector_config_btn1'></div>";
 		}
 	$>
-	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight'>
+	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight' style='border-bottom:0px'>
 	<legend><$=data.zimlet.getMessage("action")$></legend>
 	<table class='com_zimbra_erp_mail_connector_marginIE'>
 		<tr>
 			<td><$=data.zimlet.getMessage("connector_configuration_lbl_urladdress")$></td>
 			<td><input type='text' id='com_zimbra_erp_mail_connector_urladdress' value='' class='com_zimbra_erp_mail_connector_urlWidth'/></td>
-			<td><$=data.zimlet.getMessage("connector_configuration_lbl_port")$></td>
+			<td style='width:8%;'><$=data.zimlet.getMessage("connector_configuration_lbl_port")$></td>
 			<td><input type='text' id='com_zimbra_erp_mail_connector_port'></td>
 			<td id='getDatabase'></td>
 		</tr>
 		<tr>
-			<td><$=data.zimlet.getMessage("connector_configuration_lbl_database")$></td>
+			<td style='width:15%'><$=data.zimlet.getMessage("connector_configuration_lbl_database")$></td>
 			<td><select id='com_zimbra_erp_mail_connector_getdatabase' style='width:145px;'></select></td>
 		</tr>
 	</table>
 	</fieldset>
-	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight'>
+	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight' style='border-top:0px;'>
+		<hr/>
 		<table class='com_zimbra_erp_mail_connector_marginLogin'>
 			<tr>
 				<td><$=data.zimlet.getMessage("connector_configuration_lbl_username")$></td>

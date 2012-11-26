@@ -239,6 +239,7 @@ select
 
 .com_zimbra_erp_mail_connector_fieldHeight
 {
+	border:1px solid;
 	height:47%;
 	height:45%\9;		/* IE8/IE9 hack */
 }

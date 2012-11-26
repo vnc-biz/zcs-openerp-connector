@@ -49,7 +49,7 @@ com_zimbra_erp_mail_connector_Settings.prototype.clearConfig = function() {
 com_zimbra_erp_mail_connector_Settings.prototype._createHTML = function() {
 	var get_db = new DwtButton({parent:appCtxt.getShell()});
 	get_db.setText(config_btn_database);
-	get_db.setImage("getDB");
+	get_db.setImage("com_zimbra_erp_mail_connector_getDB");
 	get_db.addSelectionListener(new AjxListener(this,this._getDatabase));
 	var connectBtn = new DwtButton({parent:appCtxt.getShell()});
 	connectBtn.setText(this.zimlet.getMessage("connector_configuration_lbl_connect"));
@@ -102,6 +102,7 @@ com_zimbra_erp_mail_connector_Settings.prototype._getDatabase = function(){
 		document.getElementById("com_zimbra_erp_mail_connector_port").focus();
 		return;
 	}
+	var proto="http://";
 	var pro=urladdress.match("^https");
 	if(pro != null && pro == "https"){
 		proto="https://"
@@ -181,6 +182,7 @@ com_zimbra_erp_mail_connector_Settings.prototype.checkConnection = function(){
 		document.getElementById("com_zimbra_erp_mail_connector_userpassword").focus();
 		return;
 	}
+	var proto="http://";
 	var pro=url.match("^https");
 	if(pro != null && pro == "https"){
 		proto="https://"
