@@ -19,13 +19,11 @@
 ##############################################################################*/
 com_zimbra_erp_mail_connector_DocSettings.prototype = new DwtTabViewPage;
 com_zimbra_erp_mail_connector_DocSettings.prototype.constructor = com_zimbra_erp_mail_connector_DocSettings;
-var zm;
 
 /*...Constructor....*/
 function com_zimbra_erp_mail_connector_DocSettings(parent, zimlet){
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
-	zm=this.zimlet;
 	this._createHTML();
 	this.getTableRecords();
 	this.setScrollStyle(Dwt.SCROLL);
@@ -34,10 +32,10 @@ function com_zimbra_erp_mail_connector_DocSettings(parent, zimlet){
 
 /*...........getRecords from zimbra proeprty...*/
 com_zimbra_erp_mail_connector_DocSettings.prototype.getTableRecords = function(){
-	var data=zm.getUserProperty("doc_list");
+	var data=this.zimlet.getUserProperty("doc_list");
 	var elJson =JSON.parse(data);
 	var records=elJson.records;
-	var s="<table class='com_zimbra_erp_mail_connector_gridtable' align='right'><tr><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='com_zimbra_erp_mail_connector_DocSettings.checkAll()' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/><b></b></td><td><b>"+zm.getMessage("connector_document_document_title")+"</b></td><td><b>"+zm.getMessage("connector_document_document_docname")+"</b></td></tr>";
+	var s="<table class='com_zimbra_erp_mail_connector_gridtable' align='right'><tr><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='com_zimbra_erp_mail_connector_DocSettings.checkAll()' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/><b></b></td><td><b>"+this.zimlet.getMessage("connector_document_document_title")+"</b></td><td><b>"+this.zimlet.getMessage("connector_document_document_docname")+"</b></td></tr>";
 	for(var i=0;i<records.length;i++){
 		if(i%2==0){
 			s+="<tr class='d0'><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";
@@ -111,7 +109,7 @@ com_zimbra_erp_mail_connector_DocSettings.prototype.addRecord = function() {
 		this.zimlet.alert_critical_msg("invalid_doc_or_connection");
 		return;
 	}
-	var oldList=zm.getUserProperty("doc_list");
+	var oldList=this.zimlet.getUserProperty("doc_list");
 	var elJson =JSON.parse(oldList);
 	var oldListLength=elJson.records.length;
 	var i;
@@ -128,8 +126,8 @@ com_zimbra_erp_mail_connector_DocSettings.prototype.addRecord = function() {
 	if(duplicateFlag==0){
 		elJson.records[oldListLength]={"id":oldListLength+1,"title":title,"docname":docname};
 		var newRecordString=JSON.stringify(elJson);
-		zm.setUserProperty("doc_list",newRecordString);
-		zm.saveUserProperties();
+		this.zimlet.setUserProperty("doc_list",newRecordString);
+		this.zimlet.saveUserProperties();
 		this.zimlet.alert_info_msg("success_insert");
 		this.getTableRecords();
 	}
@@ -150,7 +148,7 @@ com_zimbra_erp_mail_connector_DocSettings.prototype.deleteRecord = function(){
 		this.zimlet.alert_warning_msg("connector_document_select_record");
 		return;
 	}
-	var dl_String=zm.getUserProperty("doc_list");
+	var dl_String=this.zimlet.getUserProperty("doc_list");
 	var dl_Json=JSON.parse(dl_String);
 	var new_String="{\"records\":[]}";
 	var new_Json=JSON.parse(new_String);
@@ -163,8 +161,8 @@ com_zimbra_erp_mail_connector_DocSettings.prototype.deleteRecord = function(){
 		}
 	}
 	var new_dl_String=JSON.stringify(new_Json);
-	zm.setUserProperty("doc_list",new_dl_String);
-	zm.saveUserProperties();
+	this.zimlet.setUserProperty("doc_list",new_dl_String);
+	this.zimlet.saveUserProperties();
 	this.zimlet.alert_info_msg("success_delete");
 	this.getTableRecords();//Fill records after update.
 }

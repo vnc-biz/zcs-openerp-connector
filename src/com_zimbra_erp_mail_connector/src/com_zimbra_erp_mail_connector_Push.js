@@ -17,12 +17,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################*/
-var zmlt;
 com_zimbra_erp_mail_connector_Push=function(zimlet,msgids,push_from,msgtype){
 	this.zimlet=zimlet;
 	this.documentrecord="";
 	this.push_id = "";
-	zmlt=this.zimlet;
 	this.email_ids = [];
 	this.email_ids = msgids;
 	this.push_random=Math.round(Math.random()*100);
@@ -72,7 +70,7 @@ com_zimbra_erp_mail_connector_Push.prototype._displayDailog = function() {
 
 /*Retrives all records stored from add document*/
 com_zimbra_erp_mail_connector_Push.prototype.getRecords = function() {
-	var dl_list=zmlt.getUserProperty("doc_list");
+	var dl_list=this.zimlet.getUserProperty("doc_list");
 	var elJson =JSON.parse(dl_list);
 	var records=elJson.records;
 	var s="";
@@ -179,7 +177,7 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 		return;
 	}
 	var tot_obj=obj_name.toString().split(',');
-	document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+zmlt.getResource("resources/submit_please_wait.gif")+"'/>";
+	document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+this.zimlet.getResource("resources/submit_please_wait.gif")+"'/>";
 	this.documentrecord+=this.fixheading;
 	for (var j=0;j<tot_obj.length-1;j++) {
 		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentlist.jsp?emailsearch="+this.zimlet.trim(emailsearch)+"&obj_name="+tot_obj[j];
@@ -189,7 +187,7 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 			if (this.zimlet.trim(response.text).length>2 && (this.zimlet.trim(response.text))!="Exception") {
 				var docrecord=JSON.parse(this.zimlet.trim(response.text));
 				var title;
-				dd_list=zmlt.getUserProperty("doc_list");
+				dd_list=this.zimlet.getUserProperty("doc_list");
 				dd_json=JSON.parse(dd_list);
 				for (var k=0;k<dd_json.records.length;k++) {
 					if (dd_json.records[k].docname==tot_obj[j]) {
@@ -258,7 +256,7 @@ com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random) {
 	var dialogMsg=null;
 	if (this.message_type!="APPT") {
 		for (var i=0;i<this.email_ids.length;i++) {
-			document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+zmlt.getResource("resources/submit_please_wait.gif")+"'/>"; 
+			document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+this.zimlet.getResource("resources/submit_please_wait.gif")+"'/>"; 
 			var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/PushEmail.jsp?push_id="+this.push_id+"&msgid="+this.email_ids[i];
 			var response = AjxRpc.invoke(null,jspurl, null, null, true);
 			if (response.success==true) {
