@@ -7,7 +7,7 @@
 			btn = "<div id='connect_database' class = 'com_zimbra_erp_mail_connector_config_btn1'></div>";
 		}
 	$>
-	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight' style='border-bottom:0px'>
+	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight'>
 	<legend><$=data.zimlet.getMessage("action")$></legend>
 	<table class='com_zimbra_erp_mail_connector_marginIE'>
 		<tr>
@@ -23,8 +23,7 @@
 		</tr>
 	</table>
 	</fieldset>
-	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight' style='border-top:0px;'>
-		<hr/>
+	<fieldset class='com_zimbra_erp_mail_connector_fieldHeight'>
 		<table class='com_zimbra_erp_mail_connector_marginLogin'>
 			<tr>
 				<td><$=data.zimlet.getMessage("connector_configuration_lbl_username")$></td>
