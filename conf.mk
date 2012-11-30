@@ -1,10 +1,10 @@
 VERSION=1.2.3.0
-PACKAGE=zcs-openerp-connector
+PACKAGE=zcs-openerp-connector-z8
 MAINTAINER=Enrico Weigelt <enrico.weigelt@vnc.biz>
 SECTION=base
 ARCHITECTURE=All
 PRIORITY=optional
 DEPENDS=zcs-lib-json-simple,zcs-lib-javacsv,zcs-lib-gson22,zcs-lib-redstone-xmlrpc,zcs-lib-vnc-common
-DESCRIPTION=OpenERP integration
+DESCRIPTION=OpenERP integration (Zimbra 8)
 REDMINE_UPLOAD_PROJECT=int-oerp-zim
 REDMINE_UPLOAD_URL=https://redmine.vnc.biz/redmine/
