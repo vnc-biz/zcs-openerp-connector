@@ -23,11 +23,9 @@ import redstone.xmlrpc.XmlRpcStruct;
 import org.apache.commons.codec.binary.Base64;
 
 public class Connector {
-	ArrayList<Object> list;
-	private Pattern pattern;
-	private Matcher matcher;
-	private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	UserPrefs prefs;
+	static final String EMAIL_PATTERN ="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 
 	public static void _err(String s, Exception e) {
 		ZLog.err("OpenERPConnector", s, e);
@@ -359,9 +357,7 @@ public class Connector {
 	}
 
 	public boolean validate(String hex) {
-		pattern = Pattern.compile(EMAIL_PATTERN);
-		matcher = pattern.matcher(hex);
-		return matcher.matches();
+		return pattern.matcher(hex).matches();
 	}
 
 	public String readConfig() {
