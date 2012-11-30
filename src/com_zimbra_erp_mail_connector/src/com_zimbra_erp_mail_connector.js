@@ -391,31 +391,31 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.trim=function(data){
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_text = function(text) {
-    var a = appCtxt.getMsgDialog();
-    a.setMessage(text,DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
-    a.popup();
+	var a = appCtxt.getMsgDialog();
+	a.setMessage(text,DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
+	a.popup();
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_msg = function(msgid) {
-    return this.alert_critical_text(this.getMessage(msgid));
+	return this.alert_critical_text(this.getMessage(msgid));
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_warning_text = function(text) {
-    var a = appCtxt.getMsgDialog();
-    a.setMessage(text,DwtMessageDialog.WARNING_STYLE,this.getMessage("warning"));
-    a.popup();
+	var a = appCtxt.getMsgDialog();
+	a.setMessage(text,DwtMessageDialog.WARNING_STYLE,this.getMessage("warning"));
+	a.popup();
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_warning_msg = function(msgid) {
-    return this.alert_warning_text(this.getMessage(msgid));
+	return this.alert_warning_text(this.getMessage(msgid));
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_info_text = function(text) {
-    var a = appCtxt.getMsgDialog();
-    a.setMessage(text,DwtMessageDialog.INFO_STYLE,this.getMessage("msg"));
-    a.popup();
+	var a = appCtxt.getMsgDialog();
+	a.setMessage(text,DwtMessageDialog.INFO_STYLE,this.getMessage("msg"));
+	a.popup();
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_info_msg = function(msgid) {
-    return this.alert_info_text(this.getMessage(msgid));
+	return this.alert_info_text(this.getMessage(msgid));
 }

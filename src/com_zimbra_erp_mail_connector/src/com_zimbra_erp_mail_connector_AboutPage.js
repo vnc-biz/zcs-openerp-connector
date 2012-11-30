@@ -23,6 +23,7 @@
 com_zimbra_erp_mail_connector_AboutPage.prototype = new DwtTabViewPage;
 
 com_zimbra_erp_mail_connector_AboutPage.prototype.constructor = com_zimbra_erp_mail_connector_AboutPage;
+
 function com_zimbra_erp_mail_connector_AboutPage(parent, zimlet){
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
