@@ -2,6 +2,7 @@ package biz.vnc.zimbra.openerp_zimlet;
 
 import biz.vnc.zimbra.util.ZLog;
 import biz.vnc.zimbra.util.JSPUtil;
+import biz.vnc.zimbra.util.MailDump;
 import com.csvreader.CsvWriter;
 import com.google.gson22.Gson;
 import java.io.InputStream;
@@ -240,83 +241,51 @@ public class Connector {
 
 	/*Gel Email Information from */
 	public String sendMail(String msg_id,String urlprefix,String push_id,String authToken) {
-		Object list = null;
+		if (msg_id == null)
+			return "Fail";
+
 		try {
-			String msgID = msg_id;
-			if(msgID != null) {
-				/*Row data*/
-				_info("sendMail(): Inside msg is not null");
-				URL urlrow = new URL(urlprefix+"service/home/~/?auth=qp&id="+URLEncoder.encode(msgID,"UTF-8")+"&zauthtoken="+URLEncoder.encode(authToken,"UTF-8"));
-				_info("sendMail(): url: "+urlrow.toString());
-				HttpURLConnection row_connection = (HttpURLConnection)urlrow.openConnection();
-				row_connection.connect();
-				InputStream rowis =row_connection.getInputStream();
-				int rowlineLength = 72;
-				StringBuffer rowstrbuffer=new StringBuffer();
-				byte[] rowbuf = new byte[rowlineLength/4*3];
-				int rowlen = 0;
-				while((rowlen = rowis.read(rowbuf)) != -1) {
-					rowstrbuffer.append(new String(rowbuf));
-					rowbuf = null;
-					rowbuf = new byte[rowlineLength/4*3];
-				}
-				String rowdata=new String(rowstrbuffer);
-				_info("sendMail(): raw data: "+rowdata);
-				byte[] temp = Base64.encodeBase64(rowdata.getBytes());
-				rowdata = new String(temp);
-				_info("sendMail(): raw data ------------>>encoded: "+rowdata);
+			String content = new String(
+			    Base64.encodeBase64(MailDump.getRawMail(urlprefix, authToken, msg_id).getBytes())
+			);
+			_info("sendMail(): base64 encoded mail: "+content);
 
-				/*End roe data*/
+			/*row data Hashtable*/
+			Vector<String> module_vec=new Vector<String>();
+			module_vec.add(new String("ref_ids"));
+			module_vec.add(push_id);
 
-				/*row data Hashtable*/
-				Vector<String> module_vec=new Vector<String>();
-				module_vec.add(new String("ref_ids"));
-				module_vec.add(push_id);
+			Vector mail_vec=new Vector();
+			mail_vec.add("message");
+			mail_vec.add(content);
 
-				Vector mail_vec=new Vector();
-				mail_vec.add("message");
-				mail_vec.add(rowdata);
+			Vector main_vec=new Vector();
+			main_vec.add(module_vec);
+			main_vec.add(mail_vec);
+			/*End of row data*/
 
-				Vector main_vec=new Vector();
-				main_vec.add(module_vec);
-				main_vec.add(mail_vec);
-				/*End of row data*/
-
-				/*send the mail to open-erp url*/
-				_info("Going to call histary_message from sendMail");
-				list = rpc_call_object(
-				           "execute",
-				new Object[] {
-					prefs.database,
-					prefs.idToInteger(),
-					prefs.password,
-					"zimbra.partner",
-					"history_message",
-					main_vec
-				}
-				       );
-				row_connection.disconnect();
-				rowstrbuffer.delete(0,rowstrbuffer.length());
-				rowis.close();
-				try {
-					main_vec.clear();
-					mail_vec.clear();
-					module_vec.clear();
-				} catch(Exception ex) {
-					_err("Send mail failed ", ex);
-					return "Fail";
-				}
-			} else {
-				return "Fail";
+			/*send the mail to open-erp url*/
+			_info("Going to call histary_message from sendMail");
+			Object list = rpc_call_object(
+			                  "execute",
+			new Object[] {
+				prefs.database,
+				prefs.idToInteger(),
+				prefs.password,
+				"zimbra.partner",
+				"history_message",
+				main_vec
 			}
+			              );
+
+			_info("sendMail(): list: "+list.toString());
+
+			if (list.toString() == null)
+				return "Fail";
+
+			return "Fail";
 		} catch(Exception e) {
 			_err("Archive email failed", e);
-			return "Fail";
-		}
-		_info("sendMail(): list: "+list.toString());
-		if(list.toString() != null) {
-			return list.toString();
-		} else {
 			return "Fail";
 		}
 	}
