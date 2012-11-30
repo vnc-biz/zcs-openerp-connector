@@ -68,6 +68,17 @@ public class Connector {
 		return (Object)(getRPC("/xmlrpc/object").invoke(proc,params));
 	}
 
+	private Object rpc_call_object_execute(Object... params)
+	throws MalformedURLException, XmlRpcFault {
+		Object[] parlist = new Object[params.length+3];
+		parlist[0] = prefs.database;
+		parlist[1] = prefs.idToInteger();
+		parlist[2] = prefs.password;
+		for (int x=0; x<params.length; x++)
+			parlist[x+3] = params[x];
+		return rpc_call_object("execute", parlist);
+	}
+
 	private Object rpc_call_common(String proc, Object[] params)
 	throws MalformedURLException, XmlRpcFault {
 		return (Object)(getRPC("/xmlrpc/common").invoke(proc,params));
@@ -122,17 +133,7 @@ public class Connector {
 	public String getDocumentlist(String emailsearch, String obj_name) {
 		try {
 			if (emailsearch.equals("")) {
-				Object token = rpc_call_object(
-				                   "execute",
-				new Object[] {
-					prefs.database,
-					prefs.idToInteger(),
-					prefs.password,
-					obj_name,
-					"name_search",
-					""
-				}
-				               );
+				Object token = rpc_call_object_execute(obj_name,"name_search","");
 				if (token.toString().length()!=2) {
 					return objToJSON(token);
 				} else {
@@ -149,18 +150,7 @@ public class Connector {
 							child.add(emailsearch);
 							parent.add(child);
 						}
-						Object token = rpc_call_object(
-						                   "execute",
-						new Object[] {
-							prefs.database,
-							prefs.idToInteger(),
-							prefs.password,
-							obj_name,
-							"name_search",
-							"",
-							parent
-						}
-						               );
+						Object token = rpc_call_object_execute(obj_name,"name_search","",parent);
 						if(token.toString().length()!=2) {
 							return objToJSON(token);
 						} else {
@@ -177,18 +167,7 @@ public class Connector {
 								domainChild.add(emailsearch);
 								domainParent.add(domainChild);
 							}
-							Object token = rpc_call_object(
-							                   "execute",
-							new Object[] {
-								prefs.database,
-								prefs.idToInteger(),
-								prefs.password,
-								obj_name,
-								"name_search",
-								"",
-								domainParent
-							}
-							               );
+							Object token = rpc_call_object_execute(obj_name,"name_search","",domainParent);
 							_info("getDocumentList() call succeed: "+token.toString());
 							if(token.toString().length()!=2) {
 								return objToJSON(token);
@@ -196,17 +175,7 @@ public class Connector {
 								return "bl";
 							}
 						} else {
-							Object token = rpc_call_object(
-							                   "execute",
-							new Object[] {
-								prefs.database,
-								prefs.idToInteger(),
-								prefs.password,
-								obj_name,
-								"name_search",
-								emailsearch
-							}
-							               );
+							Object token = rpc_call_object_execute(obj_name,"name_search",emailsearch);
 							if(token.toString().length()!=2) {
 								return objToJSON(token);
 							} else {
@@ -215,17 +184,7 @@ public class Connector {
 						}
 					}
 				} else {
-					Object token = rpc_call_object(
-					                   "execute",
-					new Object[] {
-						prefs.database,
-						prefs.idToInteger(),
-						prefs.password,
-						obj_name,
-						"name_search",
-						emailsearch
-					}
-					               );
+					Object token = rpc_call_object_execute(obj_name,"name_search",emailsearch);
 					if(token.toString().length()!=2) {
 						return objToJSON(token);
 					} else {
@@ -266,17 +225,7 @@ public class Connector {
 
 			/*send the mail to open-erp url*/
 			_info("Going to call histary_message from sendMail");
-			Object list = rpc_call_object(
-			                  "execute",
-			new Object[] {
-				prefs.database,
-				prefs.idToInteger(),
-				prefs.password,
-				"zimbra.partner",
-				"history_message",
-				main_vec
-			}
-			              );
+			Object list = rpc_call_object_execute("zimbra.partner","history_message",main_vec);
 
 			_info("sendMail(): list: "+list.toString());
 
@@ -307,17 +256,7 @@ public class Connector {
 				child2.add("installed");
 				parent.add(child2);
 			}
-			Object reply = rpc_call_object(
-			                   "execute",
-			new Object[] {
-				prefs.database,
-				prefs.idToInteger(),
-				prefs.password,
-				"ir.module.module",
-				"search",
-				parent
-			}
-			               );
+			Object reply = rpc_call_object_execute("ir.module.module","search",parent);
 			return ((reply.toString()!="") && (reply.toString().length()>2));
 		} catch (Exception e) {
 			_err("getDocumentlist call failed", e);
