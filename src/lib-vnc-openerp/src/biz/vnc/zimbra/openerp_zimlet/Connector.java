@@ -22,6 +22,7 @@ import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcStruct;
 import org.apache.commons.codec.binary.Base64;
+import javax.servlet.http.HttpServletRequest;
 
 public class Connector {
 	UserPrefs prefs;
@@ -199,13 +200,12 @@ public class Connector {
 	}
 
 	/*Gel Email Information from */
-	public String sendMail(String msg_id,String urlprefix,String push_id,String authToken) {
+	public String sendMail(String msg_id,String urlprefix,String push_id,String authToken,HttpServletRequest req) {
 		if (msg_id == null)
 			return "Fail";
-
 		try {
 			String content = new String(
-			    Base64.encodeBase64(MailDump.getRawMail(urlprefix, authToken, msg_id).getBytes())
+			    Base64.encodeBase64(JSPUtil.getRawMail(req,msg_id))
 			);
 			_info("sendMail(): base64 encoded mail: "+content);
 
@@ -213,26 +213,22 @@ public class Connector {
 			Vector<String> module_vec=new Vector<String>();
 			module_vec.add(new String("ref_ids"));
 			module_vec.add(push_id);
-
 			Vector mail_vec=new Vector();
 			mail_vec.add("message");
 			mail_vec.add(content);
-
 			Vector main_vec=new Vector();
 			main_vec.add(module_vec);
 			main_vec.add(mail_vec);
 			/*End of row data*/
-
 			/*send the mail to open-erp url*/
 			_info("Going to call histary_message from sendMail");
 			Object list = rpc_call_object_execute("zimbra.partner","history_message",main_vec);
-
 			_info("sendMail(): list: "+list.toString());
 
 			if (list.toString() == null)
 				return "Fail";
 
-			return "Fail";
+			return list.toString();
 		} catch(Exception e) {
 			_err("Archive email failed", e);
 			return "Fail";

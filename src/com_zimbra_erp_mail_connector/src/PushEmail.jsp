@@ -31,7 +31,8 @@ out.print(
 		request.getParameter("msgid"),
 		JSPUtil.getServerURLPrefix(request),
 		request.getParameter("push_id"),
-		JSPUtil.getAuthToken(request)
+		JSPUtil.getAuthToken(request),
+		request
 	)
 );
 
