@@ -232,7 +232,7 @@ com_zimbra_erp_mail_connector_Push.prototype._dismissBtnListener= function() {
 }
 
 /*Ajax call with all mail details to push Email*/
-com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random) {
+com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random,act_flag) {
 	var dbname = erpConnector.getdatabase;
 	var urladdress = erpConnector.urladdress;
 	var port =erpConnector.port;
