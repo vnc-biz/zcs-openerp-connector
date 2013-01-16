@@ -19,9 +19,9 @@ ZCS_LIB_JARS=\
 	zcs-lib-gson22.jar		\
 	zcs-lib-json-simple.jar		\
 	zcs-lib-javacsv.jar		\
-	commons-httpclient-3.1.jar	\
+	commons-httpclient.jar		\
 	zcs-lib-vnc-common.jar		\
-	commons-codec-1.4.jar
+	commons-codec.jar
 
 JAR_FILE_PREPARE_RULE=prepare-jar
 
