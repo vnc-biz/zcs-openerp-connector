@@ -39,7 +39,7 @@ com_zimbra_erp_mail_connector_Push.prototype=new ZmZimletBase;
 com_zimbra_erp_mail_connector_Push.prototype.constructor = com_zimbra_erp_mail_connector_Push;
 
 /*Display dilogbox when Email will be pushed on zimlet*/
-com_zimbra_erp_mail_connector_Push.prototype._displayDailog = function() { 
+com_zimbra_erp_mail_connector_Push.prototype._displayDailog = function() {
 	var searchDocBtn = new DwtButton({parent:appCtxt.getShell()});
 	searchDocBtn.setText(this.zimlet.getMessage("connector_pushopener_.search"));
 	searchDocBtn.setImage("com_zimbra_erp_mail_connector_getDB");
@@ -58,15 +58,18 @@ com_zimbra_erp_mail_connector_Push.prototype._displayDailog = function() {
 	if (browser=="Microsoft Internet Explorer") {
 		this.pView.getHtmlElement().style.overflow="auto";
 	}
+
 	this.pView.getHtmlElement().innerHTML=this._createDialogView();
 	this.pbDialog=new ZmDialog({title:dialogtitle, view:this.pView, parent:this.zimlet.getShell(), standardButtons:[DwtDialog.DISMISS_BUTTON]});
 	this.pbDialog.getButton(DwtDialog.DISMISS_BUTTON).setText(this.zimlet.getMessage("connector_project_close"));
 	this.pbDialog.setButtonListener(DwtDialog.DISMISS_BUTTON, new AjxListener(this, this._dismissBtnListener));
 	this.getRecords();
+
 	document.getElementById("document_name"+this.push_random+"").innerHTML=this.fixheading;
 	document.getElementById("mailsearch"+this.push_random+"").value = this.pushfrom;
 	document.getElementById("pushEmail"+this.push_random).appendChild(pushMailBtn.getHtmlElement());
 	document.getElementById("doc_search"+this.push_random).appendChild(searchDocBtn.getHtmlElement());
+
 	this.pbDialog.popup();
 }
 
@@ -258,7 +261,7 @@ com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random) {
 	var dialogMsg=null;
 	if (this.message_type!="APPT") {
 		for (var i=0;i<this.email_ids.length;i++) {
-			document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+this.zimlet.getResource("resources/submit_please_wait.gif")+"'/>"; 
+			document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+this.zimlet.getResource("resources/submit_please_wait.gif")+"'/>";
 			var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/PushEmail.jsp?push_id="+this.push_id+"&msgid="+this.email_ids[i];
 			var response = AjxRpc.invoke(null,jspurl, null, null, true);
 			if (response.success==true) {

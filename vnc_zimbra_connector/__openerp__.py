@@ -24,15 +24,14 @@
     "version" : "1.0",
     "author" : "VNC",
     "website" : "http://www.vnc.biz/",
-#    "depends" : ["base","mail_gateway","crm_caldav"],
     "depends" : ["base","crm_caldav"],
     "category" : "Generic Modules/Zimbra interface",
     "description": """
       This module is required for the zimbra openerp plug-in to work
       properly.
-      The Plugin allows you archive email and its attachments to the selected 
+      The Plugin allows you archive email and its attachments to the selected
       OpenERP objects. You can select a partner, a task, a project, an analytical
-      account,or any other object and attach selected mail as eml file in 
+      account,or any other object and attach selected mail as eml file in
       attachment of selected record. You can create Documents for crm Lead,
       HR Applicant and project issue from selected mails.
 
@@ -46,5 +45,4 @@
     'application': True,
     'sequence':3,
     "installable": True,
-#    "certificate" : "00899858104035139949",
 }

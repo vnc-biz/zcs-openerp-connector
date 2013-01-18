@@ -35,8 +35,7 @@ from email.header import decode_header
 
 class email_server_tools(osv.osv_memory):
     _name = "email.server.tools"
-    
-    
+
     def _decode_header(self, text):
         """Returns unicode() string conversion of the the given encoded smtp header"""
         if text:
@@ -45,7 +44,7 @@ class email_server_tools(osv.osv_memory):
 
     def to_email(self,text):
         return re.findall(r'([^ ,<@]+@[^> ,]+)',text)
-    
+
     def history(self, cr, uid, model, res_ids, msg, attach, context=None):
         """This function creates history for mails fetched
         @param self: The object pointer
@@ -84,7 +83,7 @@ class email_server_tools(osv.osv_memory):
             }
             msg_pool.create(cr, uid, msg_data, context=context)
         return True
-    
+
     def history_message(self, cr, uid, model, res_id, message, context=None):
         #@param message: string of mail which is read from EML File
         attachment_pool = self.pool.get('ir.attachment')
@@ -434,13 +433,11 @@ class zimbra_partner(osv.osv_memory):
             else:
                 object += "null,"
         return object
-    
-    
+
     def meeting_push(self,cr,uid,vals):
-        
+
         vals_dict = dict(vals)
         context = {}
-        print "VA_LS __________-",vals_dict
         cal_pool = self.pool.get('crm.meeting')
         obj_name = vals_dict['ref_ids'].split(',')[0]
         if vals_dict['ref_ids'].split(',') and len(vals_dict['ref_ids'].split(',')) > 1:
@@ -457,9 +454,8 @@ class zimbra_partner(osv.osv_memory):
                 context.update({'default_partner_id':partner_id})
             meeting_ids=cal_pool.import_cal(cr,uid,vals_dict['message'],context=context)
         return True
-    
+
     def check_calendar_existance(self,cr,uid,vals):
-        print "VALST_T_T_T_T_T_T_T_T_T_T_",vals
         if not vals:
             return False
         else:
@@ -469,17 +465,15 @@ class zimbra_partner(osv.osv_memory):
             self.meeting_push(cr, uid, vals)
         else:
             return False
-        
-zimbra_partner()
 
+zimbra_partner()
 
 class crm_meeting(osv.osv):
     _inherit = 'crm.meeting'
     _columns = {
                 'ext_meeting_id':fields.char('External Meeting ID',size=256)
                 }
-    
-    
+
     def uid2openobjectid(self,cr, uidval, oomodel, rdate):
         """ UID To Open Object Id
             @param cr: the current row, from the database cursor,
@@ -523,8 +517,6 @@ class crm_meeting(osv.osv):
                 return (id, None)
             return (False, None)
 
-    
-    
     def import_cal(self, cr, uid, data, data_id=None, context=None):
         """
             @param self: The object pointer
@@ -599,5 +591,5 @@ class crm_meeting(osv.osv):
         if data:
             self_ids =  self.search(cr,uid,[('ext_meeting_id','=',data)])
         return True
-    
+
 crm_meeting()

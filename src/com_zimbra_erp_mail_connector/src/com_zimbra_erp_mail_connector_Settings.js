@@ -59,7 +59,7 @@ com_zimbra_erp_mail_connector_Settings.prototype._createHTML = function() {
 	var i = 0;
 	var html = new Array();
 	var data={"zimlet":this.zimlet,random:Dwt.getNextId()};
-	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.config#config_Settings",data); 
+	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.config#config_Settings",data);
 	document.getElementById("getDatabase").appendChild(get_db.getHtmlElement());
 	document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
 };

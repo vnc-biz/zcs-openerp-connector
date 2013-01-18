@@ -16,13 +16,13 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.codec.binary.Base64;
 import org.json.simple.JSONObject;
 import redstone.xmlrpc.XmlRpcArray;
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcStruct;
-import org.apache.commons.codec.binary.Base64;
-import javax.servlet.http.HttpServletRequest;
 
 public class Connector {
 	UserPrefs prefs;
@@ -134,7 +134,7 @@ public class Connector {
 	public String getDocumentlist(String emailsearch, String obj_name) {
 		try {
 			if (emailsearch.equals("")) {
-				Object token = rpc_call_object_execute(obj_name,"name_search","");
+				Object token = rpc_call_object_execute(obj_name, "name_search", "");
 				if (token.toString().length()!=2) {
 					return objToJSON(token);
 				} else {
@@ -151,7 +151,7 @@ public class Connector {
 							child.add(emailsearch);
 							parent.add(child);
 						}
-						Object token = rpc_call_object_execute(obj_name,"name_search","",parent);
+						Object token = rpc_call_object_execute(obj_name, "name_search", "", parent);
 						if(token.toString().length()!=2) {
 							return objToJSON(token);
 						} else {
@@ -168,7 +168,7 @@ public class Connector {
 								domainChild.add(emailsearch);
 								domainParent.add(domainChild);
 							}
-							Object token = rpc_call_object_execute(obj_name,"name_search","",domainParent);
+							Object token = rpc_call_object_execute(obj_name, "name_search", "", domainParent);
 							_info("getDocumentList() call succeed: "+token.toString());
 							if(token.toString().length()!=2) {
 								return objToJSON(token);
@@ -176,7 +176,7 @@ public class Connector {
 								return "bl";
 							}
 						} else {
-							Object token = rpc_call_object_execute(obj_name,"name_search",emailsearch);
+							Object token = rpc_call_object_execute(obj_name, "name_search", emailsearch);
 							if(token.toString().length()!=2) {
 								return objToJSON(token);
 							} else {
@@ -185,7 +185,7 @@ public class Connector {
 						}
 					}
 				} else {
-					Object token = rpc_call_object_execute(obj_name,"name_search",emailsearch);
+					Object token = rpc_call_object_execute(obj_name, "name_search", emailsearch);
 					if(token.toString().length()!=2) {
 						return objToJSON(token);
 					} else {
@@ -200,7 +200,7 @@ public class Connector {
 	}
 
 	/*Gel Email Information from */
-	public String sendMail(String msg_id,String urlprefix,String push_id,String authToken,HttpServletRequest req) {
+	public String sendMail(String msg_id, String urlprefix, String push_id, String authToken, HttpServletRequest req) {
 		if (msg_id == null)
 			return "Fail";
 		try {
@@ -222,7 +222,7 @@ public class Connector {
 			/*End of row data*/
 			/*send the mail to open-erp url*/
 			_info("Going to call histary_message from sendMail");
-			Object list = rpc_call_object_execute("zimbra.partner","history_message",main_vec);
+			Object list = rpc_call_object_execute("zimbra.partner", "history_message", main_vec);
 			_info("sendMail(): list: "+list.toString());
 
 			if (list.toString() == null)
@@ -252,7 +252,7 @@ public class Connector {
 				child2.add("installed");
 				parent.add(child2);
 			}
-			Object reply = rpc_call_object_execute("ir.module.module","search",parent);
+			Object reply = rpc_call_object_execute("ir.module.module", "search", parent);
 			return ((reply.toString()!="") && (reply.toString().length()>2));
 		} catch (Exception e) {
 			_err("getDocumentlist call failed", e);

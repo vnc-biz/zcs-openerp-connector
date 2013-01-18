@@ -175,7 +175,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 	if(this.mailtopush != null){
 		this.doDrop(this.mailtopush[0]);
 	}
-}; 
+};
 
 var erpConnector = "";
 
@@ -349,7 +349,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=functi
 		mail_subject=convSrcObj.getFirstHotMsg().subject;
 		/* Get hhhh the CC , FROM, TO, BCC, SENDER ,REPLY_TO from Email */
 		if(convSrcObj.getFirstHotMsg().participants != null){
-			this.participants = convSrcObj.getFirstHotMsg().participants.getArray(); 
+			this.participants = convSrcObj.getFirstHotMsg().participants.getArray();
 		}
 		for(var i =0; i < this.participants.length; i++) {
 			if(this.participants[i].type == AjxEmailAddress.FROM) {
@@ -387,7 +387,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromMsg=functio
 };
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.trim=function(data){
-	return data.replace(/^\s+|\s+$/g,""); 
+	return data.replace(/^\s+|\s+$/g,"");
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_text = function(text) {

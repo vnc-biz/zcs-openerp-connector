@@ -32,5 +32,5 @@ function com_zimbra_erp_mail_connector_AboutPage(parent, zimlet){
 
 com_zimbra_erp_mail_connector_AboutPage.prototype._createHTML = function() {
 	var data = {"zmlt":this.zimlet}
-	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.about#about",data); 
+	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.about#about",data);
 }
