@@ -420,3 +420,11 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_info_text = function
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_info_msg = function(msgid) {
 	return this.alert_info_text(this.getMessage(msgid));
 }
+
+com_zimbra_erp_mail_connector_HandlerObject.prototype.isBlank=function(item){
+	if(item != null && item != "" && item != undefined){
+		return false;
+	}else{
+		return true;
+	}
+}
