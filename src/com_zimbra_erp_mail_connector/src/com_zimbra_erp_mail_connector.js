@@ -196,6 +196,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	erpConnector.urladdress = allConfigurations.urladdress;
 	erpConnector.port = allConfigurations.port;
 	erpConnector.getdatabase = allConfigurations.getdatabase;
+	erpConnector.zimlet = this;
 	this.tagcreate();
 	this.msgFlag = "";
 	this.participants = "";
