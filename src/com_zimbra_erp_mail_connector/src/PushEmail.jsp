@@ -19,6 +19,7 @@
 #
 ##############################################################################*/
 %>
+<%@page pageEncoding="UTF-8"%>
 <%@ page import="biz.vnc.zimbra.util.JSPUtil" %>
 <%@ page import="biz.vnc.zimbra.openerp_zimlet.Connector" %>
 <%@ page import="biz.vnc.zimbra.openerp_zimlet.JSPFactory" %>
