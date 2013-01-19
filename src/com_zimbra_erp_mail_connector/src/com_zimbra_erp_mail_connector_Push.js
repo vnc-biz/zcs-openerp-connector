@@ -158,7 +158,7 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 		this.zimlet.alert_warning_msg("connector_pushopenerp_moduleselect");
 		return;
 	}
-	var radiofill=document.getElementsByName("document_name"+this.push_random+"");
+	var radiofill=document.getElementsByName("document_name"+this.push_random);
 	for (var i=0;i<radiofill.length;i++) {
 		radiofill[i].innerHTML="";
 	}
@@ -220,7 +220,7 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 			return;
 		}
 	}
-	var radiofill=document.getElementsByName("document_name"+this.push_random+"");
+	var radiofill=document.getElementsByName("document_name"+this.push_random);
 	for (var i=0;i<radiofill.length;i++) {
 		radiofill[i].innerHTML=this.documentrecord;
 	}
