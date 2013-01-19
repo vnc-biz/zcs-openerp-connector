@@ -56,15 +56,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 	}
 };
 
-com_zimbra_erp_mail_connector_HandlerObject.prototype._handleCalSyncBtnClick = function(controller) {
-	var calendars = appCtxt.getFolderTree().getByType(ZmOrganizer.CALENDAR);
-	for(var i in calendars){
-		if(calendars[i].url != undefined){
-			calendars[i].sync();
-		}
-	}
-};
-
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handle_push_and_save = function(controller) {
 	var currController = appCtxt.getCurrentController();
 	var respCallback = new AjxCallback(this, this._handleResponsefromsend);
