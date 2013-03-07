@@ -7,4 +7,4 @@ DEPENDS=zcs-lib-json-simple,zcs-lib-javacsv,zcs-lib-gson22,zcs-lib-redstone-xmlr
 DESCRIPTION=OpenERP integration
 REDMINE_UPLOAD_PROJECT=int-oerp-zim
 REDMINE_UPLOAD_URL=https://redmine.vnc.biz/redmine/
-FORCE_ZIMBRA_BASE=helix
+FORCE_ZIMBRA_BASE=ironmaiden
