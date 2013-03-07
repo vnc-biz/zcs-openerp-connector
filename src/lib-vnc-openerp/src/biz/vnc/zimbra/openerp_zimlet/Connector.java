@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -121,6 +122,7 @@ public class Connector {
 			if(token instanceof java.lang.Integer) {
 				prefs.openerp_id = token.toString();
 				if (checkRecords()) {
+					prefs.server_version = getErpVersion();
 					prefs.store();
 					return prefs.openerp_id;
 				}
@@ -146,7 +148,11 @@ public class Connector {
 						Vector parent=new Vector();
 						{
 							Vector<String> child = new Vector<String>();
-							child.add("email");
+							if(obj_name.equals("crm.lead")) {
+								child.add("email_from");
+							} else {
+								child.add("email");
+							}
 							child.add("ilike");
 							child.add(emailsearch);
 							parent.add(child);
@@ -163,7 +169,11 @@ public class Connector {
 							Vector domainParent=new Vector();
 							{
 								Vector<String> domainChild = new Vector<String>();
-								domainChild.add("email");
+								if(obj_name.equals("crm.lead")) {
+									domainChild.add("email_from");
+								} else {
+									domainChild.add("email");
+								}
 								domainChild.add("ilike");
 								domainChild.add(emailsearch);
 								domainParent.add(domainChild);
@@ -270,6 +280,7 @@ public class Connector {
 			obj.put("urladdress",prefs.url);
 			obj.put("getdatabase",prefs.database);
 			obj.put("port",prefs.port);
+			obj.put("server_version",prefs.server_version);
 			return obj.toString();
 		} catch (Exception e) {
 			_err("read config failed", e);
@@ -279,5 +290,12 @@ public class Connector {
 
 	public String clearConfig() {
 		return (prefs.erase() ? "OK" : "FAILED");
+	}
+
+	public String getErpVersion() throws MalformedURLException, XmlRpcFault {
+		UserPrefs pr = prefs.clone();
+		Object token = rpc_call_common("version", new Object[] {});
+		HashMap<String,String> map =(HashMap<String,String>) token;
+		return map.get("server_version").substring(0,1);
 	}
 }

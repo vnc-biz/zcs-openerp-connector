@@ -17,6 +17,7 @@ public class UserPrefs {
 	public String openerp_id;
 	public String database;
 	public String zimbra_account;
+	public String server_version;
 
 	static public final String zimlet_name         = "com_zimbra_erp_mail_connector";
 	static public final String property_url        = "urladdress";
@@ -25,6 +26,7 @@ public class UserPrefs {
 	static public final String property_password   = "userpassword";
 	static public final String property_database   = "getdatabase";
 	static public final String property_openerp_id = "openerp_id";
+	static public final String property_server_version = "server_version";
 
 	public UserPrefs(Account acct) {
 		this.zimbra_account = acct.getName();
@@ -35,6 +37,7 @@ public class UserPrefs {
 		this.password   = props.getProperty(property_password);
 		this.database   = props.getProperty(property_database);
 		this.openerp_id = props.getProperty(property_openerp_id);
+		this.server_version = props.getProperty(property_server_version);
 	}
 
 	private UserPrefs() {
@@ -48,6 +51,7 @@ public class UserPrefs {
 		pr.password = this.password;
 		pr.database = this.database;
 		pr.openerp_id = this.openerp_id;
+		pr.server_version = this.server_version;
 		return pr;
 	}
 
@@ -67,6 +71,7 @@ public class UserPrefs {
 		ProtectedZimletConfig.setUserProperty(zimlet_name, zimbra_account, property_password, this.password);
 		ProtectedZimletConfig.setUserProperty(zimlet_name, zimbra_account, property_database, this.database);
 		ProtectedZimletConfig.setUserProperty(zimlet_name, zimbra_account, property_openerp_id, this.openerp_id);
+		ProtectedZimletConfig.setUserProperty(zimlet_name, zimbra_account, property_server_version, this.server_version);
 	}
 
 	public boolean erase() {

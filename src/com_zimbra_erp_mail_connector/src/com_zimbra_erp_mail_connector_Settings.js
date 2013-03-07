@@ -204,6 +204,35 @@ com_zimbra_erp_mail_connector_Settings.prototype.checkConnection = function(){
 		erpConnector.urladdress = allConfigurations.urladdress;
 		erpConnector.port = allConfigurations.port;
 		erpConnector.getdatabase = allConfigurations.getdatabase;
+		var changeVersion = false;
+		if(erpConnector.server_version!=allConfigurations.server_version) {
+			changeVersion = true;
+		}
+		erpConnector.server_version = allConfigurations.server_version;
 		this.flag=1;
+		if(allConfigurations.server_version == "6") {
+			erpConnector.ERPVersion6 = true;
+		} else {
+			erpConnector.ERPVersion6 = false;
+		}
+		if(erpConnector.ERPVersion6) {
+			docList=this.zimlet.getUserProperty("doc_list");
+			if(docList.length<=0 || changeVersion==true){
+				var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"2\",\"title\":\"Address\",\"docname\":\"res.partner.address\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
+				this.zimlet.setUserProperty("doc_list",this.zimlet.trim(doclist));
+				this.zimlet.saveUserProperties();
+				com_zimbra_erp_mail_connector_DocSettings_this = this;
+				com_zimbra_erp_mail_connector_DocSettings.prototype.getTableRecords();
+			}
+		} else {
+			docList=this.zimlet.getUserProperty("doc_list");
+			if(docList.length<=0 || changeVersion==true){
+				var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
+				this.zimlet.setUserProperty("doc_list",this.zimlet.trim(doclist));
+				this.zimlet.saveUserProperties();
+				com_zimbra_erp_mail_connector_DocSettings_this = this;
+				com_zimbra_erp_mail_connector_DocSettings.prototype.getTableRecords();
+			}
+		}
 	}
 }

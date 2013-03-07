@@ -22,10 +22,13 @@ com_zimbra_erp_mail_connector_DocSettings.prototype = new DwtTabViewPage;
 
 com_zimbra_erp_mail_connector_DocSettings.prototype.constructor = com_zimbra_erp_mail_connector_DocSettings;
 
+com_zimbra_erp_mail_connector_DocSettings_this = ""
+
 /*...Constructor....*/
 function com_zimbra_erp_mail_connector_DocSettings(parent, zimlet){
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
+	com_zimbra_erp_mail_connector_DocSettings_this=this;
 	this._createHTML();
 	this.getTableRecords();
 	this.setScrollStyle(Dwt.SCROLL);
@@ -33,10 +36,10 @@ function com_zimbra_erp_mail_connector_DocSettings(parent, zimlet){
 
 /*...........getRecords from zimbra proeprty...*/
 com_zimbra_erp_mail_connector_DocSettings.prototype.getTableRecords = function(){
-	var data=this.zimlet.getUserProperty("doc_list");
+	var data=com_zimbra_erp_mail_connector_DocSettings_this.zimlet.getUserProperty("doc_list");
 	var elJson =JSON.parse(data);
 	var records=elJson.records;
-	var s="<table class='com_zimbra_erp_mail_connector_gridtable' align='right'><tr><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='com_zimbra_erp_mail_connector_DocSettings.checkAll()' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/><b></b></td><td><b>"+this.zimlet.getMessage("connector_document_document_title")+"</b></td><td><b>"+this.zimlet.getMessage("connector_document_document_docname")+"</b></td></tr>";
+	var s="<table class='com_zimbra_erp_mail_connector_gridtable' align='right'><tr><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type='checkbox' id='selectall' onclick='com_zimbra_erp_mail_connector_DocSettings.checkAll()' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/><b></b></td><td><b>"+com_zimbra_erp_mail_connector_DocSettings_this.zimlet.getMessage("connector_document_document_title")+"</b></td><td><b>"+com_zimbra_erp_mail_connector_DocSettings_this.zimlet.getMessage("connector_document_document_docname")+"</b></td></tr>";
 	for(var i=0;i<records.length;i++){
 		if(i%2==0){
 			s+="<tr class='d0'><td class='com_zimbra_erp_mail_connector_doc_setng_chkbx'><input type=checkbox id='record_id' name='record_id' value='"+records[i].id+"' class='com_zimbra_erp_mail_connector_doc_setng_chkbx2'/></td><td>"+records[i].title+"</td><td>"+records[i].docname+"</td></tr>";

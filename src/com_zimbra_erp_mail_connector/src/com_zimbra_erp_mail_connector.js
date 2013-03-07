@@ -175,11 +175,6 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	this.mail_from = [];
 	AjxRpc.__RPC_CACHE_MAX = 200;
 	docList=this.getUserProperty("doc_list");
-	if(docList.length<=0){
-		var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"2\",\"title\":\"Address\",\"docname\":\"res.partner.address\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
-		this.setUserProperty("doc_list",this.trim(doclist));
-		this.saveUserProperties();
-	}
 	erpConnector = com_zimbra_erp_mail_connector_HandlerObject;
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/readConfig.jsp";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
@@ -187,6 +182,28 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	erpConnector.urladdress = allConfigurations.urladdress;
 	erpConnector.port = allConfigurations.port;
 	erpConnector.getdatabase = allConfigurations.getdatabase;
+	erpConnector.server_version = allConfigurations.server_version;
+
+	if(allConfigurations.server_version == "6") {
+		erpConnector.ERPVersion6 = true;
+	} else {
+		erpConnector.ERPVersion6 = false;
+	}
+	if(erpConnector.ERPVersion6) {
+		docList=this.getUserProperty("doc_list");
+		if(docList.length<=0){
+			var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"2\",\"title\":\"Address\",\"docname\":\"res.partner.address\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
+			this.setUserProperty("doc_list",this.trim(doclist));
+			this.saveUserProperties();
+		}
+	} else {
+		docList=this.getUserProperty("doc_list");
+		if(docList.length<=0){
+			var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
+			this.setUserProperty("doc_list",this.trim(doclist));
+			this.saveUserProperties();
+		}
+	}
 	erpConnector.zimlet = this;
 	this.tagcreate();
 	this.msgFlag = "";
