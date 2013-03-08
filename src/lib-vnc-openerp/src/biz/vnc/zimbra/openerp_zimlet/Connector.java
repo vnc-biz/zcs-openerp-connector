@@ -2,7 +2,6 @@ package biz.vnc.zimbra.openerp_zimlet;
 
 import biz.vnc.zimbra.util.ZLog;
 import biz.vnc.zimbra.util.JSPUtil;
-import biz.vnc.zimbra.util.MailDump;
 import com.csvreader.CsvWriter;
 import com.google.gson22.Gson;
 import java.io.InputStream;
