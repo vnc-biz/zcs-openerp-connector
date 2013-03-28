@@ -31,6 +31,13 @@ function com_zimbra_erp_mail_connector_AboutPage(parent, zimlet){
 }
 
 com_zimbra_erp_mail_connector_AboutPage.prototype._createHTML = function() {
-	var data = {"zmlt":this.zimlet}
+	if (com_zimbra_erp_mail_connector.ZIMBRA8) {
+		var change_log = "https://collaboration.vnc.biz/product-area/vnc-business-cloud-apps/vnc-zimlets/vnc-openerp-zimlet/vnc-openerp-zimlet-changelogs";
+		var documentation = "https://collaboration.vnc.biz/product-area/vnc-business-cloud-apps/vnc-zimlets/vnc-openerp-zimlet/copy_of_vnc-openerp-zimlet";
+	} else {
+		var change_log = "https://collaboration.vnc.biz/product-area/vnc-business-cloud-apps/vnc-zimlets/vnc-openerp-zimlet/vnc-openerp-zimlet-changelogs";
+		var documentation = "https://collaboration.vnc.biz/product-area/vnc-business-cloud-apps/vnc-zimlets/vnc-openerp-zimlet/vnc-openerp-zimlet";
+	}
+	var data = {"zmlt":this.zimlet,changelog:change_log,documentlink:documentation}
 	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.about#about",data);
 }

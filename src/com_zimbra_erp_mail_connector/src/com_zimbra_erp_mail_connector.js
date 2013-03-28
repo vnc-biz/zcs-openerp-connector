@@ -17,6 +17,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################*/
+
+if(ZmCsfeCommand.clientVersion.substring(0,1) == "7") {
+	com_zimbra_erp_mail_connector.ZIMBRA8 = false;
+} else {
+	com_zimbra_erp_mail_connector.ZIMBRA8 = true;
+}
+
 function com_zimbra_erp_mail_connector_HandlerObject() {
 }
 
@@ -146,7 +153,12 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.addMenuButton = function(c
 com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = function(controller) {
 	this.mailtopush = "";
 	var con=appCtxt.getCurrentController();
-	this.mailtopush = controller.getCurrentView().getDnDSelection();
+	if (com_zimbra_erp_mail_connector.ZIMBRA8) {
+		this.mailtopush = controller.getListView().getDnDSelection();
+	} else {
+		this.mailtopush = controller.getCurrentView().getDnDSelection();
+	}
+
 	this.mailtopush = (this.mailtopush instanceof Array) ? this.mailtopush : [this.mailtopush];
 	var eml;
 	for ( var i = 0; i < this.mailtopush.length; i++) {

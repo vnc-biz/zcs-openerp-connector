@@ -4,6 +4,6 @@
 		<tr><td><font face='Times New Roman' size='5px'>VNC OpenERP Zimlet (VOZ)</font></td></tr>
 		<tr><td><b><center><$=com_zimbra_erp_mail_connector.ZIMLET_VERSION$></center></b></td></tr>
 		<tr><td><div class='com_zimbra_erp_mail_connector_lincense'>http://www.vnc.biz </div><div>Copyright 2012, VNC - Virtual Network Consult GmbH </div><div class='com_zimbra_erp_mail_connector_lincense2'>Released under AGPL Licenses. </div></font></center></td></tr>
-		<tr><td><a onclick='{window.open("https://collaboration.vnc.biz/product-area/vnc-business-cloud-apps/vnc-zimlets/vnc-openerp-zimlet/vnc-openerp-zimlet")}' style='cursor:pointer;color:blue'>Documentation</a><a onclick="{window.open('https://collaboration.vnc.biz/product-area/vnc-business-cloud-apps/vnc-zimlets/vnc-openerp-zimlet/vnc-openerp-zimlet-changelogs')}" style='padding-left:50%;cursor:pointer;color:blue'>Release Notes</a></td></tr>
+		<tr><td><center><font face='Times New Roman' size='3px'><a href=<$=data.changelog $> target=\"_blank\"><$=com_zimbra_erp_mail_connector.aboutus_changelog $></a>&nbsp;&nbsp;&nbsp;<a href=<$=data.documentlink $> target=\"_blank\"><$=com_zimbra_erp_mail_connector.aboutus_documentation $></a></center></font></td></tr>
 	</table>
 </template>
