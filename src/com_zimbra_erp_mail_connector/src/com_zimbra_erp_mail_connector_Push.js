@@ -136,7 +136,7 @@ com_zimbra_erp_mail_connector_Push.checkdAll = function(ran) {
 /*Create a dialog view for push Email*/
 com_zimbra_erp_mail_connector_Push.prototype._createDialogView = function() {
 	var data={"zimlet":this.zimlet,random:this.push_random};
-	var html = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.push#pushEmail",data);	
+	var html = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.push#pushEmail",data);
 	return html;
 };
 

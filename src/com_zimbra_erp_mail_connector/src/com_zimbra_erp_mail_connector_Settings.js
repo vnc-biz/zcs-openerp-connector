@@ -111,7 +111,7 @@ com_zimbra_erp_mail_connector_Settings.prototype._getDatabase = function(){
 	}else if(urladdress.match("^http") == "http"){
 		proto="http://"
 		urladdress=urladdress.substring(7);
-	}	
+	}
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/GetDatabaseRpc.jsp?urladdress="+(proto+urladdress)+"&port="+port;
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	if (response.success == true && (this.zimlet.trim(response.text))!="fail") {

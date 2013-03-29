@@ -59,7 +59,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.initializeToolbar = functi
 			image : "NewMessage" // icon
 		};
 		var button = toolbar.createOp(com_zimbra_erp_mail_connector_HandlerObject.BUTTON2_ID, buttonArgs);
-		button.addSelectionListener(new AjxListener(this,this._handle_push_and_save, controller));	
+		button.addSelectionListener(new AjxListener(this,this._handle_push_and_save, controller));
 	}
 };
 
