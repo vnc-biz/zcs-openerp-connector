@@ -290,7 +290,7 @@ com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random,ac
 						this.zimlet.alert_critical_msg("email_archive_failed");
 						flag=1;
 					}else{
-						this.zimlet.alert_critical_msg("duplicate_mail_not_allowed");
+						this.zimlet.alert_info_msg("duplicate_mail_not_allowed");
 						flag=1;
 					}
 				}
