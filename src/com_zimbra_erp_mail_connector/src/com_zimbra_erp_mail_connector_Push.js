@@ -211,6 +211,8 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 			} else {
 				if (this.zimlet.trim(response.text)=="Exception") {
 					this.zimlet.alert_critical_text(this.zimlet.getMessage("error_in_gettingrecords")+tot_obj[j]);
+				}else{
+		            this.documentrecord+="</table><p style='text-align:center;font-weight:bold'>"+this.zimlet.getMessage("no_records_founds")+emailsearch+"</p>";			
 				}
 			}
 		} else {
