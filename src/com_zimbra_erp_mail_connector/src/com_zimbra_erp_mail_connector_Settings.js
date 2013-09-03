@@ -98,6 +98,11 @@ com_zimbra_erp_mail_connector_Settings.prototype._getDatabase = function(){
 		document.getElementById("com_zimbra_erp_mail_connector_port").focus();
 		return;
 	}
+    if(/\D/.test(port)){
+        this.zimlet.alert_critical_msg("connector_configuration_port_invalid");
+        document.getElementById("com_zimbra_erp_mail_connector_port").focus();
+        return;
+    }
 	if(document.getElementById("com_zimbra_erp_mail_connector_port").value.match(/^\s*$/)){
 		this.zimlet.alert_critical_msg("connector_configuration_port");
 		document.getElementById("com_zimbra_erp_mail_connector_port").focus();
