@@ -38,6 +38,6 @@ com_zimbra_erp_mail_connector_AboutPage.prototype._createHTML = function() {
 		var change_log = "https://collaboration.vnc.biz/product-area/vnc-business-cloud-apps/vnc-zimlets/vnc-openerp-zimlet/vnc-openerp-zimlet-changelogs";
 		var documentation = "https://collaboration.vnc.biz/product-area/vnc-business-cloud-apps/vnc-zimlets/vnc-openerp-zimlet/vnc-openerp-zimlet";
 	}
-	var data = {"zmlt":this.zimlet,changelog:change_log,documentlink:documentation}
+	var data = {"zmlt":this.zimlet,changelog:change_log,documentlink:documentation,line1:this.zimlet.getMessage("about_us_line1"),line2:this.zimlet.getMessage("about_us_line2")}
 	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.about#about",data);
 }
