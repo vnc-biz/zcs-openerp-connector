@@ -181,9 +181,10 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 };
 
 var erpConnector = "";
-
+com_zimbra_erp_mail_connector.ZIMLET = null;
 com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	//Read user credentials from database
+    com_zimbra_erp_mail_connector.ZIMLET = this;
 	this.mail_from = [];
 	AjxRpc.__RPC_CACHE_MAX = 200;
 	docList=this.getUserProperty("doc_list");
