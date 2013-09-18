@@ -22,12 +22,12 @@ com_zimbra_erp_mail_connector_Settings.prototype = new DwtTabViewPage;
 
 com_zimbra_erp_mail_connector_Settings.prototype.constructor = com_zimbra_erp_mail_connector_Settings;
 
-function com_zimbra_erp_mail_connector_Settings(parent, zimlet,confi_btn_database,canvas){
+function com_zimbra_erp_mail_connector_Settings(parent, zimlet,confi_btn_database,oe_canvas){
 	this.flag = 0;
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	config_btn_database=confi_btn_database;
-	this._createHTML(canvas);
+	this._createHTML(oe_canvas);
 	document.getElementById("com_zimbra_erp_mail_connector_urladdress").value=erpConnector.urladdress;
 	if(erpConnector.getdatabase=="" || erpConnector.getdatabase ==null || erpConnector.getdatabase == undefined){
 		document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML=""+"<option>"+zimlet.getMessage("select_any_database")+"</option>";

@@ -246,8 +246,8 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.doubleClicked =function ()
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function () {
-	if(this.canvas){
-		this.canvas.popup();
+	if(this.oe_canvas){
+		this.oe_canvas.popup();
 		return;
 	}
 	var confi_btn_database=this.getMessage("connector_configuration_btn_database");
@@ -258,74 +258,76 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	var document_success_delete=this.getMessage("connector_document_success_delete");
 	var document_unsuccess_delete=this.getMessage("connector_document_unsuccess_delete");
 	var document_unsuccess_blank=this.getMessage("connector_document_unsuccess_blank");
-	var view = new DwtComposite(appCtxt.getShell());
-	this.canvas = new erpConnector_TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),view);
-	this.tabView = new DwtTabView(view,"SideStepTabView");
+	var oe_config_view = new DwtComposite(appCtxt.getShell());
+	this.oe_canvas = new erpConnector_TabDialog(appCtxt.getShell(), this.getMessage("connector_project_title"),oe_config_view);
+    //this.oe_canvas = new ZmDialog(this, {parent:parent, title:this.getMessage("connector_project_title"), standardButtons:[DwtDialog.OK_BUTTON,DwtDialog.CANCEL_BUTTON]});
+	this.tabView = new DwtTabView(oe_config_view,"SideStepTabView");
 	this.about_setting= new com_zimbra_erp_mail_connector_AboutPage(this.tabView,this);
-	this.configuration_setting = new com_zimbra_erp_mail_connector_Settings(this.tabView,this,confi_btn_database,this.canvas);
+	this.configuration_setting = new com_zimbra_erp_mail_connector_Settings(this.tabView,this,confi_btn_database,this.oe_canvas);
 	this.document_setting= new com_zimbra_erp_mail_connector_DocSettings(this.tabView,this);
-	view.setSize("550px", "335px");
+	oe_config_view.setSize("550px", "335px");
 	this.tabView.setSize("550px", "345px");
 	this.tabkeys = [];
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab1"),this.configuration_setting));
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab2"),this.document_setting));
 	this.tabkeys.push(this.tabView.addTab(this.getMessage("connector_project_tab3"),this.about_setting));
-	this.canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_project_close"));
-	this.canvas.getButton(DwtDialog.OK_BUTTON).setText(this.getMessage("reset_configuration"));
-	this.canvas.registerCallback(DwtDialog.OK_BUTTON, new AjxCallback(this, this._handleResetClick));
-    this.canvas._baseTabGroupSize = 10;
-    this.canvas._tabGroup.__blockApplicationHandling=false;
-    this.canvas._tabGroup.__blockDefaultHandling=false;
-    console.log("This is canvas "+this.canvas);
-    this.canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_urladdress"),0);
-    this.canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_port"),1);
-    this.canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_getdatabase"),3);
-    this.canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_username"),4);
-    this.canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_userpassword"),5);
-    this.canvas._tabGroup.addMember(document.getElementById("passchk"),6);
-    this.canvas._tabGroup.addMember(this.canvas.getButton(DwtDialog.CANCEL_BUTTON),8);
-    this.canvas.setEnterListener(null);
+	this.oe_canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_project_close"));
+	this.oe_canvas.getButton(DwtDialog.OK_BUTTON).setText(this.getMessage("reset_configuration"));
+	this.oe_canvas.registerCallback(DwtDialog.OK_BUTTON, new AjxCallback(this, this._oe_handleResetClick));
+    //this.oe_canvas.getButton(this.oe_canvas.OK_BUTTON).addSelectionListener(new AjxListener(this,this._oe_handleResetClick));
+    this.oe_canvas._baseTabGroupSize = 10;
+    this.oe_canvas._tabGroup.__blockApplicationHandling=false;
+    this.oe_canvas._tabGroup.__blockDefaultHandling=false;
+    console.log("This is canvas "+this.oe_canvas);
+    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_urladdress"),0);
+    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_port"),1);
+    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_getdatabase"),3);
+    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_username"),4);
+    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_userpassword"),5);
+    this.oe_canvas._tabGroup.addMember(document.getElementById("passchk"),6);
+    this.oe_canvas._tabGroup.addMember(this.oe_canvas.getButton(DwtDialog.CANCEL_BUTTON),8);
     //this.canvas._tabGroup.blockDefaultHandling(false);
-	this.canvas.popup();
+	this.oe_canvas.popup();
 	this.tabView.getTabButton(this.tabkeys[0]).setImage("preferences");	//SideStep-configuration
 	this.tabView.getTabButton(this.tabkeys[1]).setImage("edit");		//SideStep-document
 	this.tabView.getTabButton(this.tabkeys[2]).setImage("social-icon");	//SideStep-about
 }
 
-com_zimbra_erp_mail_connector_HandlerObject.prototype._handleResetClick=function(){
-	this._dialog = appCtxt.getYesNoMsgDialog();
-	this._dialog.setMessage(this.getMessage("configuration_clear_warning"),DwtMessageDialog.WARNING_STYLE,this.getMessage("warning"));
-	this._dialog.setButtonListener(DwtDialog.YES_BUTTON, new AjxListener(this, this._yesBtnListener));
-	this._dialog.setButtonListener(DwtDialog.NO_BUTTON, new AjxListener(this, this._noBtnListener));
-	this._dialog.popup();
+com_zimbra_erp_mail_connector_HandlerObject.prototype._oe_handleResetClick=function(){
+	this._clear_config_dialog = appCtxt.getYesNoMsgDialog();
+	this._clear_config_dialog.setMessage(this.getMessage("configuration_clear_warning"),DwtMessageDialog.WARNING_STYLE,this.getMessage("warning"));
+	this._clear_config_dialog.setButtonListener(DwtDialog.YES_BUTTON, new AjxListener(this, this._oeyesBtnListener));
+	this._clear_config_dialog.setButtonListener(DwtDialog.NO_BUTTON, new AjxListener(this, this._oenoBtnListener));
+	this._clear_config_dialog.popup();
 }
 
-com_zimbra_erp_mail_connector_HandlerObject.prototype._yesBtnListener=function(){
+com_zimbra_erp_mail_connector_HandlerObject.prototype._oeyesBtnListener=function(){
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/clearConfig.jsp";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	document.getElementById("com_zimbra_erp_mail_connector_urladdress").innerHTML="";
-	this._dialog.popdown();
+	this._clear_config_dialog.popdown();
 	erpConnector.port = "";
 	erpConnector.urladdress = "";
 	erpConnector.getdatabase = "";
 	this.configuration_setting.clearConfig();
 }
 
-com_zimbra_erp_mail_connector_HandlerObject.prototype._noBtnListener=function(){
-	this._dialog.popdown();
+com_zimbra_erp_mail_connector_HandlerObject.prototype._oenoBtnListener=function(){
+	this._clear_config_dialog.popdown();
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._okBtnListener=function(){
-	this.canvas.popdown();
+	this.oe_canvas.popdown();
 }
 
-function erpConnector_TabDialog(parent,title, view) {
+function erpConnector_TabDialog(oe_parent,title, oe_view) {
 	if (arguments.length == 0) return;
-	DwtDialog.call(this, {parent:parent, title:title, standardButtons:[DwtDialog.OK_BUTTON,DwtDialog.CANCEL_BUTTON]});
-	if (!view) {
+	DwtDialog.call(this, {parent:oe_parent, title:title, standardButtons:[DwtDialog.OK_BUTTON,DwtDialog.CANCEL_BUTTON]});
+    //var configDlg = new DwtDialog({parent:parent, title:title, standardButtons:[DwtDialog.OK_BUTTON,DwtDialog.CANCEL_BUTTON]});
+	if (!oe_view) {
 		this.setContent(this._contentHtml());
 	} else {
-		this.setView(view);
+		this.setView(oe_view);
 	}
 	this._treeView = {};
 	this._opc = appCtxt.getOverviewController();
