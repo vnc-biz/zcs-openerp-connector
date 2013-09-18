@@ -59,17 +59,20 @@ com_zimbra_erp_mail_connector_Push.prototype._displayDailog = function() {
 		this.pView.getHtmlElement().style.overflow="auto";
 	}
 
-	this.pView.getHtmlElement().innerHTML=this._createDialogView();
 	this.pbDialog=new ZmDialog({title:dialogtitle, view:this.pView, parent:this.zimlet.getShell(), standardButtons:[DwtDialog.DISMISS_BUTTON]});
+	this.pView.getHtmlElement().innerHTML=this._createDialogView();
 	this.pbDialog.getButton(DwtDialog.DISMISS_BUTTON).setText(this.zimlet.getMessage("connector_project_close"));
 	this.pbDialog.setButtonListener(DwtDialog.DISMISS_BUTTON, new AjxListener(this, this._dismissBtnListener));
 	this.getRecords();
+    this.pbDialog._baseTabGroupSize = 10;
 
 	document.getElementById("document_name"+this.push_random+"").innerHTML=this.fixheading;
 	document.getElementById("mailsearch"+this.push_random+"").value = this.pushfrom;
 	document.getElementById("pushEmail"+this.push_random).appendChild(pushMailBtn.getHtmlElement());
 	document.getElementById("doc_search"+this.push_random).appendChild(searchDocBtn.getHtmlElement());
-
+    this.pbDialog._tabGroup.addMember(document.getElementById("mailsearch"+this.push_random+""),0);
+    this.pbDialog._tabGroup.addMember(searchDocBtn,1);
+    this.pbDialog._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_gridtable"),2);
 	this.pbDialog.popup();
 }
 
@@ -201,7 +204,7 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 				}
 				for (var i = 0; i < docrecord.length; i++) {
 					var record_id=docrecord[i].toString().split(',')[0];
-					var record_names=docrecord[i].toString().split(',')[1];
+					var record_names=docrecord[i].toString().split(',').splice(1,docrecord[i].toString().split(',').length).join();
 					if (i%2==0) {
 						this.documentrecord+="<tr class='d0'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
 					} else {
