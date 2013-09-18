@@ -164,6 +164,7 @@ select
 
 .com_zimbra_erp_mail_connector_marginIE
 {
+    margin-left:12%;
 	padding-left:12%;
 	margin-left:8%\9;	/* IE8/IE9 hack */
 	margin-top:3%;
