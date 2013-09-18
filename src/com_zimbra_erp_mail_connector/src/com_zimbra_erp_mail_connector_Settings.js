@@ -22,12 +22,12 @@ com_zimbra_erp_mail_connector_Settings.prototype = new DwtTabViewPage;
 
 com_zimbra_erp_mail_connector_Settings.prototype.constructor = com_zimbra_erp_mail_connector_Settings;
 
-function com_zimbra_erp_mail_connector_Settings(parent, zimlet,confi_btn_database){
+function com_zimbra_erp_mail_connector_Settings(parent, zimlet,confi_btn_database,canvas){
 	this.flag = 0;
 	DwtTabViewPage.call(this,parent);
 	this.zimlet = zimlet;
 	config_btn_database=confi_btn_database;
-	this._createHTML();
+	this._createHTML(canvas);
 	document.getElementById("com_zimbra_erp_mail_connector_urladdress").value=erpConnector.urladdress;
 	if(erpConnector.getdatabase=="" || erpConnector.getdatabase ==null || erpConnector.getdatabase == undefined){
 		document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML=""+"<option>"+zimlet.getMessage("select_any_database")+"</option>";
@@ -47,15 +47,22 @@ com_zimbra_erp_mail_connector_Settings.prototype.clearConfig = function() {
 	document.getElementById("com_zimbra_erp_mail_connector_urladdress").value="";
 }
 
-com_zimbra_erp_mail_connector_Settings.prototype._createHTML = function() {
-	var get_db = new DwtButton({parent:appCtxt.getShell()});
+com_zimbra_erp_mail_connector_Settings.prototype._createHTML = function(dlgObj) {
+	var get_db = new DwtButton({parent:appCtxt.getShell(),id:"tete"});
 	get_db.setText(config_btn_database);
 	get_db.setImage("com_zimbra_erp_mail_connector_getDB");
+    dlgObj._tabGroup.addMember(get_db,2);
+    dlgObj.associateEnterWithButton("tete");
 	get_db.addSelectionListener(new AjxListener(this,this._getDatabase));
-	var connectBtn = new DwtButton({parent:appCtxt.getShell()});
+	//get_db.setEnterListener(new AjxListener(this,this._getDatabase));
+
+    console.log("aa canvas che ??? "+dlgObj);
+	var connectBtn = new DwtButton({parent:dlgObj,id:"connectButton"});
 	connectBtn.setText(this.zimlet.getMessage("connector_configuration_lbl_connect"));
 	connectBtn.setImage("connect");
 	connectBtn.addSelectionListener(new AjxListener(this,this.checkConnection));
+	//connectBtn.setEnterListener(new AjxListener(this,this.checkConnection));
+    dlgObj._tabGroup.addMember(connectBtn,7);
 	var i = 0;
 	var html = new Array();
 	var data={"zimlet":this.zimlet,random:Dwt.getNextId()};
