@@ -427,14 +427,22 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.trim=function(data){
 	return data.replace(/^\s+|\s+$/g,"");
 }
 
-com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_text = function(text) {
-	var a = appCtxt.getMsgDialog();
+com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_text = function(text,focusid) {
+    console.log("alert_critical_text() : HTML control ID : "+focusid);
+	var a = new DwtMessageDialog({parent:appCtxt.getShell(), id: "test_id",buttons:[DwtDialog.OK_BUTTON]});
 	a.setMessage(text,DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
+    a.getButton(DwtDialog.OK_BUTTON).addSelectionListener(new AjxListener(this,this._errorDlgListener,[a,focusid]));
 	a.popup();
 }
-
-com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_msg = function(msgid) {
-	return this.alert_critical_text(this.getMessage(msgid));
+com_zimbra_erp_mail_connector_HandlerObject.prototype._errorDlgListener = function(dlg,focusid) {
+    console.log("THis is HTML control ID  : "+focusid);
+    dlg.popdown();
+    if(!this.isBlank(focusid)){
+        document.getElementById(focusid).focus();
+    }
+}
+com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_msg = function(msgid,focusid) {
+	return this.alert_critical_text(this.getMessage(msgid),focusid);
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_warning_text = function(text) {
