@@ -31,6 +31,7 @@ com_zimbra_erp_mail_connector_Push=function(zimlet,msgids,push_from,msgtype){
 	}
 	this.message_type=msgtype;
 	this.fixheading= AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.push#fixheading");
+	this.errorHeading= AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.push#fixheading")+"</table><p style='text-align:center;font-weight:bold'>"+this.zimlet.getMessage("no_records_founds")+"EMAILSEARCH </p>";
 	this._displayDailog();
 };
 
@@ -146,6 +147,7 @@ com_zimbra_erp_mail_connector_Push.prototype._createDialogView = function() {
 /*Provede All users name from Open ERP*/
 com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 	this.documentrecord = "";
+    this.recordFound = false;
 	record_check=document.getElementsByName("records"+this.push_random+"");
 	var flg=0;
 	for(var i=0;i<record_check.length;i++) {
@@ -193,6 +195,7 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 		/*response will have documents list*/
 		if (response.success == true) {
 			if (this.zimlet.trim(response.text).length>2 && (this.zimlet.trim(response.text))!="Exception") {
+                this.recordFound = true;
 				var docrecord=JSON.parse(this.zimlet.trim(response.text));
 				var title;
 				dd_list=this.zimlet.getUserProperty("doc_list");
@@ -214,8 +217,6 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 			} else {
 				if (this.zimlet.trim(response.text)=="Exception") {
 					this.zimlet.alert_critical_text(this.zimlet.getMessage("error_in_gettingrecords")+tot_obj[j]);
-				}else{
-                    this.documentrecord=this.fixheading+"</table><p style='text-align:center;font-weight:bold'>"+this.zimlet.getMessage("no_records_founds")+emailsearch+"</p>";
 				}
 			}
 		} else {
@@ -227,7 +228,11 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 	}
 	var radiofill=document.getElementsByName("document_name"+this.push_random);
 	for (var i=0;i<radiofill.length;i++) {
-		radiofill[i].innerHTML=this.documentrecord;
+        if(this.recordFound){
+            radiofill[i].innerHTML=this.documentrecord;
+        }else{
+            radiofill[i].innerHTML=this.errorHeading.replace("EMAILSEARCH",emailsearch);
+        }
 	}
 	document.getElementById("wait"+this.push_random+"").innerHTML="";
 }
