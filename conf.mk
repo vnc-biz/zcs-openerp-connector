@@ -1,4 +1,4 @@
-VERSION=1.2.5.4
+VERSION=1.2.5.5
 PACKAGE=zcs-openerp-connector
 MAINTAINER=Enrico Weigelt <enrico.weigelt@vnc.biz>
 SECTION=free/zcs-office
