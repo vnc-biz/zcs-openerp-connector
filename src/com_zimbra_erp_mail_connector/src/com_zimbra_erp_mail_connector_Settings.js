@@ -225,9 +225,10 @@ com_zimbra_erp_mail_connector_Settings.prototype.checkConnection = function(){
 				com_zimbra_erp_mail_connector_DocSettings.prototype.getTableRecords();
 			}
 		} else {
+			changeVersion=true;
 			docList=this.zimlet.getUserProperty("doc_list");
-			if(docList.length<=0 || changeVersion==true){
-				var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"}]}";
+			if(changeVersion==true){
+				var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"},{\"id\":\"4\",\"title\":\"Project\",\"docname\":\"project.project\"}]}";
 				this.zimlet.setUserProperty("doc_list",this.zimlet.trim(doclist));
 				this.zimlet.saveUserProperties();
 				com_zimbra_erp_mail_connector_DocSettings_this = this;
