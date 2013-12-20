@@ -142,13 +142,15 @@ public class Connector {
 					return "bl";
 				}
 			} else {
-				if (obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead")) {
+				if (obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead") || obj_name.equals("project.project")) {
 					if (validate(emailsearch)) {
 						Vector parent=new Vector();
 						{
 							Vector<String> child = new Vector<String>();
 							if(obj_name.equals("crm.lead")) {
 								child.add("email_from");
+							} else if(obj_name.equals("project.project")) {
+								child.add("name");
 							} else {
 								child.add("email");
 							}
@@ -170,6 +172,8 @@ public class Connector {
 								Vector<String> domainChild = new Vector<String>();
 								if(obj_name.equals("crm.lead")) {
 									domainChild.add("email_from");
+								} else if(obj_name.equals("project.project")) {
+									domainChild.add("name");
 								} else {
 									domainChild.add("email");
 								}
