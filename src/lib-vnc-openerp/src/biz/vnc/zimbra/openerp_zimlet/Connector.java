@@ -142,8 +142,6 @@ public class Connector {
 					Object token = rpc_call_object_execute(obj_name[k], "name_search", "");
 					if (token.toString().length()!=2) {
 						vc.add(gson.toJson(token));
-					} else {
-						return "bl";
 					}
 				} else {
 					if (obj_name[k].equals("res.partner") || obj_name[k].equals("res.partner.address") || obj_name[k].equals("crm.lead") || obj_name[k].equals("project.project")) {
@@ -165,8 +163,6 @@ public class Connector {
 							Object token = rpc_call_object_execute(obj_name[k], "name_search", "", parent);
 							if(token.toString().length()!=2) {
 								vc.add(gson.toJson(token));
-							} else {
-								return "bl";
 							}
 						} else {
 							if(emailsearch.indexOf("@")== 0 && emailsearch.indexOf(".")>0) {
@@ -189,15 +185,11 @@ public class Connector {
 								_info("getDocumentList() call succeed: "+token.toString());
 								if(token.toString().length()!=2) {
 									vc.add(gson.toJson(token));
-								} else {
-									return "bl";
 								}
 							} else {
 								Object token = rpc_call_object_execute(obj_name[k], "name_search", emailsearch);
 								if(token.toString().length()!=2) {
 									vc.add(gson.toJson(token));
-								} else {
-									return "bl";
 								}
 							}
 						}
@@ -205,8 +197,6 @@ public class Connector {
 						Object token = rpc_call_object_execute(obj_name[k], "name_search", emailsearch);
 						if(token.toString().length()!=2) {
 							vc.add(gson.toJson(token));
-						} else {
-							return "bl";
 						}
 					}
 				}
