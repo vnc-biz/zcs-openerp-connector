@@ -19,7 +19,7 @@
 #
 ##############################################################################
 -->
-<zimlet name="@ZIMLET_NAME@" version="@ZIMLET_VERSION@" label="${msg.connector_panel_lbl}" description="$(msg.zimlet_description)">
+<zimlet name="@ZIMLET_NAME@" version="@ZIMLET_VERSION@" label="${msg.connector_panel_lbl}" description="${msg.zimlet_description} (@ZIMLET_VERSION@)">
 	<include>com_zimbra_erp_mail_connector.js</include>
 	<include>com_zimbra_erp_mail_connector_Settings.js</include>
 	<include>com_zimbra_erp_mail_connector_Push.js</include>
