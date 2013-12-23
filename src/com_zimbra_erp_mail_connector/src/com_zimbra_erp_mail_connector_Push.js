@@ -188,51 +188,57 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 	}
 	var tot_obj=obj_name.toString().split(',');
 	document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+this.zimlet.getResource("resources/submit_please_wait.gif")+"'/>";
+	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentlist.jsp?emailsearch="+this.zimlet.trim(emailsearch)+"&obj_name="+AjxStringUtil.urlComponentEncode(tot_obj);
+	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	this.documentrecord+=this.fixheading;
-	for (var j=0;j<tot_obj.length-1;j++) {
-		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentlist.jsp?emailsearch="+this.zimlet.trim(emailsearch)+"&obj_name="+tot_obj[j];
-		var response = AjxRpc.invoke(null,jspurl, null, null, true);
-		/*response will have documents list*/
-		if (response.success == true) {
-			if (this.zimlet.trim(response.text).length>2 && (this.zimlet.trim(response.text))!="Exception") {
-                this.recordFound = true;
-				var docrecord=JSON.parse(this.zimlet.trim(response.text));
+	if (response.success == true) {
+		if (this.zimlet.trim(response.text).length>2 && (this.zimlet.trim(response.text))!="Exception") {
+			this.recordFound = true;
+			if(this.zimlet.trim(response.text)!="bl" && this.zimlet.trim(response.text)!="blbl" && this.zimlet.trim(response.text)!="blblbl"){
+				var docrecord=jsonParse(this.zimlet.trim(response.text));
 				var title;
-				dd_list=this.zimlet.getUserProperty("doc_list");
-				dd_json=JSON.parse(dd_list);
-				for (var k=0;k<dd_json.records.length;k++) {
-					if (dd_json.records[k].docname==tot_obj[j]) {
-						title=dd_json.records[k].title;
+				for(var l=0;l<docrecord.length;l++){
+					var recordsdata = docrecord[l];
+					var doc_name = tot_obj[l];
+					doc_name = doc_name.split(".")[1];
+					if(AjxStringUtil.trim(doc_name)=="partner"){
+						title = "Partner";
 					}
-				}
-				for (var i = 0; i < docrecord.length; i++) {
-					var record_id=docrecord[i].toString().split(',')[0];
-					var record_names=docrecord[i].toString().split(',').splice(1,docrecord[i].toString().split(',').length).join();
-					if (i%2==0) {
-						this.documentrecord+="<tr class='d0'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
-					} else {
-						this.documentrecord+="<tr class='d1'><td style='width:12%'><input type='radio' value="+(tot_obj[j]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
+					if(AjxStringUtil.trim(doc_name)=="lead"){
+						title = "Lead";
 					}
-				}
-			} else {
-				if (this.zimlet.trim(response.text)=="Exception") {
-					this.zimlet.alert_critical_text(this.zimlet.getMessage("error_in_gettingrecords")+tot_obj[j]);
+					if(AjxStringUtil.trim(doc_name)=="project"){
+						title = "Project";
+					}
+					for(k=0;k<recordsdata.length;k++){
+						record_id = recordsdata[k].toString().split(",")[0];
+						record_names = recordsdata[k].toString().substring(recordsdata[k].toString().indexOf(",")+1,recordsdata[k].toString().length);
+						if(k%2==0){
+							this.documentrecord+="<tr class='d0'><td style='width:12%'><input type='radio' value="+(tot_obj[l]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
+						}else{
+							this.documentrecord+="<tr class='d1'><td style='width:12%'><input type='radio' value="+(tot_obj[l]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
+						}
+					}
 				}
 			}
 		} else {
-			this.zimlet.alert_warning_msg("connector_pushopenerp_responseproblem");
-			document.getElementById("document_name"+this.push_random+"").innerHTML=""+this.fixheading;
-			document.getElementById("wait"+this.push_random+"").innerHTML="";
-			return;
+			if (this.zimlet.trim(response.text)=="Exception") {
+				this.zimlet.alert_critical_text(this.zimlet.getMessage("error_in_gettingrecords"));
+			}
 		}
+	} else {
+		this.zimlet.alert_warning_msg("connector_pushopenerp_responseproblem");
+		document.getElementById("document_name"+this.push_random+"").innerHTML=""+this.fixheading;
+		document.getElementById("wait"+this.push_random+"").innerHTML="";
+		return;
 	}
 	var radiofill=document.getElementsByName("document_name"+this.push_random);
 	for (var i=0;i<radiofill.length;i++) {
-        if(this.recordFound){
-            radiofill[i].innerHTML=this.documentrecord;
-        }else{
-            radiofill[i].innerHTML=this.errorHeading.replace("EMAILSEARCH",emailsearch);
-        }
+		if(this.recordFound){
+			radiofill[i].innerHTML=this.documentrecord;
+		}else{
+			radiofill[i].innerHTML=this.errorHeading.replace("EMAILSEARCH",emailsearch);
+		}
 	}
 	document.getElementById("wait"+this.push_random+"").innerHTML="";
 }

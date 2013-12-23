@@ -25,12 +25,12 @@
 <%
 
 JSPUtil.nocache(response);
-
+String objectnames[] = request.getParameterValues("obj_name");
+String obj_name[] = objectnames[0].split(",");
 out.print(
 	JSPFactory.getConnector(request).getDocumentlist(
 		request.getParameter("emailsearch"),
-		request.getParameter("obj_name")
+		objectnames[0]
 	)
 );
-
 %>

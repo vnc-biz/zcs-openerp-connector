@@ -222,6 +222,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	this.msgFlag = "";
 	this.participants = "";
 	AjxPackage.require("vnc.json.json2");
+	AjxPackage.require("vnc.json.json-minified");
 }
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.tagcreate = function(){

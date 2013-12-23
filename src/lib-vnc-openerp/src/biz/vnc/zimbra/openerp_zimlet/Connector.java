@@ -132,77 +132,82 @@ public class Connector {
 		return "false";
 	}
 
-	public String getDocumentlist(String emailsearch, String obj_name) {
+	public String getDocumentlist(String emailsearch, String obj_name_array) {
+		Gson gson = new Gson();
+		Vector vc = new Vector();
 		try {
-			if (emailsearch.equals("")) {
-				Object token = rpc_call_object_execute(obj_name, "name_search", "");
-				if (token.toString().length()!=2) {
-					return objToJSON(token);
+			String obj_name[] = obj_name_array.split(",");
+			for(int k=0; k<obj_name.length; k++) {
+				if (emailsearch.equals("")) {
+					Object token = rpc_call_object_execute(obj_name[k], "name_search", "");
+					if (token.toString().length()!=2) {
+						vc.add(gson.toJson(token));
+					} else {
+						return "bl";
+					}
 				} else {
-					return "bl";
-				}
-			} else {
-				if (obj_name.equals("res.partner") || obj_name.equals("res.partner.address") || obj_name.equals("crm.lead") || obj_name.equals("project.project")) {
-					if (validate(emailsearch)) {
-						Vector parent=new Vector();
-						{
-							Vector<String> child = new Vector<String>();
-							if(obj_name.equals("crm.lead")) {
-								child.add("email_from");
-							} else if(obj_name.equals("project.project")) {
-								child.add("name");
-							} else {
-								child.add("email");
+					if (obj_name[k].equals("res.partner") || obj_name[k].equals("res.partner.address") || obj_name[k].equals("crm.lead") || obj_name[k].equals("project.project")) {
+						if (validate(emailsearch)) {
+							Vector parent=new Vector();
+							{
+								Vector<String> child = new Vector<String>();
+								if(obj_name[k].equals("crm.lead")) {
+									child.add("email_from");
+								} else if(obj_name[k].equals("project.project")) {
+									child.add("name");
+								} else {
+									child.add("email");
+								}
+								child.add("ilike");
+								child.add(emailsearch);
+								parent.add(child);
 							}
-							child.add("ilike");
-							child.add(emailsearch);
-							parent.add(child);
+							Object token = rpc_call_object_execute(obj_name[k], "name_search", "", parent);
+							if(token.toString().length()!=2) {
+								vc.add(gson.toJson(token));
+							} else {
+								return "bl";
+							}
+						} else {
+							if(emailsearch.indexOf("@")== 0 && emailsearch.indexOf(".")>0) {
+								_info("getDocumentList() got a domainname");
+								Vector domainParent=new Vector();
+								{
+									Vector<String> domainChild = new Vector<String>();
+									if(obj_name[k].equals("crm.lead")) {
+										domainChild.add("email_from");
+									} else if(obj_name[k].equals("project.project")) {
+										domainChild.add("name");
+									} else {
+										domainChild.add("email");
+									}
+									domainChild.add("ilike");
+									domainChild.add(emailsearch);
+									domainParent.add(domainChild);
+								}
+								Object token = rpc_call_object_execute(obj_name, "name_search", "", domainParent);
+								_info("getDocumentList() call succeed: "+token.toString());
+								if(token.toString().length()!=2) {
+									vc.add(gson.toJson(token));
+								} else {
+									return "bl";
+								}
+							} else {
+								Object token = rpc_call_object_execute(obj_name[k], "name_search", emailsearch);
+								if(token.toString().length()!=2) {
+									vc.add(gson.toJson(token));
+								} else {
+									return "bl";
+								}
+							}
 						}
-						Object token = rpc_call_object_execute(obj_name, "name_search", "", parent);
+					} else {
+						Object token = rpc_call_object_execute(obj_name[k], "name_search", emailsearch);
 						if(token.toString().length()!=2) {
-							return objToJSON(token);
+							vc.add(gson.toJson(token));
 						} else {
 							return "bl";
 						}
-					} else {
-						if(emailsearch.indexOf("@")== 0 && emailsearch.indexOf(".")>0) {
-							_info("getDocumentList() got a domainname");
-							Vector domainParent=new Vector();
-							{
-								Vector<String> domainChild = new Vector<String>();
-								if(obj_name.equals("crm.lead")) {
-									domainChild.add("email_from");
-								} else if(obj_name.equals("project.project")) {
-									domainChild.add("name");
-								} else {
-									domainChild.add("email");
-								}
-								domainChild.add("ilike");
-								domainChild.add(emailsearch);
-								domainParent.add(domainChild);
-							}
-							Object token = rpc_call_object_execute(obj_name, "name_search", "", domainParent);
-							_info("getDocumentList() call succeed: "+token.toString());
-							if(token.toString().length()!=2) {
-								return objToJSON(token);
-							} else {
-								return "bl";
-							}
-						} else {
-							Object token = rpc_call_object_execute(obj_name, "name_search", emailsearch);
-							if(token.toString().length()!=2) {
-								return objToJSON(token);
-							} else {
-								return "bl";
-							}
-						}
-					}
-				} else {
-					Object token = rpc_call_object_execute(obj_name, "name_search", emailsearch);
-					if(token.toString().length()!=2) {
-						return objToJSON(token);
-					} else {
-						return "bl";
 					}
 				}
 			}
@@ -210,6 +215,7 @@ public class Connector {
 			_err("getDocumentList() failed", ex);
 			return "Exception";
 		}
+		return vc.clone().toString();
 	}
 
 	/*Gel Email Information from */
