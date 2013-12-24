@@ -25,6 +25,7 @@ com_zimbra_erp_mail_connector_Settings.prototype.constructor = com_zimbra_erp_ma
 function com_zimbra_erp_mail_connector_Settings(parent, zimlet,confi_btn_database,oe_canvas){
 	this.flag = 0;
 	DwtTabViewPage.call(this,parent);
+	this.oe_canvas = oe_canvas;
 	this.zimlet = zimlet;
 	config_btn_database=confi_btn_database;
 	this._createHTML(oe_canvas);
@@ -69,6 +70,8 @@ com_zimbra_erp_mail_connector_Settings.prototype._createHTML = function(dlgObj) 
 	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.config#config_Settings",data);
 	document.getElementById("getDatabase").appendChild(get_db.getHtmlElement());
 	document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
+	this.connectBtn = connectBtn;
+	this.get_db = get_db;
 };
 
 com_zimbra_erp_mail_connector_Settings.showpass = function(){
@@ -237,3 +240,22 @@ com_zimbra_erp_mail_connector_Settings.prototype.checkConnection = function(){
 		}
 	}
 }
+
+com_zimbra_erp_mail_connector_Settings.prototype.showMe = function(){
+	DwtTabViewPage.prototype.showMe.call(this);
+	this.oe_canvas._tabGroup.removeAllMembers();
+	this.oe_canvas._baseTabGroupSize = 10;
+	this.oe_canvas._tabGroup.__blockApplicationHandling=false;
+	this.oe_canvas._tabGroup.__blockDefaultHandling=false;
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_urladdress"),0);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_port"),1);
+	this.oe_canvas._tabGroup.addMember(this.get_db,2);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_getdatabase"),3);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_username"),4);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_userpassword"),5);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("passchk"),6);
+	this.oe_canvas._tabGroup.addMember(this.connectBtn,7);
+	this.oe_canvas._tabGroup.addMember(this.oe_canvas.getButton(DwtDialog.OK_BUTTON),8);
+	this.oe_canvas._tabGroup.addMember(this.oe_canvas.getButton(DwtDialog.CANCEL_BUTTON),9)
+	document.getElementById("com_zimbra_erp_mail_connector_urladdress").focus();
+};
