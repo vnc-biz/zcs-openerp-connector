@@ -211,9 +211,17 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 		}
 	} else {
 		docList=this.getUserProperty("doc_list");
-		var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"},{\"id\":\"4\",\"title\":\"Project\",\"docname\":\"project.project\"}]}";
-		this.setUserProperty("doc_list",this.trim(doclist));
-		this.saveUserProperties();
+		if(docList.length<=0){
+			var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"},{\"id\":\"4\",\"title\":\"Project\",\"docname\":\"project.project\"}]}";
+			this.setUserProperty("doc_list",this.trim(doclist));
+			this.saveUserProperties();
+		}
+		if(this.getUserProperty("projectmodule")==undefined){
+			var doclist="{\"records\":[{\"id\":\"1\",\"title\":\"Partner\",\"docname\":\"res.partner\"},{\"id\":\"3\",\"title\":\"Lead\",\"docname\":\"crm.lead\"},{\"id\":\"4\",\"title\":\"Project\",\"docname\":\"project.project\"}]}";
+			this.setUserProperty("doc_list",this.trim(doclist));
+			this.setUserProperty("projectmodule","projectmodule");
+			this.saveUserProperties();
+		}
 	}
 	erpConnector.zimlet = this;
 	this.tagcreate();
