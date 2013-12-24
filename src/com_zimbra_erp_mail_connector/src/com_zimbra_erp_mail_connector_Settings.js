@@ -55,14 +55,11 @@ com_zimbra_erp_mail_connector_Settings.prototype._createHTML = function(dlgObj) 
     dlgObj._tabGroup.addMember(get_db,2);
     dlgObj.associateEnterWithButton("tete");
 	get_db.addSelectionListener(new AjxListener(this,this._getDatabase));
-	//get_db.setEnterListener(new AjxListener(this,this._getDatabase));
 
-    console.log("aa canvas che ??? "+dlgObj);
 	var connectBtn = new DwtButton({parent:dlgObj,id:"connectButton"});
 	connectBtn.setText(this.zimlet.getMessage("connector_configuration_lbl_connect"));
 	connectBtn.setImage("connect");
 	connectBtn.addSelectionListener(new AjxListener(this,this.checkConnection));
-	//connectBtn.setEnterListener(new AjxListener(this,this.checkConnection));
     dlgObj._tabGroup.addMember(connectBtn,7);
 	var i = 0;
 	var html = new Array();
@@ -82,7 +79,6 @@ com_zimbra_erp_mail_connector_Settings.showpass = function(){
 	}
 }
 com_zimbra_erp_mail_connector_Settings.prototype._tempListener = function(dlg){
-    console.log("Is this dialog object ? "+dlg);
     dlg.popdown();
     document.getElementById("com_zimbra_erp_mail_connector_urladdress").focus();
 }
