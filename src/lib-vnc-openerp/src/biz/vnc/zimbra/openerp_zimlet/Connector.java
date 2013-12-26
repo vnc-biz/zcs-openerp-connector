@@ -134,6 +134,7 @@ public class Connector {
 
 	public String getDocumentlist(String emailsearch, String obj_name_array) {
 		Gson gson = new Gson();
+		JSONObject jobj = new JSONObject();
 		Vector vc = new Vector();
 		try {
 			String obj_name[] = obj_name_array.split(",");
@@ -141,7 +142,7 @@ public class Connector {
 				if (emailsearch.equals("")) {
 					Object token = rpc_call_object_execute(obj_name[k], "name_search", "");
 					if (token.toString().length()!=2) {
-						vc.add(gson.toJson(token));
+						jobj.put(obj_name[k],token);
 					}
 				} else {
 					if (obj_name[k].equals("res.partner") || obj_name[k].equals("res.partner.address") || obj_name[k].equals("crm.lead") || obj_name[k].equals("project.project")) {
@@ -162,7 +163,7 @@ public class Connector {
 							}
 							Object token = rpc_call_object_execute(obj_name[k], "name_search", "", parent);
 							if(token.toString().length()!=2) {
-								vc.add(gson.toJson(token));
+								jobj.put(obj_name[k],token);
 							}
 						} else {
 							if(emailsearch.indexOf("@")== 0 && emailsearch.indexOf(".")>0) {
@@ -184,19 +185,19 @@ public class Connector {
 								Object token = rpc_call_object_execute(obj_name[k], "name_search", "", domainParent);
 								_info("getDocumentList() call succeed: "+token.toString());
 								if(token.toString().length()!=2) {
-									vc.add(gson.toJson(token));
+									jobj.put(obj_name[k],token);
 								}
 							} else {
 								Object token = rpc_call_object_execute(obj_name[k], "name_search", emailsearch);
 								if(token.toString().length()!=2) {
-									vc.add(gson.toJson(token));
+									jobj.put(obj_name[k],token);
 								}
 							}
 						}
 					} else {
 						Object token = rpc_call_object_execute(obj_name[k], "name_search", emailsearch);
 						if(token.toString().length()!=2) {
-							vc.add(gson.toJson(token));
+							jobj.put(obj_name[k],token);
 						}
 					}
 				}
@@ -205,7 +206,7 @@ public class Connector {
 			_err("getDocumentList() failed", ex);
 			return "Exception";
 		}
-		return vc.clone().toString();
+		return jobj.toJSONString();
 	}
 
 	/*Gel Email Information from */

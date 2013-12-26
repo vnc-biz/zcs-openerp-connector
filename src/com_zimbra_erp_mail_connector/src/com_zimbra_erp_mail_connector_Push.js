@@ -197,29 +197,15 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 			if(this.zimlet.trim(response.text)!="bl" && this.zimlet.trim(response.text)!="blbl" && this.zimlet.trim(response.text)!="blblbl"){
 				var docrecord=jsonParse(this.zimlet.trim(response.text));
 				var title;
-				for(var l=0;l<docrecord.length;l++){
-					var recordsdata = docrecord[l];
-					var doc_name = tot_obj[l];
-					doc_name = doc_name.split(".")[1];
-					if(AjxStringUtil.trim(doc_name)=="partner"){
-						title = "Partner";
-					}
-					if(AjxStringUtil.trim(doc_name)=="lead"){
-						title = "Lead";
-					}
-					if(AjxStringUtil.trim(doc_name)=="project"){
-						title = "Project";
-					}
-					for(k=0;k<recordsdata.length;k++){
-						record_id = recordsdata[k].toString().split(",")[0];
-						record_names = recordsdata[k].toString().substring(recordsdata[k].toString().indexOf(",")+1,recordsdata[k].toString().length);
-						if(k%2==0){
-							this.documentrecord+="<tr class='d0'><td style='width:12%'><input type='radio' value="+(tot_obj[l]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
-						}else{
-							this.documentrecord+="<tr class='d1'><td style='width:12%'><input type='radio' value="+(tot_obj[l]+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
-						}
-					}
+				if(docrecord["project.project"]!=undefined){
+					this._fillRecords(docrecord["project.project"],"project.project","Project");
 				}
+				if(docrecord["res.partner"]!=undefined){
+					this._fillRecords(docrecord["res.partner"],"res.partner","Partner");
+                }
+				if(docrecord["crm.lead"]!=undefined){
+					this._fillRecords(docrecord["crm.lead"],"crm.lead","Lead");
+                }
 			}
 		} else {
 			if (this.zimlet.trim(response.text)=="Exception") {
@@ -243,6 +229,17 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 	document.getElementById("wait"+this.push_random+"").innerHTML="";
 }
 
+com_zimbra_erp_mail_connector_Push.prototype._fillRecords = function(recordsdata,object,title){
+	for(k=0;k<recordsdata.length;k++){
+		record_id = recordsdata[k].toString().split(",")[0];
+		record_names = recordsdata[k].toString().substring(recordsdata[k].toString().indexOf(",")+1,recordsdata[k].toString().length);
+		if(k%2==0){
+			this.documentrecord+="<tr class='d0'><td style='width:12%'><input type='radio' value="+(object+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
+		}else{
+			this.documentrecord+="<tr class='d1'><td style='width:12%'><input type='radio' value="+(object+","+record_id)+" id='record_names"+this.push_random+"' name='record_names"+this.push_random+"' style='margin-left:30%'></td><td style='width:60%'>"+record_names+"</td><td style='width:33%'>"+title+"</td></tr>";
+		}
+	}
+};
 com_zimbra_erp_mail_connector_Push.prototype._dismissBtnListener= function() {
 	this.pbDialog.popdown();
 }
