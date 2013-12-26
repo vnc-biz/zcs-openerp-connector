@@ -181,7 +181,7 @@ public class Connector {
 									domainChild.add(emailsearch);
 									domainParent.add(domainChild);
 								}
-								Object token = rpc_call_object_execute(obj_name, "name_search", "", domainParent);
+								Object token = rpc_call_object_execute(obj_name[k], "name_search", "", domainParent);
 								_info("getDocumentList() call succeed: "+token.toString());
 								if(token.toString().length()!=2) {
 									vc.add(gson.toJson(token));
