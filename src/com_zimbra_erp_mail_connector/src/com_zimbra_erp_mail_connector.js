@@ -170,7 +170,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 		} else if (this.mailtopush[i].type === ZmId.ITEM_MSG) {
 			var obj = this.mailtopush[i].getAddress(AjxEmailAddress.FROM);
 			if(obj)
-			eml = obj.address;
+				eml = obj.address;
 		}
 	}
 	this.mail_from=[];
@@ -182,9 +182,10 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._menuButtonListener = func
 
 var erpConnector = "";
 com_zimbra_erp_mail_connector.ZIMLET = null;
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype.init=function(){
 	//Read user credentials from database
-    com_zimbra_erp_mail_connector.ZIMLET = this;
+	com_zimbra_erp_mail_connector.ZIMLET = this;
 	this.mail_from = [];
 	AjxRpc.__RPC_CACHE_MAX = 200;
 	docList=this.getUserProperty("doc_list");
@@ -280,16 +281,16 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.showSideStepDlg = function
 	this.oe_canvas.getButton(DwtDialog.CANCEL_BUTTON).setText(this.getMessage("connector_project_close"));
 	this.oe_canvas.getButton(DwtDialog.OK_BUTTON).setText(this.getMessage("reset_configuration"));
 	this.oe_canvas.registerCallback(DwtDialog.OK_BUTTON, new AjxCallback(this, this._oe_handleResetClick));
-    this.oe_canvas._baseTabGroupSize = 10;
-    this.oe_canvas._tabGroup.__blockApplicationHandling=false;
-    this.oe_canvas._tabGroup.__blockDefaultHandling=false;
-    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_urladdress"),0);
-    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_port"),1);
-    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_getdatabase"),3);
-    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_username"),4);
-    this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_userpassword"),5);
-    this.oe_canvas._tabGroup.addMember(document.getElementById("passchk"),6);
-    this.oe_canvas._tabGroup.addMember(this.oe_canvas.getButton(DwtDialog.CANCEL_BUTTON),8);
+	this.oe_canvas._baseTabGroupSize = 10;
+	this.oe_canvas._tabGroup.__blockApplicationHandling=false;
+	this.oe_canvas._tabGroup.__blockDefaultHandling=false;
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_urladdress"),0);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_port"),1);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_getdatabase"),3);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_username"),4);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_userpassword"),5);
+	this.oe_canvas._tabGroup.addMember(document.getElementById("passchk"),6);
+	this.oe_canvas._tabGroup.addMember(this.oe_canvas.getButton(DwtDialog.CANCEL_BUTTON),8);
 	this.oe_canvas.popup();
 	this.tabView.getTabButton(this.tabkeys[0]).setImage("preferences");	//SideStep-configuration
 	this.tabView.getTabButton(this.tabkeys[1]).setImage("edit");		//SideStep-document
@@ -432,15 +433,17 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.trim=function(data){
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_text = function(text,focusid) {
 	var a = new DwtMessageDialog({parent:appCtxt.getShell(), id: "test_id",buttons:[DwtDialog.OK_BUTTON]});
 	a.setMessage(text,DwtMessageDialog.CRITICAL_STYLE,this.getMessage("error"));
-    a.getButton(DwtDialog.OK_BUTTON).addSelectionListener(new AjxListener(this,this._errorDlgListener,[a,focusid]));
+	a.getButton(DwtDialog.OK_BUTTON).addSelectionListener(new AjxListener(this,this._errorDlgListener,[a,focusid]));
 	a.popup();
 }
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype._errorDlgListener = function(dlg,focusid) {
-    dlg.popdown();
-    if(!this.isBlank(focusid)){
-        document.getElementById(focusid).focus();
-    }
+	dlg.popdown();
+	if(!this.isBlank(focusid)){
+		document.getElementById(focusid).focus();
+	}
 }
+
 com_zimbra_erp_mail_connector_HandlerObject.prototype.alert_critical_msg = function(msgid,focusid) {
 	return this.alert_critical_text(this.getMessage(msgid),focusid);
 }

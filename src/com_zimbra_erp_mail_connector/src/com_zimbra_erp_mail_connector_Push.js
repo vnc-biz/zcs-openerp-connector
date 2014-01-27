@@ -65,15 +65,15 @@ com_zimbra_erp_mail_connector_Push.prototype._displayDailog = function() {
 	this.pbDialog.getButton(DwtDialog.DISMISS_BUTTON).setText(this.zimlet.getMessage("connector_project_close"));
 	this.pbDialog.setButtonListener(DwtDialog.DISMISS_BUTTON, new AjxListener(this, this._dismissBtnListener));
 	this.getRecords();
-    this.pbDialog._baseTabGroupSize = 10;
+	this.pbDialog._baseTabGroupSize = 10;
 
 	document.getElementById("document_name"+this.push_random+"").innerHTML=this.fixheading;
 	document.getElementById("mailsearch"+this.push_random+"").value = this.pushfrom;
 	document.getElementById("pushEmail"+this.push_random).appendChild(pushMailBtn.getHtmlElement());
 	document.getElementById("doc_search"+this.push_random).appendChild(searchDocBtn.getHtmlElement());
-    this.pbDialog._tabGroup.addMember(document.getElementById("mailsearch"+this.push_random+""),0);
-    this.pbDialog._tabGroup.addMember(searchDocBtn,1);
-    this.pbDialog._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_gridtable"),2);
+	this.pbDialog._tabGroup.addMember(document.getElementById("mailsearch"+this.push_random+""),0);
+	this.pbDialog._tabGroup.addMember(searchDocBtn,1);
+	this.pbDialog._tabGroup.addMember(document.getElementById("com_zimbra_erp_mail_connector_gridtable"),2);
 	this.pbDialog.popup();
 }
 
@@ -98,9 +98,9 @@ com_zimbra_erp_mail_connector_Push.prototype.getRecords = function() {
 			if (j%3==0) {
 				s+="</tr><tr>"
 			}
-			s+="<td style='width:32%;'>"
-			s+="<input type='checkbox' id='records"+this.push_random+"' name='records"+this.push_random+"' value='"+records[i].docname+"' onclick='com_zimbra_erp_mail_connector_Push.AllCheckbox("+this.push_random+")'/>"+records[i].title;
-			s+="</td>"
+		s+="<td style='width:32%;'>"
+		s+="<input type='checkbox' id='records"+this.push_random+"' name='records"+this.push_random+"' value='"+records[i].docname+"' onclick='com_zimbra_erp_mail_connector_Push.AllCheckbox("+this.push_random+")'/>"+records[i].title;
+		s+="</td>"
 		}
 	}
 	s+="</tr></table>"
@@ -147,7 +147,7 @@ com_zimbra_erp_mail_connector_Push.prototype._createDialogView = function() {
 /*Provede All users name from Open ERP*/
 com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 	this.documentrecord = "";
-    this.recordFound = false;
+	this.recordFound = false;
 	record_check=document.getElementsByName("records"+this.push_random+"");
 	var flg=0;
 	for(var i=0;i<record_check.length;i++) {
@@ -202,10 +202,10 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 				}
 				if(docrecord["res.partner"]!=undefined){
 					this._fillRecords(docrecord["res.partner"],"res.partner","Partner");
-                }
+				}
 				if(docrecord["crm.lead"]!=undefined){
 					this._fillRecords(docrecord["crm.lead"],"crm.lead","Lead");
-                }
+				}
 			}
 		} else {
 			if (this.zimlet.trim(response.text)=="Exception") {
@@ -240,6 +240,7 @@ com_zimbra_erp_mail_connector_Push.prototype._fillRecords = function(recordsdata
 		}
 	}
 };
+
 com_zimbra_erp_mail_connector_Push.prototype._dismissBtnListener= function() {
 	this.pbDialog.popdown();
 }
@@ -296,7 +297,7 @@ com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random,ac
 					appCtxt.getAppController().sendRequest(params);
 				} else {
 					if (this.zimlet.trim(response.text)=="2") {
-						 this.zimlet.alert_warning_msg("reconnect");
+						this.zimlet.alert_warning_msg("reconnect");
 					} else if(this.zimlet.trim(response.text) == "Fail"){
 						this.zimlet.alert_critical_msg("email_archive_failed");
 						flag=1;
