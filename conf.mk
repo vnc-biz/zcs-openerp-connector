@@ -5,5 +5,3 @@ SECTION=free/zcs-office
 PRIORITY=optional
 DEPENDS=zcs-lib-json-simple,zcs-lib-javacsv,zcs-lib-gson22,zcs-lib-redstone-xmlrpc,zcs-lib-vnc-common,zcs-core-libs
 DESCRIPTION=OpenERP integration
-REDMINE_UPLOAD_PROJECT=int-oerp-zim
-REDMINE_UPLOAD_URL=https://redmine.vnc.biz/redmine/
