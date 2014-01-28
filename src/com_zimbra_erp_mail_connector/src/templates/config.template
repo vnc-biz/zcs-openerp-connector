@@ -32,7 +32,7 @@
 			</tr>
 			<tr>
 				<td><$=data.zimlet.getMessage("connector_configuration_lbl_password")$></td>
-				<td><input type='password' id='com_zimbra_erp_mail_connector_userpassword' class='com_zimbra_erp_mail_connector_textWidth'/></td>
+				<td><input type='password' id='com_zimbra_erp_mail_connector_userpassword' class='com_zimbra_erp_mail_connector_textWidth' onfocus='this.select()'/></td>
 				<td class='com_zimbra_erp_mail_connector_showpass'><div><div style='float:left'><input type='checkbox' id='passchk' onclick='com_zimbra_erp_mail_connector_Settings.showpass()'/></div><div class='com_zimbra_erp_mail_connector_showpassLabel'><$=data.zimlet.getMessage("show_password")$></div></div></td>
 			</tr>
 		</table>

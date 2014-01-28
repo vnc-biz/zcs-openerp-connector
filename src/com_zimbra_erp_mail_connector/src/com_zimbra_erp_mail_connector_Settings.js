@@ -26,7 +26,7 @@ function com_zimbra_erp_mail_connector_Settings(parent, zimlet,confi_btn_databas
 	this.flag = 0;
 	DwtTabViewPage.call(this,parent);
 	this.oe_canvas = oe_canvas;
-	this.zimlet = zimlet;
+	this.zimlet = com_zimbra_erp_mail_connector_Settings.zimlet = zimlet;
 	config_btn_database=confi_btn_database;
 	this._createHTML(oe_canvas);
 	document.getElementById("com_zimbra_erp_mail_connector_urladdress").value=erpConnector.urladdress;
@@ -67,6 +67,13 @@ com_zimbra_erp_mail_connector_Settings.prototype._createHTML = function(dlgObj) 
 	this.getHtmlElement().innerHTML = AjxTemplate.expand("com_zimbra_erp_mail_connector.templates.config#config_Settings",data);
 	document.getElementById("getDatabase").appendChild(get_db.getHtmlElement());
 	document.getElementById("connect_database").appendChild(connectBtn.getHtmlElement());
+    document.getElementById("com_zimbra_erp_mail_connector_userpassword").onkeyup=function(e){
+        if (typeof e == 'undefined' && window.event) { e = window.event; }
+        if (e.keyCode == 13){
+            document.getElementById("com_zimbra_erp_mail_connector_userpassword").blur();
+            erpConnector.zimlet.configuration_setting.checkConnection();
+        }
+    }
 	this.connectBtn = connectBtn;
 	this.get_db = get_db;
 };
@@ -196,9 +203,9 @@ com_zimbra_erp_mail_connector_Settings.prototype.checkConnection = function(){
 	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Authentication.jsp?urladdress="+(proto+url)+"&port="+port+"&database="+this.zimlet.trim(database)+"&username="+this.zimlet.trim(username)+"&userpassword="+z_password+"&temp=tt";
 	var response = AjxRpc.invoke(null,jspurl, null, null, true);
 	if(this.zimlet.trim(response.text) == 'false'){
-		this.zimlet.alert_critical_msg("connector_configuration_userandpassword");
+		this.zimlet.alert_critical_msg_focus("connector_configuration_userandpassword",null,"com_zimbra_erp_mail_connector_userpassword");
 	}else{
-		this.zimlet.alert_info_msg("connector_configuration_lbl_conection_saved");
+		this.zimlet.alert_info_msg_focus("connector_configuration_lbl_conection_saved",null,"com_zimbra_erp_mail_connector_userpassword");
 		var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/readConfig.jsp";
 		var response = AjxRpc.invoke(null,jspurl, null, null, true);
 		var allConfigurations = JSON.parse(response.text);
