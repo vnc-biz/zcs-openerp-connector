@@ -281,8 +281,10 @@ com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random,ac
 			if (response.success==true) {
 				if(this.zimlet.trim(response.text)=="1"){
 					var tagObj = appCtxt.getActiveAccount().trees.TAG.getByName("openERP_archived");
-					if(!tagObj)
+					if(!tagObj){
+						document.getElementById("wait"+this.push_random+"").innerHTML="";
 						return;
+					}
 					var tagId = tagObj.id;
 					var soapCmd = "MsgActionRequest";
 					var itemActionRequest = {};
