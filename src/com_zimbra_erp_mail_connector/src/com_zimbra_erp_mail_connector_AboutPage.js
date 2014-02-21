@@ -1,6 +1,6 @@
 /*##############################################################################
-#    VNC-Virtual Network Consult GmbH.
-#    Copyright (C) 2004-TODAY VNC-Virtual Network Consult GmbH
+#    VNC - Virtual Network Consult AG
+#    Copyright (C) 2014-TODAY VNC - Virtual Network Consult AG 
 #    (<http://www.vnc.biz>).
 #
 #    This program is free software: you can redistribute it and/or modify
