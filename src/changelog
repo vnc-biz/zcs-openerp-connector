@@ -1,0 +1,7 @@
+Version (1.2.5.7) stable; urgency=low
+
+	*Shared emails can be pushed without tagging.
+	*Changed company name and copy rights info.
+	*Added German translation.
+	
+	--Enrico Weigelt <enrico.weigelt@vnc.biz> 
