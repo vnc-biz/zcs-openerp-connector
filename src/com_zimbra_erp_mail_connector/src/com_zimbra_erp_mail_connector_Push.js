@@ -18,7 +18,7 @@
 #
 ##############################################################################*/
 
-com_zimbra_erp_mail_connector_Push=function(zimlet,msgids,push_from,msgtype){
+com_zimbra_erp_mail_connector_Push=function(zimlet,msgids,push_from,msgtype,isShared){
 	this.zimlet=zimlet;
 	this.documentrecord="";
 	this.push_id = "";
@@ -26,6 +26,7 @@ com_zimbra_erp_mail_connector_Push=function(zimlet,msgids,push_from,msgtype){
 	this.email_ids = msgids;
 	this.push_random=Math.round(Math.random()*100);
 	this.pushfrom=push_from;
+	this.isShared = isShared;
 	if(this.pushfrom == undefined){
 		this.pushfrom = "";
 	}
@@ -281,22 +282,20 @@ com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random,ac
 			if (response.success==true) {
 				if(this.zimlet.trim(response.text)=="1"){
 					var tagObj = appCtxt.getActiveAccount().trees.TAG.getByName("openERP_archived");
-					if(!tagObj){
-						document.getElementById("wait"+this.push_random+"").innerHTML="";
-						return;
+					if(tagObj && !this.isShared){
+						var tagId = tagObj.id;
+						var soapCmd = "MsgActionRequest";
+						var itemActionRequest = {};
+						itemActionRequest[soapCmd] = {_jsns:"urn:zimbraMail"};
+						var request = itemActionRequest[soapCmd];
+						var action = request.action = {};
+						var emailid = "" + this.email_ids[i];
+						action.id = emailid;
+						action.op = "tag";
+						action.tag = tagId;
+						var params = {asyncMode: true, callback: null, jsonObj:itemActionRequest};
+						appCtxt.getAppController().sendRequest(params);
 					}
-					var tagId = tagObj.id;
-					var soapCmd = "MsgActionRequest";
-					var itemActionRequest = {};
-					itemActionRequest[soapCmd] = {_jsns:"urn:zimbraMail"};
-					var request = itemActionRequest[soapCmd];
-					var action = request.action = {};
-					var emailid = "" + this.email_ids[i];
-					action.id = emailid;
-					action.op = "tag";
-					action.tag = tagId;
-					var params = {asyncMode: true, callback: null, jsonObj:itemActionRequest};
-					appCtxt.getAppController().sendRequest(params);
 				} else {
 					if (this.zimlet.trim(response.text)=="2") {
 						this.zimlet.alert_warning_msg("reconnect");

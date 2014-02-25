@@ -334,6 +334,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop = function(droppedI
 	var ids = [];
 	this.msgids=[];
 	this.msgtype=[];
+	var isShared = false;
 	try{
 		var dbname=erpConnector.getdatabase;
 		var urladdress=erpConnector.urladdress;
@@ -345,6 +346,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop = function(droppedI
 		if(droppedItem instanceof Array) {
 			for(var i =0; i < droppedItem.length; i++) {
 				var obj = droppedItem[i].srcObj ?  droppedItem[i].srcObj :  droppedItem[i];
+				isShared = obj._isShared?obj._isShared:false;
 				if (obj.type == "CONV" ) {
 					this._getMessageFromConv(obj);
 					this.mail_from[0]="";
@@ -355,6 +357,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop = function(droppedI
 			}
 		} else {
 			var obj = droppedItem.srcObj ? droppedItem.srcObj : droppedItem;
+			isShared = obj._isShared?obj._isShared:false;
 			if (obj.type == "CONV"){
 				this._getMessageFromConv(obj);
 			} else if(obj.type == "MSG") {
@@ -366,7 +369,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop = function(droppedI
 		this.alert_critical("mail_push_exception");
 	}
 	if(obj.type != "APPT") {
-		new com_zimbra_erp_mail_connector_Push(this,this.msgids,this.mail_from[0],this.msgtype);
+		new com_zimbra_erp_mail_connector_Push(this,this.msgids,this.mail_from[0],this.msgtype,isShared);
 	}
 };
 
