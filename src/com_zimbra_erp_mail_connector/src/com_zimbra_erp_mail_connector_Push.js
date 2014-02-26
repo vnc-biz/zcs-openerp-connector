@@ -189,8 +189,11 @@ com_zimbra_erp_mail_connector_Push.prototype.getDocumentRecord = function() {
 	}
 	var tot_obj=obj_name.toString().split(',');
 	document.getElementById("wait"+this.push_random+"").innerHTML="<img src='"+this.zimlet.getResource("resources/submit_please_wait.gif")+"'/>";
-	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentlist.jsp?emailsearch="+this.zimlet.trim(emailsearch)+"&obj_name="+AjxStringUtil.urlComponentEncode(tot_obj);
-	var response = AjxRpc.invoke(null,jspurl, null, null, true);
+	var paramstr = "emailsearch="+AjxStringUtil.urlComponentEncode(this.zimlet.trim(emailsearch))+"&obj_name="+AjxStringUtil.urlComponentEncode(tot_obj);
+	var jspurl="/service/zimlet/com_zimbra_erp_mail_connector/Documentlist.jsp";
+	var headers = {};
+	headers['Content-Type'] = "application/x-www-form-urlencoded";
+	var response = AjxRpc.invoke(paramstr,jspurl, headers, null, false);
 	this.documentrecord+=this.fixheading;
 	if (response.success == true) {
 		if (this.zimlet.trim(response.text).length>2 && (this.zimlet.trim(response.text))!="Exception") {
