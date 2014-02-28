@@ -298,6 +298,9 @@ com_zimbra_erp_mail_connector_Push.prototype.pushEmail = function(push_random,ac
 						action.tag = tagId;
 						var params = {asyncMode: true, callback: null, jsonObj:itemActionRequest};
 						appCtxt.getAppController().sendRequest(params);
+					}else{
+						this.zimlet.alert_info_msg("connector_pushopenerp_process_success_shared");
+						flag = 1;		
 					}
 				} else {
 					if (this.zimlet.trim(response.text)=="2") {

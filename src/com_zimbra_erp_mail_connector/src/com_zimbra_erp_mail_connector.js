@@ -99,7 +99,7 @@ com_zimbra_erp_mail_connector_HandlerObject.prototype._msgLoaded = function(resu
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype._handleSOAPErrorResponseXML = function(result) {
 	if (result.isException()) {
-		this.alert_critical("mail_push_exception");
+		this.alert_critical_msg("mail_push_exception");
 		var exception = result.getException();
 		return;
 	}
@@ -331,47 +331,68 @@ erpConnector_TabDialog.prototype = new ZmDialog;
 erpConnector_TabDialog.prototype.constructor = erpConnector_TabDialog;
 
 com_zimbra_erp_mail_connector_HandlerObject.prototype.doDrop = function(droppedItem) {
+	this._pushEmail(droppedItem);
+};
+com_zimbra_erp_mail_connector_HandlerObject.prototype._loadItem = function(obj,droppedItem){
+	var callback = new AjxCallback(this, this._itemLoaded,[droppedItem]);
+	if (obj.type == "CONV" ) {
+            obj.loadMsgs({fetchAll:true},callback);
+	} else if (obj.type == "MSG") {
+		obj.load({forceLoad:true,callback:callback});
+	}
+}
+com_zimbra_erp_mail_connector_HandlerObject.prototype._itemLoaded = function(item) {
+	this._pushEmail(item);
+}
+com_zimbra_erp_mail_connector_HandlerObject.prototype._pushEmail = function(droppedItem) {
 	var ids = [];
-	this.msgids=[];
-	this.msgtype=[];
-	var isShared = false;
-	try{
-		var dbname=erpConnector.getdatabase;
-		var urladdress=erpConnector.urladdress;
-		var port=erpConnector.port;
-		if(!(dbname || urladdress || port)){
-			this.alert_warning_msg("no_database_configured");
-			return;
-		}
-		if(droppedItem instanceof Array) {
-			for(var i =0; i < droppedItem.length; i++) {
-				var obj = droppedItem[i].srcObj ?  droppedItem[i].srcObj :  droppedItem[i];
-				isShared = obj._isShared?obj._isShared:false;
-				if (obj.type == "CONV" ) {
-					this._getMessageFromConv(obj);
-					this.mail_from[0]="";
-				} else if (obj.type == "MSG") {
-					this._getMessageFromMsg(obj);
+    this.msgids=[];
+    this.msgtype=[];
+    this.isShared = false;
+    try{
+        var dbname=erpConnector.getdatabase;
+        var urladdress=erpConnector.urladdress;
+        var port=erpConnector.port;
+        if(!(dbname || urladdress || port)){
+            this.alert_warning_msg("no_database_configured");
+            return;
+        }
+        if(droppedItem instanceof Array) {
+            for(var i =0; i < droppedItem.length; i++) {
+                var obj = droppedItem[i].srcObj ?  droppedItem[i].srcObj :  droppedItem[i];
+				if(!obj._loaded){
+					this._loadItem(obj,droppedItem);
+					return;
 				}
-				this.mail_from[0]="";
+                this.isShared = obj.isShared();
+                if (obj.type == "CONV" ) {
+                    this._getMessageFromConv(obj);
+                    this.mail_from[0]="";
+                } else if (obj.type == "MSG") {
+                    this._getMessageFromMsg(obj);
+                }
+                this.mail_from[0]="";
 			}
 		} else {
-			var obj = droppedItem.srcObj ? droppedItem.srcObj : droppedItem;
-			isShared = obj._isShared?obj._isShared:false;
-			if (obj.type == "CONV"){
-				this._getMessageFromConv(obj);
-			} else if(obj.type == "MSG") {
-				this._getMessageFromMsg(obj);
-			}else if(obj.type == "APPT") {
-			}
-		}
-	}catch(e){
-		this.alert_critical("mail_push_exception");
-	}
-	if(obj.type != "APPT") {
-		new com_zimbra_erp_mail_connector_Push(this,this.msgids,this.mail_from[0],this.msgtype,isShared);
-	}
-};
+            var obj = droppedItem.srcObj ? droppedItem.srcObj : droppedItem;
+			if(!obj._loaded){
+                    this._loadItem(obj,droppedItem);
+                    return;
+            }
+            this.isShared = obj.isShared();
+            if (obj.type == "CONV"){
+                this._getMessageFromConv(obj);
+            } else if(obj.type == "MSG") {
+                this._getMessageFromMsg(obj);
+            }
+        }
+    }catch(e){
+        this.alert_critical_msg("mail_push_exception");
+    }
+    if(obj.type != "APPT") {
+        new com_zimbra_erp_mail_connector_Push(this,this.msgids,this.mail_from[0],this.msgtype,this.isShared);
+    }
+}
 
 /** Conversation Mails Detail...**/
 com_zimbra_erp_mail_connector_HandlerObject.prototype._getMessageFromConv=function(convSrcObj) {
