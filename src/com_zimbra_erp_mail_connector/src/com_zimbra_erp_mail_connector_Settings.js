@@ -144,7 +144,7 @@ com_zimbra_erp_mail_connector_Settings.prototype._getDatabase = function(){
 		}
 	}
 	else{
-		this.zimlet.alert_warning_msg("time_out");
+		this.zimlet.alert_critical_msg("host_error");
 		document.getElementById("com_zimbra_erp_mail_connector_getdatabase").innerHTML=""+"<option>"+this.zimlet.getMessage("select_any_database")+"</option>";
 	}
 }
